@@ -1,0 +1,29 @@
+{
+  "type": "cosmos-sdk/StdTx",
+  "value": {
+    "msg": [
+      {
+        "type": "nameservice/SetDescription",
+        "value": {
+          "name": "jack1.id",
+          "description": "hahaha",
+          "owner": "cosmos1yw0j6h588pjwuwehldhk4tuq8yhht7829kdzw0"
+        }
+      }
+    ],
+    "fee": {
+      "amount": [],
+      "gas": "200000"
+    },
+    "signatures": [
+      {
+        "pub_key": {
+          "type": "tendermint/PubKeySecp256k1",
+          "value": "AtH8QXg5hoeY72icDD/1CT2klGNMfkmrlYaqGyRAVjRd"
+        },
+        "signature": "MbrhJ6tWLjRMCLNOmHsI2EpLNbKHgnTNjmruJx6v6XgYHPvbTyGk6oCedWdoEwXHHO3LoMfHRgmKoiZKp50P8w=="
+      }
+    ],
+    "memo": ""
+  }
+}

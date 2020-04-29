@@ -1,0 +1,1 @@
+{"type":"cosmos-sdk/StdTx","value":{"msg":[{"type":"nameservice/SetDescription","value":{"name":"jack1.id","description":"hahaha","owner":"cosmos1yw0j6h588pjwuwehldhk4tuq8yhht7829kdzw0"}}],"fee":{"amount":[],"gas":"200000"},"signatures":null,"memo":""}}
