@@ -1,32 +1,98 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <header-page />
+    <router-view />
+    <footer-page />
   </div>
 </template>
 
+<script>
+import HeaderPage from '@/components/Header';
+import FooterPage from '@/components/Footer';
+export default {
+  components: {
+    HeaderPage,
+    FooterPage,
+  },
+};
+</script>
+
 <style>
+@import './assets/css/col-bootstrap-4.css';
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  text-align: center;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.text-align-left {
+  text-align: left !important;
+}
+
+.text-align-right {
+  text-align: right !important;
+}
+.text-align-center {
+  text-align: center !important;
+}
+.text-align-justify {
+  text-align: justify !important;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+section {
+  width: 100vw;
+  height: auto;
+  display: flex;
+  justify-content: center;
 }
 </style>
