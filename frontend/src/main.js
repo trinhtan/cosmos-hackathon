@@ -6,11 +6,13 @@ import store from './store';
 Vue.config.productionTip = false;
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-
 Vue.use(ElementUI);
+
+import VueLazyload from 'vue-lazyload';
+Vue.use(VueLazyload);
 
 new Vue({
   router,
   store,
-  render: (h) => h(App),
+  render: (h) => h(App)
 }).$mount('#app');

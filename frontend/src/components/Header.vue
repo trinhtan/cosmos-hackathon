@@ -22,7 +22,7 @@
             </router-link>
           </li>
           <li>
-            <router-link to="/new-asset">
+            <router-link to="/publish">
               <h3>Publish</h3>
             </router-link>
           </li>
@@ -57,7 +57,7 @@ export default {
       classHeader: '',
       classMenuToggle: '',
       menuToggle: true,
-      classShowMenu: '',
+      classShowMenu: ''
     };
   },
   created() {
@@ -91,8 +91,8 @@ export default {
           document.getElementById('ul-subMenu').classList.remove('top-100');
         }
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -156,8 +156,8 @@ nav {
   display: grid;
   grid-template-columns: 1fr 1fr;
   position: fixed;
-  z-index: 10;
-  transition: all 0.3s;
+  z-index: 2001;
+  transition: all 0.1s;
   &.navShadow {
     box-shadow: 0 4px 30px -5px rgba(#000, 0.2);
     height: 100px;
@@ -206,6 +206,7 @@ header ul {
   padding-right: 100px;
 }
 .ul-menu-toggle {
+  text-align: center;
   li {
     margin-left: 25px;
     list-style: none;
