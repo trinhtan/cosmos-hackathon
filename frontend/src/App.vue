@@ -12,8 +12,8 @@ import FooterPage from '@/components/Footer';
 export default {
   components: {
     HeaderPage,
-    FooterPage,
-  },
+    FooterPage
+  }
 };
 </script>
 
