@@ -20,10 +20,6 @@ export default {
 <style>
 @import './assets/css/col-bootstrap-4.css';
 
-#app {
-  text-align: center;
-}
-
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',

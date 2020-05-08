@@ -98,7 +98,7 @@ input[type='search'] {
 }
 
 .content-home {
-  min-height: 500px;
+  min-height: 470px;
   padding: 0px 50px 50px 50px;
   width: 75%;
   margin: 0 auto;
