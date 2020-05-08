@@ -9,17 +9,24 @@
 <script>
 import HeaderPage from '@/components/Header';
 import FooterPage from '@/components/Footer';
+import { mapState, mapActions } from 'vuex';
 export default {
+  name: 'app',
   components: {
     HeaderPage,
     FooterPage
+  },
+  computed: { ...mapState('ethereum', ['web3']) },
+  methods: {
+    ...mapActions('ethereum', ['setWeb3'])
+  },
+  async mounted() {
+    await this.setWeb3();
   }
 };
 </script>
 
 <style>
-@import './assets/css/col-bootstrap-4.css';
-
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
@@ -90,5 +97,11 @@ section {
   height: auto;
   display: flex;
   justify-content: center;
+}
+
+.box-shadow {
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 </style>

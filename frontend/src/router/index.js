@@ -19,6 +19,11 @@ const routes = [
     path: '/publish',
     name: 'Publish',
     component: () => import('../views/Publish.vue')
+  },
+  {
+    path: '/my-assets',
+    name: 'MyAssets',
+    component: () => import('../views/MyAssests.vue')
   }
 ];
 
