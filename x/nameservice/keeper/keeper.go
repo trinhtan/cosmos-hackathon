@@ -181,6 +181,13 @@ func (k Keeper) SetProductOwner(ctx sdk.Context, productID string, owner sdk.Acc
 	k.SetProduct(ctx, productID, product)
 }
 
+// SetProductOwner sets product owner
+func (k Keeper) ChangeProductOwner(ctx sdk.Context, productID string, newOwner sdk.AccAddress) {
+	product := k.GetProduct(ctx, productID)
+	product.Owner = newOwner
+	k.SetProduct(ctx, productID, product)
+}
+
 // GetProductDescription gets product description
 func (k Keeper) GetProductDescription(ctx sdk.Context, productID string) string {
 	return k.GetProduct(ctx, productID).Description

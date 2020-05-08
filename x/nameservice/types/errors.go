@@ -5,6 +5,6 @@ import (
 )
 
 var (
-	ErrNameDoesNotExist = sdkerrors.Register(ModuleName, 1, "name does not exist")
-	ProductDoesNotExist = sdkerrors.Register(ModuleName, 2, "product does not exist")
+	ErrNameDoesNotExist    = sdkerrors.Register(ModuleName, 1, "name does not exist")
+	ErrProductDoesNotExist = sdkerrors.Register(ModuleName, 2, "product does not exist")
 )
