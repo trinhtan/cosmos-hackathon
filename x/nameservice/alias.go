@@ -32,6 +32,10 @@ var (
 	NewMsgSetSell         = types.NewMsgSetSell
 	NewMsgSetSellMinPrice = types.NewMsgSetSellMinPrice
 
+	NewReservation            = types.NewReservation
+	NewMsgSetReservation      = types.NewMsgSetReservation
+	NewMsgSetReservationPrice = types.NewMsgSetReservationPrice
+
 	ModuleCdc     = types.ModuleCdc
 	RegisterCodec = types.RegisterCodec
 )
@@ -58,4 +62,8 @@ type (
 	Sell               = types.Sell
 	MsgSetSell         = types.MsgSetSell
 	MsgSetSellMinPrice = types.MsgSetSellMinPrice
+
+	Reservation            = types.Reservation
+	MsgSetReservation      = types.MsgSetReservation
+	MsgSetReservationPrice = types.MsgSetReservationPrice
 )

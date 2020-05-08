@@ -68,9 +68,7 @@ type Sell struct {
 
 //NewSell returns a new sell
 func NewSell() Sell {
-	return Sell{
-		MinPrice: MinProductPrice,
-	}
+	return Sell{}
 }
 
 // implement fmt.Stringer
@@ -85,7 +83,7 @@ func (sell Sell) String() string {
 // Reservation is a struct contains all the metadata of a reservation
 type Reservation struct {
 	ReservationID string         `json:"reservationID"`
-	ProductID     string         `json:"productID"`
+	SellID        string         `json:"sellID"`
 	Buyer         sdk.AccAddress `json:"buyer"`
 	Price         sdk.Coins      `json:"price"`
 }
@@ -99,7 +97,7 @@ func NewReservation() Reservation {
 func (reservation Reservation) String() string {
 	return strings.TrimSpace(fmt.Sprintf(`
 	ReservationID: %s
-	ProductID: %s
+	SellID: %s
 	Buyer: %s
-	Price: %s`, reservation.ReservationID, reservation.ProductID, reservation.Buyer, reservation.Price))
+	Price: %s`, reservation.ReservationID, reservation.SellID, reservation.Buyer, reservation.Price))
 }

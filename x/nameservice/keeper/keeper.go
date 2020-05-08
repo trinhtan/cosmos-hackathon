@@ -307,7 +307,7 @@ func (k Keeper) GetReservation(ctx sdk.Context, reservationID string) types.Rese
 
 // SetReservation sets the entire sell metadata struct for a reservation
 func (k Keeper) SetReservation(ctx sdk.Context, reservationID string, reservation types.Reservation) {
-	if reservation.Buyer.Empty() || len(reservation.ProductID) == 0 || reservation.Price.Empty() {
+	if reservation.Buyer.Empty() || len(reservation.SellID) == 0 || reservation.Price.Empty() {
 		return
 	}
 
@@ -317,14 +317,14 @@ func (k Keeper) SetReservation(ctx sdk.Context, reservationID string, reservatio
 }
 
 // GetReservationProductID gets productID of reservation
-func (k Keeper) GetReservationProductID(ctx sdk.Context, reservationID string) string {
-	return k.GetReservation(ctx, reservationID).ProductID
+func (k Keeper) GetReservationSellID(ctx sdk.Context, reservationID string) string {
+	return k.GetReservation(ctx, reservationID).SellID
 }
 
 // SetReservationProductID sets productID of reservation
-func (k Keeper) SetReservationProductID(ctx sdk.Context, reservationID string, productID string) {
+func (k Keeper) SetReservationSellID(ctx sdk.Context, reservationID string, sellID string) {
 	reservation := k.GetReservation(ctx, reservationID)
-	reservation.ProductID = productID
+	reservation.SellID = sellID
 	k.SetReservation(ctx, reservationID, reservation)
 }
 

@@ -15,6 +15,12 @@ const (
 	QueryWhois       = "whois"
 	QueryNames       = "names"
 	QueryDescription = "description"
+
+	QueryProduct = "product"
+
+	QuerySell = "sell"
+
+	QueryReservation = "reservation"
 )
 
 // NewQuerier is the module level router for state queries
@@ -29,6 +35,12 @@ func NewQuerier(keeper Keeper) sdk.Querier {
 			return queryNames(ctx, req, keeper)
 		case QueryDescription:
 			return queryDescription(ctx, path[1:], req, keeper)
+		case QueryProduct:
+			return queryProduct(ctx, path[1:], req, keeper)
+		case QuerySell:
+			return querySell(ctx, path[1:], req, keeper)
+		case QueryReservation:
+			return queryReservation(ctx, path[1:], req, keeper)
 		default:
 			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "unknown nameservice query endpoint")
 		}
@@ -88,6 +100,42 @@ func queryNames(ctx sdk.Context, req abci.RequestQuery, keeper Keeper) ([]byte, 
 	}
 
 	res, err := codec.MarshalJSONIndent(keeper.cdc, namesList)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
+	}
+
+	return res, nil
+}
+
+// nolint: unparam
+func queryProduct(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
+	product := keeper.GetProduct(ctx, path[0])
+
+	res, err := codec.MarshalJSONIndent(keeper.cdc, product)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
+	}
+
+	return res, nil
+}
+
+// nolint: unparam
+func querySell(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
+	sell := keeper.GetSell(ctx, path[0])
+
+	res, err := codec.MarshalJSONIndent(keeper.cdc, sell)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
+	}
+
+	return res, nil
+}
+
+// nolint: unparam
+func queryReservation(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
+	reservation := keeper.GetReservation(ctx, path[0])
+
+	res, err := codec.MarshalJSONIndent(keeper.cdc, reservation)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
 	}
