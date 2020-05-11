@@ -8,6 +8,8 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 
+import '@/assets/css/col-bootstrap-4.css';
+
 import VueLazyload from 'vue-lazyload';
 Vue.use(VueLazyload);
 

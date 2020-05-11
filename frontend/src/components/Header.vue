@@ -37,9 +37,10 @@
                 My Account<i class="el-icon-arrow-down el-icon--right"></i>
               </h3>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item icon="el-icon-s-finance"
-                  >Account : 0xb1233452123545412</el-dropdown-item
-                >
+                <el-dropdown-item>
+                  <div>Account : {{ account }}</div>
+                  <div>Balance : {{ balance }}</div>
+                </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </li>
@@ -50,8 +51,12 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
   name: 'header-page',
+  computed: {
+    ...mapState('ethereum', ['account', 'balance'])
+  },
   data() {
     return {
       classHeader: '',

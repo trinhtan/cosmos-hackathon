@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: 'footer-page',
+  name: 'footer-page'
 };
 </script>
 
@@ -16,6 +16,8 @@ export default {
 .ant-layout-footer {
   padding: 0 50px 15px;
   background: none;
+  position: fixed;
+  bottom: 0;
 }
 
 .footer-home {
