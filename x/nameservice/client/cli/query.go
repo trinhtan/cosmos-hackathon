@@ -7,8 +7,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
-	"github.com/trinhtan/cosmos-hackathon/x/nameservice/types"
 	"github.com/spf13/cobra"
+	"github.com/trinhtan/cosmos-hackathon/x/nameservice/types"
 )
 
 func GetQueryCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
@@ -24,6 +24,9 @@ func GetQueryCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
 		GetCmdWhois(storeKey, cdc),
 		GetCmdNames(storeKey, cdc),
 		GetCmdGetDescription(storeKey, cdc),
+		GetCmdProduct(storeKey, cdc),
+		GetCmdSell(storeKey, cdc),
+		GetCmdReservation(storeKey, cdc),
 	)...)
 
 	return nameserviceQueryCmd
@@ -114,6 +117,75 @@ func GetCmdNames(queryRoute string, cdc *codec.Codec) *cobra.Command {
 			}
 
 			var out types.QueryResNames
+			cdc.MustUnmarshalJSON(res, &out)
+			return cliCtx.PrintOutput(out)
+		},
+	}
+}
+
+// GetCmdProduct queries information about a product
+func GetCmdProduct(queryRoute string, cdc *codec.Codec) *cobra.Command {
+	return &cobra.Command{
+		Use:   "product [productID]",
+		Short: "Query info of product",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cliCtx := context.NewCLIContext().WithCodec(cdc)
+			productID := args[0]
+
+			res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/product/%s", queryRoute, productID), nil)
+			if err != nil {
+				fmt.Printf("could not get product - %s \n", productID)
+				return nil
+			}
+
+			var out types.Product
+			cdc.MustUnmarshalJSON(res, &out)
+			return cliCtx.PrintOutput(out)
+		},
+	}
+}
+
+// GetCmdSell queries information about a product
+func GetCmdSell(queryRoute string, cdc *codec.Codec) *cobra.Command {
+	return &cobra.Command{
+		Use:   "sell [sellID]",
+		Short: "Query info of sell",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cliCtx := context.NewCLIContext().WithCodec(cdc)
+			sellID := args[0]
+
+			res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/sell/%s", queryRoute, sellID), nil)
+			if err != nil {
+				fmt.Printf("could not get sell - %s \n", sellID)
+				return nil
+			}
+
+			var out types.Sell
+			cdc.MustUnmarshalJSON(res, &out)
+			return cliCtx.PrintOutput(out)
+		},
+	}
+}
+
+// GetCmdSell queries information about a product
+func GetCmdReservation(queryRoute string, cdc *codec.Codec) *cobra.Command {
+	return &cobra.Command{
+		Use:   "reservation [reservationID]",
+		Short: "Query info of reservation",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cliCtx := context.NewCLIContext().WithCodec(cdc)
+			reservationID := args[0]
+
+			res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/reservation/%s", queryRoute, reservationID), nil)
+			if err != nil {
+				fmt.Printf("could not get sell - %s \n", reservationID)
+				return nil
+			}
+
+			var out types.Reservation
 			cdc.MustUnmarshalJSON(res, &out)
 			return cliCtx.PrintOutput(out)
 		},

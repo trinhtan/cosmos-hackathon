@@ -438,6 +438,7 @@ func (msg MsgSetSell) ValidateBasic() error {
 	if len(msg.SellID) == 0 || len(msg.ProductID) == 0 || msg.MinPrice.Empty() {
 		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "ProductID and/or SellID and/or MinPrice cannot be empty")
 	}
+
 	return nil
 }
 
@@ -538,16 +539,16 @@ func (msg MsgDeleteSell) GetSigners() []sdk.AccAddress {
 // MsgSetReservation defines a SetReservation message
 type MsgSetReservation struct {
 	ReservationID string         `json:"reservationID"`
-	ProductID     string         `json:"productID"`
+	SellID        string         `json:"sellID"`
 	Buyer         sdk.AccAddress `json:"buyer"`
 	Price         sdk.Coins      `json:"price"`
 }
 
 // NewMsgSetReservation is a constructor function for MsgSetReservation
-func NewMsgSetReservation(reservationID string, productID string, buyer sdk.AccAddress, price sdk.Coins) MsgSetReservation {
+func NewMsgSetReservation(reservationID string, sellID string, buyer sdk.AccAddress, price sdk.Coins) MsgSetReservation {
 	return MsgSetReservation{
 		ReservationID: reservationID,
-		ProductID:     productID,
+		SellID:        sellID,
 		Buyer:         buyer,
 		Price:         price,
 	}
@@ -564,8 +565,8 @@ func (msg MsgSetReservation) ValidateBasic() error {
 	if msg.Buyer.Empty() {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Buyer.String())
 	}
-	if len(msg.ReservationID) == 0 || len(msg.ProductID) == 0 || msg.Price.Empty() {
-		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "ProductID and/or ReservationID and/or Price cannot be empty")
+	if len(msg.ReservationID) == 0 || len(msg.SellID) == 0 || msg.Price.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "SellID and/or ReservationID and/or Price cannot be empty")
 	}
 	return nil
 }

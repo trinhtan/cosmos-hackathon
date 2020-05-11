@@ -29,8 +29,16 @@ func NewHandler(keeper Keeper) sdk.Handler {
 			return handleMsgSetProductDescription(ctx, keeper, msg)
 		case MsgDeleteProduct:
 			return handleMsgDeleteProduct(ctx, keeper, msg)
+		case MsgChangeProductOwner:
+			return handleMsgChangeProductOwner(ctx, keeper, msg)
 		case MsgSetSell:
 			return handleMsgSetSell(ctx, keeper, msg)
+		case MsgSetSellMinPrice:
+			return handleMsgSetSellMinPrice(ctx, keeper, msg)
+		case MsgSetReservation:
+			return handleMsgSetReservation(ctx, keeper, msg)
+		case MsgSetReservationPrice:
+			return handleMsgSetReservationPrice(ctx, keeper, msg)
 		default:
 			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, fmt.Sprintf("Unrecognized nameservice Msg type: %v", msg.Type()))
 		}
@@ -136,12 +144,33 @@ func handleMsgDeleteProduct(ctx sdk.Context, keeper Keeper, msg MsgDeleteProduct
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Incorrect Owner")
 	}
 
-	keeper.DeleteWhois(ctx, msg.ProductID)
+	keeper.DeleteProduct(ctx, msg.ProductID)
+	return &sdk.Result{}, nil
+}
+
+// handleMsgChangeProductOwner a message to delete product
+func handleMsgChangeProductOwner(ctx sdk.Context, keeper Keeper, msg MsgChangeProductOwner) (*sdk.Result, error) {
+	if !keeper.IsProductPresent(ctx, msg.ProductID) {
+		return nil, sdkerrors.Wrap(types.ErrProductDoesNotExist, msg.ProductID)
+	}
+	if !msg.CurrentOwner.Equals(keeper.GetProductOwner(ctx, msg.ProductID)) {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Incorrect Owner")
+	}
+
+	keeper.ChangeProductOwner(ctx, msg.ProductID, msg.NewOwner)
 	return &sdk.Result{}, nil
 }
 
 // handleMsgSetSell handles a message to set sell
 func handleMsgSetSell(ctx sdk.Context, keeper Keeper, msg MsgSetSell) (*sdk.Result, error) {
+
+	if !keeper.IsProductPresent(ctx, msg.ProductID) {
+		return nil, sdkerrors.Wrap(types.ErrProductDoesNotExist, msg.ProductID)
+	}
+
+	if !msg.Seller.Equals(keeper.GetProductOwner(ctx, msg.ProductID)) {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Incorrect Owner")
+	}
 
 	var sell = Sell{
 		SellID:    msg.SellID,
@@ -151,5 +180,53 @@ func handleMsgSetSell(ctx sdk.Context, keeper Keeper, msg MsgSetSell) (*sdk.Resu
 	}
 
 	keeper.SetSell(ctx, msg.SellID, sell)
+	return &sdk.Result{}, nil // return
+}
+
+// handleMsgSetSellMinPrice handles a message to set sell minprice
+func handleMsgSetSellMinPrice(ctx sdk.Context, keeper Keeper, msg MsgSetSellMinPrice) (*sdk.Result, error) {
+
+	if !keeper.IsSellPresent(ctx, msg.SellID) {
+		return nil, sdkerrors.Wrap(types.ErrSellDoesNotExist, msg.SellID)
+	}
+
+	if !msg.Seller.Equals(keeper.GetProductOwner(ctx, msg.SellID)) {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Incorrect Owner")
+	}
+
+	keeper.SetSellMinPrice(ctx, msg.SellID, msg.MinPrice)
+	return &sdk.Result{}, nil // return
+}
+
+// handleMsgSetReservation handles a message to set reservation
+func handleMsgSetReservation(ctx sdk.Context, keeper Keeper, msg MsgSetReservation) (*sdk.Result, error) {
+
+	if !keeper.IsSellPresent(ctx, msg.SellID) {
+		return nil, sdkerrors.Wrap(types.ErrProductDoesNotExist, msg.SellID)
+	}
+
+	if keeper.GetSellMinPrice(ctx, msg.SellID).IsAllGT(msg.Price) {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Price not high enough") // If not, throw an error
+	}
+
+	var reservation = Reservation{
+		ReservationID: msg.ReservationID,
+		SellID:        msg.SellID,
+		Buyer:         msg.Buyer,
+		Price:         msg.Price,
+	}
+
+	keeper.SetReservation(ctx, msg.ReservationID, reservation)
+	return &sdk.Result{}, nil // return
+}
+
+// handleMsgSetReservation handles a message to set reservation
+func handleMsgSetReservationPrice(ctx sdk.Context, keeper Keeper, msg MsgSetReservationPrice) (*sdk.Result, error) {
+
+	if !keeper.IsReservationPresent(ctx, msg.ReservationID) {
+		return nil, sdkerrors.Wrap(types.ErrReservationDoesNotExist, msg.ReservationID)
+	}
+
+	keeper.SetReservationPrice(ctx, msg.ReservationID, msg.Price)
 	return &sdk.Result{}, nil // return
 }
