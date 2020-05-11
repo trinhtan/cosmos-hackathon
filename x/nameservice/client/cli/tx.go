@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/cosmos/cosmos-sdk/client"
+
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -13,6 +14,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
 	"github.com/trinhtan/cosmos-hackathon/x/nameservice/types"
+)
+
+const (
+	flagClientHome = "home-client"
 )
 
 func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
@@ -30,9 +35,10 @@ func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
 		GetCmdDeleteName(cdc),
 		GetCmdSetDescription(cdc),
 
-		GetCmdSetProduct(cdc),
+		GetCmdCreateProduct(cdc),
 		GetCmdDeleteProduct(cdc),
-		GetCmdSetProductDescription(cdc),
+		GetCmdUpdateProduct(cdc),
+		GetCmdChangeProductOwner(cdc),
 
 		GetCmdSetSell(cdc),
 		GetCmdSetSellMinPrice(cdc),
@@ -142,10 +148,10 @@ func GetCmdDeleteName(cdc *codec.Codec) *cobra.Command {
 	}
 }
 
-// GetCmdSetProduct is the CLI command for sending a SetProduct transaction
-func GetCmdSetProduct(cdc *codec.Codec) *cobra.Command {
+// GetCmdCreateProduct is the CLI command for sending a SetProduct transaction
+func GetCmdCreateProduct(cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
-		Use:   "set-product [productID] [title] [description]",
+		Use:   "create-product [productID] [title] [description]",
 		Short: "set the value associated with a product that you own",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -157,7 +163,7 @@ func GetCmdSetProduct(cdc *codec.Codec) *cobra.Command {
 			// 	return err
 			// }
 
-			msg := types.NewMsgSetProduct(args[0], args[1], args[2], cliCtx.GetFromAddress())
+			msg := types.NewMsgCreateProduct(args[0], args[1], args[2], cliCtx.GetFromAddress())
 			err := msg.ValidateBasic()
 			if err != nil {
 				return err
@@ -169,41 +175,22 @@ func GetCmdSetProduct(cdc *codec.Codec) *cobra.Command {
 	}
 }
 
-// GetCmdSetProductTitle is the CLI command for sending a SetProductTitle transaction
-func GetCmdSetProductTitle(cdc *codec.Codec) *cobra.Command {
+// GetCmdUpdateProduct is the CLI command for sending a SetProduct transaction
+func GetCmdUpdateProduct(cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
-		Use:   "set-product-title [productID] [title]",
-		Short: "set the value associated with a name that you own",
-		Args:  cobra.ExactArgs(2),
+		Use:   "update-product [productID] [title] [description]",
+		Short: "set the value associated with a product that you own",
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
 
-			msg := types.NewMsgSetProductTitle(args[0], args[1], cliCtx.GetFromAddress())
-			err := msg.ValidateBasic()
-			if err != nil {
-				return err
-			}
+			// if err := cliCtx.EnsureAccountExists(); err != nil {
+			// 	return err
+			// }
 
-			// return utils.CompleteAndBroadcastTxCLI(txBldr, cliCtx, msgs)
-			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
-		},
-	}
-}
-
-// GetCmdSetProductDescription is the CLI command for sending a SetProductDescription transaction
-func GetCmdSetProductDescription(cdc *codec.Codec) *cobra.Command {
-	return &cobra.Command{
-		Use:   "set-product-description [productID] [description]",
-		Short: "set the value associated with a name that you own",
-		Args:  cobra.ExactArgs(2),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			cliCtx := context.NewCLIContext().WithCodec(cdc)
-			inBuf := bufio.NewReader(cmd.InOrStdin())
-			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
-
-			msg := types.NewMsgSetProductDescription(args[0], args[1], cliCtx.GetFromAddress())
+			msg := types.NewMsgUpdateProduct(args[0], args[1], args[2], cliCtx.GetFromAddress())
 			err := msg.ValidateBasic()
 			if err != nil {
 				return err
@@ -228,6 +215,33 @@ func GetCmdDeleteProduct(cdc *codec.Codec) *cobra.Command {
 
 			msg := types.NewMsgDeleteProduct(args[0], cliCtx.GetFromAddress())
 			err := msg.ValidateBasic()
+			if err != nil {
+				return err
+			}
+
+			// return utils.CompleteAndBroadcastTxCLI(txBldr, cliCtx, msgs)
+			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
+		},
+	}
+}
+
+// GetCmdChangeProductOwner is the CLI command for sending a ChangeProductOwner transaction
+func GetCmdChangeProductOwner(cdc *codec.Codec) *cobra.Command {
+	return &cobra.Command{
+		Use:   "change-product-owner [productID] [newOwner]",
+		Short: "set the value associated with a product that you own",
+		Args:  cobra.ExactArgs(2),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cliCtx := context.NewCLIContext().WithCodec(cdc)
+			inBuf := bufio.NewReader(cmd.InOrStdin())
+			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+
+			addr, err := sdk.AccAddressFromBech32(args[1])
+
+			msg := types.NewMsgChangeProductOwner(args[0], cliCtx.GetFromAddress(), addr)
+
+			err = msg.ValidateBasic()
+
 			if err != nil {
 				return err
 			}

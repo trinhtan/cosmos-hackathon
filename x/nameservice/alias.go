@@ -22,11 +22,11 @@ var (
 	NewMsgDeleteName     = types.NewMsgDeleteName
 	NewMsgSetDescription = types.NewMsgSetDescription
 
-	NewProduct                  = types.NewProduct
-	NewMsgSetProduct            = types.NewMsgSetProduct
-	NewMsgSetProductTitle       = types.NewMsgSetProductTitle
-	NewMsgSetProductDescription = types.NewMsgSetProductDescription
-	NewMsgDeleteProduct         = types.NewMsgDeleteProduct
+	NewProduct               = types.NewProduct
+	NewMsgCreateProduct      = types.NewMsgCreateProduct
+	NewMsgChangeProductOwner = types.NewMsgChangeProductOwner
+	NewMsgDeleteProduct      = types.NewMsgDeleteProduct
+	NewMsgUpdateProduct      = types.NewMsgUpdateProduct
 
 	NewSell               = types.NewSell
 	NewMsgSetSell         = types.NewMsgSetSell
@@ -52,12 +52,11 @@ type (
 	QueryResNames       = types.QueryResNames
 	QueryResDescription = types.QueryResDescription
 
-	Product                  = types.Product
-	MsgSetProduct            = types.MsgSetProduct
-	MsgSetProductTitle       = types.MsgSetProductTitle
-	MsgSetProductDescription = types.MsgSetProductDescription
-	MsgDeleteProduct         = types.MsgDeleteProduct
-	MsgChangeProductOwner    = types.MsgChangeProductOwner
+	Product               = types.Product
+	MsgCreateProduct      = types.MsgCreateProduct
+	MsgUpdateProduct      = types.MsgUpdateProduct
+	MsgDeleteProduct      = types.MsgDeleteProduct
+	MsgChangeProductOwner = types.MsgChangeProductOwner
 
 	Sell               = types.Sell
 	MsgSetSell         = types.MsgSetSell

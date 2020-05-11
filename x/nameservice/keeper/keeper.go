@@ -140,7 +140,7 @@ func (k Keeper) GetProduct(ctx sdk.Context, productID string) types.Product {
 	return product
 }
 
-// SetProduct sets the entire Product metadata struct for a product
+// CreateProduct sets the entire Product metadata struct for a product
 func (k Keeper) SetProduct(ctx sdk.Context, productID string, product types.Product) {
 	if product.Owner.Empty() {
 		return
@@ -162,26 +162,12 @@ func (k Keeper) GetProductTitle(ctx sdk.Context, productID string) string {
 	return k.GetProduct(ctx, productID).Title
 }
 
-// SetProductTitle sets product title
-func (k Keeper) SetProductTitle(ctx sdk.Context, productID string, title string) {
-	product := k.GetProduct(ctx, productID)
-	product.Title = title
-	k.SetProduct(ctx, productID, product)
-}
-
 // GetProductOwner gets product owner
 func (k Keeper) GetProductOwner(ctx sdk.Context, productID string) sdk.AccAddress {
 	return k.GetProduct(ctx, productID).Owner
 }
 
-// SetProductOwner sets product owner
-func (k Keeper) SetProductOwner(ctx sdk.Context, productID string, owner sdk.AccAddress) {
-	product := k.GetProduct(ctx, productID)
-	product.Owner = owner
-	k.SetProduct(ctx, productID, product)
-}
-
-// SetProductOwner sets product owner
+// ChangeProductOwner changes product owner
 func (k Keeper) ChangeProductOwner(ctx sdk.Context, productID string, newOwner sdk.AccAddress) {
 	product := k.GetProduct(ctx, productID)
 	product.Owner = newOwner
@@ -191,13 +177,6 @@ func (k Keeper) ChangeProductOwner(ctx sdk.Context, productID string, newOwner s
 // GetProductDescription gets product description
 func (k Keeper) GetProductDescription(ctx sdk.Context, productID string) string {
 	return k.GetProduct(ctx, productID).Description
-}
-
-// SetProductDescription sets product description
-func (k Keeper) SetProductDescription(ctx sdk.Context, productID string, description string) {
-	product := k.GetProduct(ctx, productID)
-	product.Description = description
-	k.SetProduct(ctx, productID, product)
 }
 
 // GetProductsIterator gets an iterator over all product in which the keys are the productID and the values are the product
