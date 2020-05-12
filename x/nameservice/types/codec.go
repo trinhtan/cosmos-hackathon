@@ -18,9 +18,10 @@ func RegisterCodec(cdc *codec.Codec) {
 	cdc.RegisterConcrete(MsgDeleteName{}, "nameservice/DeleteName", nil)
 	cdc.RegisterConcrete(MsgSetDescription{}, "nameservice/SetDescription", nil)
 
-	cdc.RegisterConcrete(MsgSetProduct{}, "nameservice/SetProduct", nil)
+	cdc.RegisterConcrete(MsgCreateProduct{}, "nameservice/CreateProduct", nil)
 	cdc.RegisterConcrete(MsgDeleteProduct{}, "nameservice/DeleteProduct", nil)
 	cdc.RegisterConcrete(MsgChangeProductOwner{}, "nameservice/ChangeProductOwner", nil)
+	cdc.RegisterConcrete(MsgUpdateProduct{}, "nameservice/UpdateProduct", nil)
 
 	cdc.RegisterConcrete(MsgSetSell{}, "nameservice/SetSell", nil)
 	cdc.RegisterConcrete(MsgSetSellMinPrice{}, "nameservice/SetSellMinPrice", nil)

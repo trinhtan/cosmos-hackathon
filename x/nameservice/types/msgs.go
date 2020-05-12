@@ -179,151 +179,108 @@ func (msg MsgSetDescription) GetSigners() []sdk.AccAddress {
 }
 
 // MsgSetProduct defines a SetProduct message
-type MsgSetProduct struct {
+type MsgCreateProduct struct {
 	ProductID   string         `json:"productID"`
 	Title       string         `json:"title"`
 	Description string         `json:"description"`
-	Owner       sdk.AccAddress `json:"owner"`
+	Signer      sdk.AccAddress `json:"signer"`
 }
 
 // NewMsgSetProduct is a constructor function for MsgSetProduct
-func NewMsgSetProduct(productID string, title string, description string, owner sdk.AccAddress) MsgSetProduct {
-	return MsgSetProduct{
+func NewMsgCreateProduct(productID string, title string, description string, signer sdk.AccAddress) MsgCreateProduct {
+	return MsgCreateProduct{
 		ProductID:   productID,
 		Title:       title,
 		Description: description,
-		Owner:       owner,
+		Signer:      signer,
 	}
 }
 
 // Route should return the name of the module
-func (msg MsgSetProduct) Route() string { return RouterKey }
+func (msg MsgCreateProduct) Route() string { return RouterKey }
 
 // Type should return the action
-func (msg MsgSetProduct) Type() string { return "set_product" }
+func (msg MsgCreateProduct) Type() string { return "create_product" }
 
 // ValidateBasic runs stateless checks on the message
-func (msg MsgSetProduct) ValidateBasic() error {
-	if msg.Owner.Empty() {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Owner.String())
+func (msg MsgCreateProduct) ValidateBasic() error {
+	if msg.Signer.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Signer.String())
 	}
 	if len(msg.ProductID) == 0 || len(msg.Title) == 0 {
-		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "ProductID and/or Title cannot be empty")
+		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "ProductID and/or Title and/or Description cannot be empty")
 	}
 	return nil
 }
 
 // GetSignBytes encodes the message for signing
-func (msg MsgSetProduct) GetSignBytes() []byte {
+func (msg MsgCreateProduct) GetSignBytes() []byte {
 	return sdk.MustSortJSON(ModuleCdc.MustMarshalJSON(msg))
 }
 
 // GetSigners defines whose signature is required
-func (msg MsgSetProduct) GetSigners() []sdk.AccAddress {
-	return []sdk.AccAddress{msg.Owner}
+func (msg MsgCreateProduct) GetSigners() []sdk.AccAddress {
+	return []sdk.AccAddress{msg.Signer}
 }
 
-// MsgSetProductTitle defines a SetProductTitle message
-type MsgSetProductTitle struct {
-	ProductID string         `json:"productID"`
-	Title     string         `json:"title"`
-	Owner     sdk.AccAddress `json:"owner"`
-}
-
-// NewMsgSetProductTitle is a constructor function for MsgSetProductTitle
-func NewMsgSetProductTitle(productID string, title string, owner sdk.AccAddress) MsgSetProductTitle {
-	return MsgSetProductTitle{
-		ProductID: productID,
-		Title:     title,
-		Owner:     owner,
-	}
-}
-
-// Route should return the name of the module
-func (msg MsgSetProductTitle) Route() string { return RouterKey }
-
-// Type should return the action
-func (msg MsgSetProductTitle) Type() string { return "set_product_title" }
-
-// ValidateBasic runs stateless checks on the message
-func (msg MsgSetProductTitle) ValidateBasic() error {
-	if msg.Owner.Empty() {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Owner.String())
-	}
-	if len(msg.ProductID) == 0 || len(msg.Title) == 0 {
-		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "ProductID and/or Title cannot be empty")
-	}
-	return nil
-}
-
-// GetSignBytes encodes the message for signing
-func (msg MsgSetProductTitle) GetSignBytes() []byte {
-	return sdk.MustSortJSON(ModuleCdc.MustMarshalJSON(msg))
-}
-
-// GetSigners defines whose signature is required
-func (msg MsgSetProductTitle) GetSigners() []sdk.AccAddress {
-	return []sdk.AccAddress{msg.Owner}
-}
-
-// MsgSetProductDescription defines a SetProductDescription message
-type MsgSetProductDescription struct {
+// MsgUpdateProduct defines a UpdateProduct message
+type MsgUpdateProduct struct {
 	ProductID   string         `json:"productID"`
+	Title       string         `json:"title"`
 	Description string         `json:"description"`
-	Owner       sdk.AccAddress `json:"owner"`
+	Signer      sdk.AccAddress `json:"signer"`
 }
 
-// NewMsgSetProductDescription is a constructor function for MsgSetProductDescription
-func NewMsgSetProductDescription(productID string, description string, owner sdk.AccAddress) MsgSetProductDescription {
-	return MsgSetProductDescription{
+// NewMsgUpdateProduct is a constructor function for MsgSetProduct
+func NewMsgUpdateProduct(productID string, title string, description string, signer sdk.AccAddress) MsgUpdateProduct {
+	return MsgUpdateProduct{
 		ProductID:   productID,
+		Title:       title,
 		Description: description,
-		Owner:       owner,
+		Signer:      signer,
 	}
 }
 
 // Route should return the name of the module
-func (msg MsgSetProductDescription) Route() string { return RouterKey }
+func (msg MsgUpdateProduct) Route() string { return RouterKey }
 
 // Type should return the action
-func (msg MsgSetProductDescription) Type() string { return "set_product_description" }
+func (msg MsgUpdateProduct) Type() string { return "update_product" }
 
 // ValidateBasic runs stateless checks on the message
-func (msg MsgSetProductDescription) ValidateBasic() error {
-	if msg.Owner.Empty() {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Owner.String())
+func (msg MsgUpdateProduct) ValidateBasic() error {
+	if msg.Signer.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Signer.String())
 	}
-	if len(msg.ProductID) == 0 || len(msg.Description) == 0 {
-		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "ProductID and/or Description cannot be empty")
+	if len(msg.ProductID) == 0 || len(msg.Title) == 0 || len(msg.Description) == 0 {
+		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "ProductID and/or Title and/or Description cannot be empty")
 	}
 	return nil
 }
 
 // GetSignBytes encodes the message for signing
-func (msg MsgSetProductDescription) GetSignBytes() []byte {
+func (msg MsgUpdateProduct) GetSignBytes() []byte {
 	return sdk.MustSortJSON(ModuleCdc.MustMarshalJSON(msg))
 }
 
 // GetSigners defines whose signature is required
-func (msg MsgSetProductDescription) GetSigners() []sdk.AccAddress {
-	return []sdk.AccAddress{msg.Owner}
+func (msg MsgUpdateProduct) GetSigners() []sdk.AccAddress {
+	return []sdk.AccAddress{msg.Signer}
 }
 
 // MsgChangeProductOwner defines the ChangeProductOwner message
 type MsgChangeProductOwner struct {
-	ProductID    string         `json:"productID"`
-	Bid          sdk.Coins      `json:"bid"`
-	CurrentOwner sdk.AccAddress `json:"currentOwner"`
-	NewOwner     sdk.AccAddress `json:"newOnwer"`
+	ProductID string         `json:"productID"`
+	Signer    sdk.AccAddress `json:"singer"`
+	NewOwner  sdk.AccAddress `json:"newOnwer"`
 }
 
 // NewMsgChangeProductOwner is the constructor function for MsgBuyName
-func NewMsgChangeProductOwner(productID string, bid sdk.Coins, currentOwner sdk.AccAddress, newOwner sdk.AccAddress) MsgChangeProductOwner {
+func NewMsgChangeProductOwner(productID string, signer sdk.AccAddress, newOwner sdk.AccAddress) MsgChangeProductOwner {
 	return MsgChangeProductOwner{
-		ProductID:    productID,
-		Bid:          bid,
-		CurrentOwner: currentOwner,
-		NewOwner:     newOwner,
+		ProductID: productID,
+		Signer:    signer,
+		NewOwner:  newOwner,
 	}
 }
 
@@ -336,8 +293,8 @@ func (msg MsgChangeProductOwner) Type() string { return "change_product_owner" }
 // ValidateBasic runs stateless checks on the message
 func (msg MsgChangeProductOwner) ValidateBasic() error {
 
-	if msg.CurrentOwner.Empty() {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.CurrentOwner.String())
+	if msg.Signer.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Signer.String())
 	}
 
 	if msg.NewOwner.Empty() {
@@ -346,10 +303,6 @@ func (msg MsgChangeProductOwner) ValidateBasic() error {
 
 	if len(msg.ProductID) == 0 {
 		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "ProductID cannot be empty")
-	}
-
-	if !msg.Bid.IsAllPositive() {
-		return sdkerrors.ErrInsufficientFunds
 	}
 
 	return nil
@@ -362,20 +315,20 @@ func (msg MsgChangeProductOwner) GetSignBytes() []byte {
 
 // GetSigners defines whose signature is required
 func (msg MsgChangeProductOwner) GetSigners() []sdk.AccAddress {
-	return []sdk.AccAddress{msg.CurrentOwner}
+	return []sdk.AccAddress{msg.Signer}
 }
 
 // MsgDeleteProduct defines a DeleteProduct message
 type MsgDeleteProduct struct {
 	ProductID string         `json:"productID"`
-	Owner     sdk.AccAddress `json:"owner"`
+	Signer    sdk.AccAddress `json:"signer"`
 }
 
 // NewMsgDeleteProduct is a constructor function for NewMsgDeleteProduct
-func NewMsgDeleteProduct(productID string, owner sdk.AccAddress) MsgDeleteProduct {
+func NewMsgDeleteProduct(productID string, signer sdk.AccAddress) MsgDeleteProduct {
 	return MsgDeleteProduct{
 		ProductID: productID,
-		Owner:     owner,
+		Signer:    signer,
 	}
 }
 
@@ -387,8 +340,8 @@ func (msg MsgDeleteProduct) Type() string { return "delete_product" }
 
 // ValidateBasic runs stateless checks on the message
 func (msg MsgDeleteProduct) ValidateBasic() error {
-	if msg.Owner.Empty() {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Owner.String())
+	if msg.Signer.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Signer.String())
 	}
 	if len(msg.ProductID) == 0 {
 		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "ProductID cannot be empty")
@@ -403,23 +356,23 @@ func (msg MsgDeleteProduct) GetSignBytes() []byte {
 
 // GetSigners defines whose signature is required
 func (msg MsgDeleteProduct) GetSigners() []sdk.AccAddress {
-	return []sdk.AccAddress{msg.Owner}
+	return []sdk.AccAddress{msg.Signer}
 }
 
 // MsgSetSell defines a SetSell message
 type MsgSetSell struct {
 	SellID    string         `json:"sellID"`
 	ProductID string         `json:"productID"`
-	Seller    sdk.AccAddress `json:"seller"`
+	Signer    sdk.AccAddress `json:"signer"`
 	MinPrice  sdk.Coins      `json:"minPrice"`
 }
 
 // NewMsgSetSell is a constructor function for MsgSetSell
-func NewMsgSetSell(sellID string, productID string, seller sdk.AccAddress, minPrice sdk.Coins) MsgSetSell {
+func NewMsgSetSell(sellID string, productID string, signer sdk.AccAddress, minPrice sdk.Coins) MsgSetSell {
 	return MsgSetSell{
 		SellID:    sellID,
 		ProductID: productID,
-		Seller:    seller,
+		Signer:    signer,
 		MinPrice:  minPrice,
 	}
 }
@@ -432,8 +385,8 @@ func (msg MsgSetSell) Type() string { return "set_sell" }
 
 // ValidateBasic runs stateless checks on the message
 func (msg MsgSetSell) ValidateBasic() error {
-	if msg.Seller.Empty() {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Seller.String())
+	if msg.Signer.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Signer.String())
 	}
 	if len(msg.SellID) == 0 || len(msg.ProductID) == 0 || msg.MinPrice.Empty() {
 		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "ProductID and/or SellID and/or MinPrice cannot be empty")
@@ -449,21 +402,21 @@ func (msg MsgSetSell) GetSignBytes() []byte {
 
 // GetSigners defines whose signature is required
 func (msg MsgSetSell) GetSigners() []sdk.AccAddress {
-	return []sdk.AccAddress{msg.Seller}
+	return []sdk.AccAddress{msg.Signer}
 }
 
 // MsgSetSellMinPrice defines a SetSellMinPrice message
 type MsgSetSellMinPrice struct {
 	SellID   string         `json:"sellID"`
-	Seller   sdk.AccAddress `json:"seller"`
+	Signer   sdk.AccAddress `json:"signer"`
 	MinPrice sdk.Coins      `json:"minPrice"`
 }
 
 // NewMsgSetSellMinPrice is a constructor function for MsgSetSellMinPrice
-func NewMsgSetSellMinPrice(sellID string, seller sdk.AccAddress, minPrice sdk.Coins) MsgSetSellMinPrice {
+func NewMsgSetSellMinPrice(sellID string, signer sdk.AccAddress, minPrice sdk.Coins) MsgSetSellMinPrice {
 	return MsgSetSellMinPrice{
 		SellID:   sellID,
-		Seller:   seller,
+		Signer:   signer,
 		MinPrice: minPrice,
 	}
 }
@@ -476,8 +429,8 @@ func (msg MsgSetSellMinPrice) Type() string { return "set_sell_minPrice" }
 
 // ValidateBasic runs stateless checks on the message
 func (msg MsgSetSellMinPrice) ValidateBasic() error {
-	if msg.Seller.Empty() {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Seller.String())
+	if msg.Signer.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Signer.String())
 	}
 	if len(msg.SellID) == 0 || msg.MinPrice.Empty() {
 		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "SellID and/or MinPrice cannot be empty")
@@ -492,20 +445,20 @@ func (msg MsgSetSellMinPrice) GetSignBytes() []byte {
 
 // GetSigners defines whose signature is required
 func (msg MsgSetSellMinPrice) GetSigners() []sdk.AccAddress {
-	return []sdk.AccAddress{msg.Seller}
+	return []sdk.AccAddress{msg.Signer}
 }
 
 // MsgDeleteSell defines a DeleteSell message
 type MsgDeleteSell struct {
 	SellID string         `json:"sellID"`
-	Seller sdk.AccAddress `json:"seller"`
+	Signer sdk.AccAddress `json:"signer"`
 }
 
 // NewMsgDeleteSell is a constructor function for MsgDeleteSell
-func NewMsgDeleteSell(sellID string, seller sdk.AccAddress) MsgDeleteSell {
+func NewMsgDeleteSell(sellID string, signer sdk.AccAddress) MsgDeleteSell {
 	return MsgDeleteSell{
 		SellID: sellID,
-		Seller: seller,
+		Signer: signer,
 	}
 }
 
@@ -517,8 +470,8 @@ func (msg MsgDeleteSell) Type() string { return "delete_sell" }
 
 // ValidateBasic runs stateless checks on the message
 func (msg MsgDeleteSell) ValidateBasic() error {
-	if msg.Seller.Empty() {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Seller.String())
+	if msg.Signer.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Signer.String())
 	}
 	if len(msg.SellID) == 0 {
 		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "SellID cannot be empty")
@@ -533,23 +486,23 @@ func (msg MsgDeleteSell) GetSignBytes() []byte {
 
 // GetSigners defines whose signature is required
 func (msg MsgDeleteSell) GetSigners() []sdk.AccAddress {
-	return []sdk.AccAddress{msg.Seller}
+	return []sdk.AccAddress{msg.Signer}
 }
 
 // MsgSetReservation defines a SetReservation message
 type MsgSetReservation struct {
 	ReservationID string         `json:"reservationID"`
 	SellID        string         `json:"sellID"`
-	Buyer         sdk.AccAddress `json:"buyer"`
+	Signer        sdk.AccAddress `json:"buyer"`
 	Price         sdk.Coins      `json:"price"`
 }
 
 // NewMsgSetReservation is a constructor function for MsgSetReservation
-func NewMsgSetReservation(reservationID string, sellID string, buyer sdk.AccAddress, price sdk.Coins) MsgSetReservation {
+func NewMsgSetReservation(reservationID string, sellID string, signer sdk.AccAddress, price sdk.Coins) MsgSetReservation {
 	return MsgSetReservation{
 		ReservationID: reservationID,
 		SellID:        sellID,
-		Buyer:         buyer,
+		Signer:        signer,
 		Price:         price,
 	}
 }
@@ -562,8 +515,8 @@ func (msg MsgSetReservation) Type() string { return "set_reservation" }
 
 // ValidateBasic runs stateless checks on the message
 func (msg MsgSetReservation) ValidateBasic() error {
-	if msg.Buyer.Empty() {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Buyer.String())
+	if msg.Signer.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Signer.String())
 	}
 	if len(msg.ReservationID) == 0 || len(msg.SellID) == 0 || msg.Price.Empty() {
 		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "SellID and/or ReservationID and/or Price cannot be empty")
@@ -578,21 +531,21 @@ func (msg MsgSetReservation) GetSignBytes() []byte {
 
 // GetSigners defines whose signature is required
 func (msg MsgSetReservation) GetSigners() []sdk.AccAddress {
-	return []sdk.AccAddress{msg.Buyer}
+	return []sdk.AccAddress{msg.Signer}
 }
 
 // MsgSetReservationPrice defines a SetReservationPrice message
 type MsgSetReservationPrice struct {
 	ReservationID string         `json:"reservationID"`
-	Buyer         sdk.AccAddress `json:"buyer"`
+	Signer        sdk.AccAddress `json:"signer"`
 	Price         sdk.Coins      `json:"price"`
 }
 
 // NewMsgSetReservationPrice is a constructor function for MsgSetReservation
-func NewMsgSetReservationPrice(reservationID string, buyer sdk.AccAddress, price sdk.Coins) MsgSetReservationPrice {
+func NewMsgSetReservationPrice(reservationID string, signer sdk.AccAddress, price sdk.Coins) MsgSetReservationPrice {
 	return MsgSetReservationPrice{
 		ReservationID: reservationID,
-		Buyer:         buyer,
+		Signer:        signer,
 		Price:         price,
 	}
 }
@@ -605,8 +558,8 @@ func (msg MsgSetReservationPrice) Type() string { return "set_reservation_price"
 
 // ValidateBasic runs stateless checks on the message
 func (msg MsgSetReservationPrice) ValidateBasic() error {
-	if msg.Buyer.Empty() {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Buyer.String())
+	if msg.Signer.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Signer.String())
 	}
 	if len(msg.ReservationID) == 0 || msg.Price.Empty() {
 		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "ReservationID and/or Price cannot be empty")
@@ -621,20 +574,20 @@ func (msg MsgSetReservationPrice) GetSignBytes() []byte {
 
 // GetSigners defines whose signature is required
 func (msg MsgSetReservationPrice) GetSigners() []sdk.AccAddress {
-	return []sdk.AccAddress{msg.Buyer}
+	return []sdk.AccAddress{msg.Signer}
 }
 
 // MsgDeleteReservation defines a DeleteReservation message
 type MsgDeleteReservation struct {
 	ReservationID string         `json:"reservationID"`
-	Buyer         sdk.AccAddress `json:"buyer"`
+	Signer        sdk.AccAddress `json:"signer"`
 }
 
 // NewMsgDeleteReservation is a constructor function for MsgDeleteReservation
-func NewMsgDeleteReservation(reservationId string, buyer sdk.AccAddress) MsgDeleteReservation {
+func NewMsgDeleteReservation(reservationId string, signer sdk.AccAddress) MsgDeleteReservation {
 	return MsgDeleteReservation{
 		ReservationID: reservationId,
-		Buyer:         buyer,
+		Signer:        signer,
 	}
 }
 
@@ -646,8 +599,8 @@ func (msg MsgDeleteReservation) Type() string { return "delete_reservation" }
 
 // ValidateBasic runs stateless checks on the message
 func (msg MsgDeleteReservation) ValidateBasic() error {
-	if msg.Buyer.Empty() {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Buyer.String())
+	if msg.Signer.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Signer.String())
 	}
 	if len(msg.ReservationID) == 0 {
 		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "ReservationID cannot be empty")
@@ -662,5 +615,5 @@ func (msg MsgDeleteReservation) GetSignBytes() []byte {
 
 // GetSigners defines whose signature is required
 func (msg MsgDeleteReservation) GetSigners() []sdk.AccAddress {
-	return []sdk.AccAddress{msg.Buyer}
+	return []sdk.AccAddress{msg.Signer}
 }

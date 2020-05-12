@@ -21,12 +21,10 @@ func NewHandler(keeper Keeper) sdk.Handler {
 			return handleMsgDeleteName(ctx, keeper, msg)
 		case MsgSetDescription:
 			return handleMsgSetDescription(ctx, keeper, msg)
-		case MsgSetProduct:
-			return handleMsgSetProduct(ctx, keeper, msg)
-		case MsgSetProductTitle:
-			return handleMsgSetProductTitle(ctx, keeper, msg)
-		case MsgSetProductDescription:
-			return handleMsgSetProductDescription(ctx, keeper, msg)
+		case MsgCreateProduct:
+			return handleMsgCreateProduct(ctx, keeper, msg)
+		case MsgUpdateProduct:
+			return handleMsgUpdateProduct(ctx, keeper, msg)
 		case MsgDeleteProduct:
 			return handleMsgDeleteProduct(ctx, keeper, msg)
 		case MsgChangeProductOwner:
@@ -98,40 +96,47 @@ func handleMsgSetDescription(ctx sdk.Context, keeper Keeper, msg MsgSetDescripti
 	return &sdk.Result{}, nil                             // return
 }
 
-// handleMsgProduct handles a message to set product
-func handleMsgSetProduct(ctx sdk.Context, keeper Keeper, msg MsgSetProduct) (*sdk.Result, error) {
-	// if !msg.Owner.Equals(keeper.GetProductOwner(ctx, msg.ProductID)) { // Checks if the the msg sender is the same as the current owner
-	// 	return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Incorrect Owner") // If not, throw an error
-	// }
+// handleCreateProduct handles a message to set product
+func handleMsgCreateProduct(ctx sdk.Context, keeper Keeper, msg MsgCreateProduct) (*sdk.Result, error) {
+	if keeper.IsProductPresent(ctx, msg.ProductID) {
+		return nil, sdkerrors.Wrap(types.ErrProductAlreadyExists, msg.ProductID)
+	}
 
 	var product = Product{
 		ProductID:   msg.ProductID,
 		Title:       msg.Title,
 		Description: msg.Description,
-		Owner:       msg.Owner,
+		Owner:       msg.Signer,
 	}
 
 	keeper.SetProduct(ctx, msg.ProductID, product)
 	return &sdk.Result{}, nil // return
 }
 
-// handleMsgSetProductTitle handles a message to set product title
-func handleMsgSetProductTitle(ctx sdk.Context, keeper Keeper, msg MsgSetProductTitle) (*sdk.Result, error) {
-	if !msg.Owner.Equals(keeper.GetProductOwner(ctx, msg.ProductID)) { // Checks if the the msg sender is the same as the current owner
+// handleMsgUpdateProduct handles a message to set product
+func handleMsgUpdateProduct(ctx sdk.Context, keeper Keeper, msg MsgUpdateProduct) (*sdk.Result, error) {
+	if !keeper.IsProductPresent(ctx, msg.ProductID) {
+		return nil, sdkerrors.Wrap(types.ErrProductDoesNotExist, msg.ProductID)
+	}
+
+	if !msg.Signer.Equals(keeper.GetProductOwner(ctx, msg.ProductID)) { // Checks if the the msg sender is the same as the current owner
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Incorrect Owner") // If not, throw an error
 	}
 
-	keeper.SetProductTitle(ctx, msg.ProductID, msg.Title)
-	return &sdk.Result{}, nil // return
-}
+	// var product = keeper.GetProduct(ctx, msg.ProductID)
 
-// handleMsgSetProductDescription handles a message to set product description
-func handleMsgSetProductDescription(ctx sdk.Context, keeper Keeper, msg MsgSetProductDescription) (*sdk.Result, error) {
-	if !msg.Owner.Equals(keeper.GetProductOwner(ctx, msg.ProductID)) { // Checks if the the msg sender is the same as the current owner
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Incorrect Owner") // If not, throw an error
+	// if product.Title == msg.Title && product.Description == msg.Description {
+	// 	return nil, sdkerrors.Wrap(types.ErrNothingChanges, msg.ProductID)
+	// }
+
+	var newInfo = Product{
+		ProductID:   msg.ProductID,
+		Title:       msg.Title,
+		Description: msg.Description,
+		Owner:       msg.Signer,
 	}
 
-	keeper.SetProductDescription(ctx, msg.ProductID, msg.Description)
+	keeper.SetProduct(ctx, msg.ProductID, newInfo)
 	return &sdk.Result{}, nil // return
 }
 
@@ -140,7 +145,7 @@ func handleMsgDeleteProduct(ctx sdk.Context, keeper Keeper, msg MsgDeleteProduct
 	if !keeper.IsProductPresent(ctx, msg.ProductID) {
 		return nil, sdkerrors.Wrap(types.ErrNameDoesNotExist, msg.ProductID)
 	}
-	if !msg.Owner.Equals(keeper.GetProductOwner(ctx, msg.ProductID)) {
+	if !msg.Signer.Equals(keeper.GetProductOwner(ctx, msg.ProductID)) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Incorrect Owner")
 	}
 
@@ -153,7 +158,7 @@ func handleMsgChangeProductOwner(ctx sdk.Context, keeper Keeper, msg MsgChangePr
 	if !keeper.IsProductPresent(ctx, msg.ProductID) {
 		return nil, sdkerrors.Wrap(types.ErrProductDoesNotExist, msg.ProductID)
 	}
-	if !msg.CurrentOwner.Equals(keeper.GetProductOwner(ctx, msg.ProductID)) {
+	if !msg.Signer.Equals(keeper.GetProductOwner(ctx, msg.ProductID)) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Incorrect Owner")
 	}
 
@@ -168,14 +173,14 @@ func handleMsgSetSell(ctx sdk.Context, keeper Keeper, msg MsgSetSell) (*sdk.Resu
 		return nil, sdkerrors.Wrap(types.ErrProductDoesNotExist, msg.ProductID)
 	}
 
-	if !msg.Seller.Equals(keeper.GetProductOwner(ctx, msg.ProductID)) {
+	if !msg.Signer.Equals(keeper.GetProductOwner(ctx, msg.ProductID)) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Incorrect Owner")
 	}
 
 	var sell = Sell{
 		SellID:    msg.SellID,
 		ProductID: msg.ProductID,
-		Seller:    msg.Seller,
+		Seller:    msg.Signer,
 		MinPrice:  msg.MinPrice,
 	}
 
@@ -190,7 +195,7 @@ func handleMsgSetSellMinPrice(ctx sdk.Context, keeper Keeper, msg MsgSetSellMinP
 		return nil, sdkerrors.Wrap(types.ErrSellDoesNotExist, msg.SellID)
 	}
 
-	if !msg.Seller.Equals(keeper.GetProductOwner(ctx, msg.SellID)) {
+	if !msg.Signer.Equals(keeper.GetSell(ctx, msg.SellID).Seller) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Incorrect Owner")
 	}
 
@@ -212,7 +217,7 @@ func handleMsgSetReservation(ctx sdk.Context, keeper Keeper, msg MsgSetReservati
 	var reservation = Reservation{
 		ReservationID: msg.ReservationID,
 		SellID:        msg.SellID,
-		Buyer:         msg.Buyer,
+		Buyer:         msg.Signer,
 		Price:         msg.Price,
 	}
 
