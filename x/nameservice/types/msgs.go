@@ -360,16 +360,16 @@ func (msg MsgDeleteProduct) GetSigners() []sdk.AccAddress {
 }
 
 // MsgSetSell defines a SetSell message
-type MsgSetSell struct {
+type MsgCreateSell struct {
 	SellID    string         `json:"sellID"`
 	ProductID string         `json:"productID"`
 	Signer    sdk.AccAddress `json:"signer"`
 	MinPrice  sdk.Coins      `json:"minPrice"`
 }
 
-// NewMsgSetSell is a constructor function for MsgSetSell
-func NewMsgSetSell(sellID string, productID string, signer sdk.AccAddress, minPrice sdk.Coins) MsgSetSell {
-	return MsgSetSell{
+// NewMsgCreateSell is a constructor function for MsgCreateSell
+func NewMsgCreateSell(sellID string, productID string, signer sdk.AccAddress, minPrice sdk.Coins) MsgCreateSell {
+	return MsgCreateSell{
 		SellID:    sellID,
 		ProductID: productID,
 		Signer:    signer,
@@ -378,13 +378,13 @@ func NewMsgSetSell(sellID string, productID string, signer sdk.AccAddress, minPr
 }
 
 // Route should return the name of the module
-func (msg MsgSetSell) Route() string { return RouterKey }
+func (msg MsgCreateSell) Route() string { return RouterKey }
 
 // Type should return the action
-func (msg MsgSetSell) Type() string { return "set_sell" }
+func (msg MsgCreateSell) Type() string { return "create_sell" }
 
 // ValidateBasic runs stateless checks on the message
-func (msg MsgSetSell) ValidateBasic() error {
+func (msg MsgCreateSell) ValidateBasic() error {
 	if msg.Signer.Empty() {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Signer.String())
 	}
@@ -396,25 +396,25 @@ func (msg MsgSetSell) ValidateBasic() error {
 }
 
 // GetSignBytes encodes the message for signing
-func (msg MsgSetSell) GetSignBytes() []byte {
+func (msg MsgCreateSell) GetSignBytes() []byte {
 	return sdk.MustSortJSON(ModuleCdc.MustMarshalJSON(msg))
 }
 
 // GetSigners defines whose signature is required
-func (msg MsgSetSell) GetSigners() []sdk.AccAddress {
+func (msg MsgCreateSell) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{msg.Signer}
 }
 
-// MsgSetSellMinPrice defines a SetSellMinPrice message
-type MsgSetSellMinPrice struct {
+// MsgUpdateSell defines a SetSellMinPrice message
+type MsgUpdateSell struct {
 	SellID   string         `json:"sellID"`
 	Signer   sdk.AccAddress `json:"signer"`
 	MinPrice sdk.Coins      `json:"minPrice"`
 }
 
-// NewMsgSetSellMinPrice is a constructor function for MsgSetSellMinPrice
-func NewMsgSetSellMinPrice(sellID string, signer sdk.AccAddress, minPrice sdk.Coins) MsgSetSellMinPrice {
-	return MsgSetSellMinPrice{
+// NewMsgUpdateSell is a constructor function for MsgUpdateSell
+func NewMsgUpdateSell(sellID string, signer sdk.AccAddress, minPrice sdk.Coins) MsgUpdateSell {
+	return MsgUpdateSell{
 		SellID:   sellID,
 		Signer:   signer,
 		MinPrice: minPrice,
@@ -422,13 +422,13 @@ func NewMsgSetSellMinPrice(sellID string, signer sdk.AccAddress, minPrice sdk.Co
 }
 
 // Route should return the name of the module
-func (msg MsgSetSellMinPrice) Route() string { return RouterKey }
+func (msg MsgUpdateSell) Route() string { return RouterKey }
 
 // Type should return the action
-func (msg MsgSetSellMinPrice) Type() string { return "set_sell_minPrice" }
+func (msg MsgUpdateSell) Type() string { return "update_sell" }
 
 // ValidateBasic runs stateless checks on the message
-func (msg MsgSetSellMinPrice) ValidateBasic() error {
+func (msg MsgUpdateSell) ValidateBasic() error {
 	if msg.Signer.Empty() {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Signer.String())
 	}
@@ -439,12 +439,12 @@ func (msg MsgSetSellMinPrice) ValidateBasic() error {
 }
 
 // GetSignBytes encodes the message for signing
-func (msg MsgSetSellMinPrice) GetSignBytes() []byte {
+func (msg MsgUpdateSell) GetSignBytes() []byte {
 	return sdk.MustSortJSON(ModuleCdc.MustMarshalJSON(msg))
 }
 
 // GetSigners defines whose signature is required
-func (msg MsgSetSellMinPrice) GetSigners() []sdk.AccAddress {
+func (msg MsgUpdateSell) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{msg.Signer}
 }
 
@@ -490,16 +490,16 @@ func (msg MsgDeleteSell) GetSigners() []sdk.AccAddress {
 }
 
 // MsgSetReservation defines a SetReservation message
-type MsgSetReservation struct {
+type MsgCreateReservation struct {
 	ReservationID string         `json:"reservationID"`
 	SellID        string         `json:"sellID"`
 	Signer        sdk.AccAddress `json:"buyer"`
 	Price         sdk.Coins      `json:"price"`
 }
 
-// NewMsgSetReservation is a constructor function for MsgSetReservation
-func NewMsgSetReservation(reservationID string, sellID string, signer sdk.AccAddress, price sdk.Coins) MsgSetReservation {
-	return MsgSetReservation{
+// NewMsgCreateReservation is a constructor function for MsgCreateReservation
+func NewMsgCreateReservation(reservationID string, sellID string, signer sdk.AccAddress, price sdk.Coins) MsgCreateReservation {
+	return MsgCreateReservation{
 		ReservationID: reservationID,
 		SellID:        sellID,
 		Signer:        signer,
@@ -508,13 +508,13 @@ func NewMsgSetReservation(reservationID string, sellID string, signer sdk.AccAdd
 }
 
 // Route should return the name of the module
-func (msg MsgSetReservation) Route() string { return RouterKey }
+func (msg MsgCreateReservation) Route() string { return RouterKey }
 
 // Type should return the action
-func (msg MsgSetReservation) Type() string { return "set_reservation" }
+func (msg MsgCreateReservation) Type() string { return "set_reservation" }
 
 // ValidateBasic runs stateless checks on the message
-func (msg MsgSetReservation) ValidateBasic() error {
+func (msg MsgCreateReservation) ValidateBasic() error {
 	if msg.Signer.Empty() {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Signer.String())
 	}
@@ -525,25 +525,25 @@ func (msg MsgSetReservation) ValidateBasic() error {
 }
 
 // GetSignBytes encodes the message for signing
-func (msg MsgSetReservation) GetSignBytes() []byte {
+func (msg MsgCreateReservation) GetSignBytes() []byte {
 	return sdk.MustSortJSON(ModuleCdc.MustMarshalJSON(msg))
 }
 
 // GetSigners defines whose signature is required
-func (msg MsgSetReservation) GetSigners() []sdk.AccAddress {
+func (msg MsgCreateReservation) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{msg.Signer}
 }
 
-// MsgSetReservationPrice defines a SetReservationPrice message
-type MsgSetReservationPrice struct {
+// MsgUpdateReservation defines a SetReservationPrice message
+type MsgUpdateReservation struct {
 	ReservationID string         `json:"reservationID"`
 	Signer        sdk.AccAddress `json:"signer"`
 	Price         sdk.Coins      `json:"price"`
 }
 
-// NewMsgSetReservationPrice is a constructor function for MsgSetReservation
-func NewMsgSetReservationPrice(reservationID string, signer sdk.AccAddress, price sdk.Coins) MsgSetReservationPrice {
-	return MsgSetReservationPrice{
+// NewMsgUpdateReservation is a constructor function for MsgUpdateReservation
+func NewMsgUpdateReservation(reservationID string, signer sdk.AccAddress, price sdk.Coins) MsgUpdateReservation {
+	return MsgUpdateReservation{
 		ReservationID: reservationID,
 		Signer:        signer,
 		Price:         price,
@@ -551,13 +551,13 @@ func NewMsgSetReservationPrice(reservationID string, signer sdk.AccAddress, pric
 }
 
 // Route should return the name of the module
-func (msg MsgSetReservationPrice) Route() string { return RouterKey }
+func (msg MsgUpdateReservation) Route() string { return RouterKey }
 
 // Type should return the action
-func (msg MsgSetReservationPrice) Type() string { return "set_reservation_price" }
+func (msg MsgUpdateReservation) Type() string { return "update_reservation" }
 
 // ValidateBasic runs stateless checks on the message
-func (msg MsgSetReservationPrice) ValidateBasic() error {
+func (msg MsgUpdateReservation) ValidateBasic() error {
 	if msg.Signer.Empty() {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Signer.String())
 	}
@@ -568,12 +568,12 @@ func (msg MsgSetReservationPrice) ValidateBasic() error {
 }
 
 // GetSignBytes encodes the message for signing
-func (msg MsgSetReservationPrice) GetSignBytes() []byte {
+func (msg MsgUpdateReservation) GetSignBytes() []byte {
 	return sdk.MustSortJSON(ModuleCdc.MustMarshalJSON(msg))
 }
 
 // GetSigners defines whose signature is required
-func (msg MsgSetReservationPrice) GetSigners() []sdk.AccAddress {
+func (msg MsgUpdateReservation) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{msg.Signer}
 }
 

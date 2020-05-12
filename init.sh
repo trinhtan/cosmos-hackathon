@@ -14,8 +14,8 @@ nscli config keyring-backend test
 nscli keys add jack
 nscli keys add alice
 
-nsd add-genesis-account $(nscli keys show jack -a) 1000nametoken,100000000stake
-nsd add-genesis-account $(nscli keys show alice -a) 1000nametoken,100000000stake
+nsd add-genesis-account $(nscli keys show jack -a) 1000nametoken,100000000stake,1000producttoken
+nsd add-genesis-account $(nscli keys show alice -a) 1000nametoken,100000000stake,1000producttoken
 
 nsd gentx --name jack --keyring-backend test
 
