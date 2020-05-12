@@ -16,11 +16,14 @@ const (
 	QueryNames       = "names"
 	QueryDescription = "description"
 
-	QueryProduct = "product"
+	QueryProduct  = "product"
+	QueryProducts = "products"
 
-	QuerySell = "sell"
+	QuerySell  = "sell"
+	QuerySells = "sells"
 
-	QueryReservation = "reservation"
+	QueryReservation  = "reservation"
+	QueryReservations = "reservations"
 )
 
 // NewQuerier is the module level router for state queries
@@ -37,10 +40,16 @@ func NewQuerier(keeper Keeper) sdk.Querier {
 			return queryDescription(ctx, path[1:], req, keeper)
 		case QueryProduct:
 			return queryProduct(ctx, path[1:], req, keeper)
+		case QueryProducts:
+			return queryProducts(ctx, req, keeper)
 		case QuerySell:
 			return querySell(ctx, path[1:], req, keeper)
+		case QuerySells:
+			return querySells(ctx, req, keeper)
 		case QueryReservation:
 			return queryReservation(ctx, path[1:], req, keeper)
+		case QueryReservations:
+			return queryReservations(ctx, req, keeper)
 		default:
 			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "unknown nameservice query endpoint")
 		}
@@ -120,6 +129,24 @@ func queryProduct(ctx sdk.Context, path []string, req abci.RequestQuery, keeper 
 }
 
 // nolint: unparam
+func queryProducts(ctx sdk.Context, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
+	var productsList types.QueryResProducts
+
+	iterator := keeper.GetProductsIterator(ctx)
+
+	for ; iterator.Valid(); iterator.Next() {
+		productsList = append(productsList, keeper.GetProduct(ctx, string(iterator.Key())))
+	}
+
+	res, err := codec.MarshalJSONIndent(keeper.cdc, productsList)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
+	}
+
+	return res, nil
+}
+
+// nolint: unparam
 func querySell(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
 	sell := keeper.GetSell(ctx, path[0])
 
@@ -132,10 +159,46 @@ func querySell(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Kee
 }
 
 // nolint: unparam
+func querySells(ctx sdk.Context, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
+	var sellsList types.QueryResSells
+
+	iterator := keeper.GetSellsIterator(ctx)
+
+	for ; iterator.Valid(); iterator.Next() {
+		sellsList = append(sellsList, keeper.GetSell(ctx, string(iterator.Key())))
+	}
+
+	res, err := codec.MarshalJSONIndent(keeper.cdc, sellsList)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
+	}
+
+	return res, nil
+}
+
+// nolint: unparam
 func queryReservation(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
 	reservation := keeper.GetReservation(ctx, path[0])
 
 	res, err := codec.MarshalJSONIndent(keeper.cdc, reservation)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
+	}
+
+	return res, nil
+}
+
+// nolint: unparam
+func queryReservations(ctx sdk.Context, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
+	var sellsList types.QueryResSells
+
+	iterator := keeper.GetSellsIterator(ctx)
+
+	for ; iterator.Valid(); iterator.Next() {
+		sellsList = append(sellsList, keeper.GetSell(ctx, string(iterator.Key())))
+	}
+
+	res, err := codec.MarshalJSONIndent(keeper.cdc, sellsList)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
 	}
