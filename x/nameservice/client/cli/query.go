@@ -25,6 +25,7 @@ func GetQueryCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
 		GetCmdNames(storeKey, cdc),
 		GetCmdGetDescription(storeKey, cdc),
 		GetCmdProduct(storeKey, cdc),
+		GetCmdProducts(storeKey, cdc),
 		GetCmdSell(storeKey, cdc),
 		GetCmdReservation(storeKey, cdc),
 	)...)
@@ -140,6 +141,28 @@ func GetCmdProduct(queryRoute string, cdc *codec.Codec) *cobra.Command {
 			}
 
 			var out types.Product
+			cdc.MustUnmarshalJSON(res, &out)
+			return cliCtx.PrintOutput(out)
+		},
+	}
+}
+
+// GetCmdProducts queries a list of all products
+func GetCmdProducts(queryRoute string, cdc *codec.Codec) *cobra.Command {
+	return &cobra.Command{
+		Use:   "products",
+		Short: "products",
+		// Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cliCtx := context.NewCLIContext().WithCodec(cdc)
+
+			res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/products", queryRoute), nil)
+			if err != nil {
+				fmt.Printf("could not get query products\n")
+				return nil
+			}
+
+			var out types.QueryResProducts
 			cdc.MustUnmarshalJSON(res, &out)
 			return cliCtx.PrintOutput(out)
 		},

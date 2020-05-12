@@ -1,1 +1,1 @@
-{"type":"cosmos-sdk/StdTx","value":{"msg":[{"type":"nameservice/SetDescription","value":{"name":"jack1.id","description":"hahaha","owner":"cosmos1yw0j6h588pjwuwehldhk4tuq8yhht7829kdzw0"}}],"fee":{"amount":[],"gas":"200000"},"signatures":null,"memo":""}}
+{"type":"cosmos-sdk/StdTx","value":{"msg":[{"type":"nameservice/CreateSell","value":{"sellID":"sell01","productID":"product01","signer":"cosmos1utfexkesy7wms96dcqsf4dynhevhwrp96y6t6l","minPrice":[{"denom":"producttoken","amount":"10"}]}}],"fee":{"amount":[],"gas":"200000"},"signatures":null,"memo":""}}

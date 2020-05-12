@@ -3,11 +3,17 @@
   "value": {
     "msg": [
       {
-        "type": "nameservice/SetDescription",
+        "type": "nameservice/CreateSell",
         "value": {
-          "name": "jack1.id",
-          "description": "hahaha",
-          "owner": "cosmos1yw0j6h588pjwuwehldhk4tuq8yhht7829kdzw0"
+          "sellID": "sell01",
+          "productID": "product01",
+          "signer": "cosmos1utfexkesy7wms96dcqsf4dynhevhwrp96y6t6l",
+          "minPrice": [
+            {
+              "denom": "producttoken",
+              "amount": "10"
+            }
+          ]
         }
       }
     ],
@@ -19,9 +25,9 @@
       {
         "pub_key": {
           "type": "tendermint/PubKeySecp256k1",
-          "value": "AtH8QXg5hoeY72icDD/1CT2klGNMfkmrlYaqGyRAVjRd"
+          "value": "A0bGmIxGtBN/iQYR/qVEtOuTUeONmeDiuE5lkAbKYI+O"
         },
-        "signature": "MbrhJ6tWLjRMCLNOmHsI2EpLNbKHgnTNjmruJx6v6XgYHPvbTyGk6oCedWdoEwXHHO3LoMfHRgmKoiZKp50P8w=="
+        "signature": "zf+j/0KqVUn1epJXq9nqybA0pqZc6cdukxh076JyNw0lgXm7yH4446Smf4m8BAiWpwd7EtwDI4eVYMRML8K5aQ=="
       }
     ],
     "memo": ""
