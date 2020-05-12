@@ -28,13 +28,15 @@ var (
 	NewMsgDeleteProduct      = types.NewMsgDeleteProduct
 	NewMsgUpdateProduct      = types.NewMsgUpdateProduct
 
-	NewSell               = types.NewSell
-	NewMsgSetSell         = types.NewMsgSetSell
-	NewMsgSetSellMinPrice = types.NewMsgSetSellMinPrice
+	NewSell          = types.NewSell
+	NewMsgCreateSell = types.NewMsgCreateSell
+	NewMsgUpdateSell = types.NewMsgUpdateSell
+	NewMsgDeleteSell = types.NewMsgDeleteSell
 
-	NewReservation            = types.NewReservation
-	NewMsgSetReservation      = types.NewMsgSetReservation
-	NewMsgSetReservationPrice = types.NewMsgSetReservationPrice
+	NewReservation          = types.NewReservation
+	NewMsgCreateReservation = types.NewMsgCreateReservation
+	NewMsgUpdateReservation = types.NewMsgUpdateReservation
+	NewMsgDeleteReservation = types.NewMsgDeleteReservation
 
 	ModuleCdc     = types.ModuleCdc
 	RegisterCodec = types.RegisterCodec
@@ -58,11 +60,13 @@ type (
 	MsgDeleteProduct      = types.MsgDeleteProduct
 	MsgChangeProductOwner = types.MsgChangeProductOwner
 
-	Sell               = types.Sell
-	MsgSetSell         = types.MsgSetSell
-	MsgSetSellMinPrice = types.MsgSetSellMinPrice
+	Sell          = types.Sell
+	MsgCreateSell = types.MsgCreateSell
+	MsgUpdateSell = types.MsgUpdateSell
+	MsgDeleteSell  = types.MsgDeleteSell
 
-	Reservation            = types.Reservation
-	MsgSetReservation      = types.MsgSetReservation
-	MsgSetReservationPrice = types.MsgSetReservationPrice
+	Reservation          = types.Reservation
+	MsgCreateReservation = types.MsgCreateReservation
+	MsgUpdateReservation = types.MsgUpdateReservation
+	MsgDeleteReservation = types.MsgDeleteReservation
 )

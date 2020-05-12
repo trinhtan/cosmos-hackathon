@@ -40,8 +40,13 @@ func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
 		GetCmdUpdateProduct(cdc),
 		GetCmdChangeProductOwner(cdc),
 
-		GetCmdSetSell(cdc),
-		GetCmdSetSellMinPrice(cdc),
+		GetCmdCreateSell(cdc),
+		GetCmdUpdateSell(cdc),
+		GetCmdDeleteSell(cdc),
+
+		GetCmdCreateReservation(cdc),
+		GetCmdUpdateReservation(cdc),
+		GetCmdDeleteReservation(cdc),
 	)...)
 
 	return nameserviceTxCmd
@@ -252,10 +257,10 @@ func GetCmdChangeProductOwner(cdc *codec.Codec) *cobra.Command {
 	}
 }
 
-// GetCmdSetSell is the CLI command for sending a SetProduct transaction
-func GetCmdSetSell(cdc *codec.Codec) *cobra.Command {
+// GetCmdCreateSell is the CLI command for sending a CreateProduct transaction
+func GetCmdCreateSell(cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
-		Use:   "set-sell [sellID] [productID] [minPrice]",
+		Use:   "create-sell [sellID] [productID] [minPrice]",
 		Short: "set the value associated with a product that you own",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -268,7 +273,7 @@ func GetCmdSetSell(cdc *codec.Codec) *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgSetSell(args[0], args[1], cliCtx.GetFromAddress(), coins)
+			msg := types.NewMsgCreateSell(args[0], args[1], cliCtx.GetFromAddress(), coins)
 			err = msg.ValidateBasic()
 			if err != nil {
 				return err
@@ -280,10 +285,10 @@ func GetCmdSetSell(cdc *codec.Codec) *cobra.Command {
 	}
 }
 
-// GetCmdSetSellMinPrice is the CLI command for sending a SetSellMinPrice transaction
-func GetCmdSetSellMinPrice(cdc *codec.Codec) *cobra.Command {
+// GetCmdUpdateSell is the CLI command for sending a UpdateSell transaction
+func GetCmdUpdateSell(cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
-		Use:   "set-sell-minPrice [sellID] [price]",
+		Use:   "update-sell [sellID] [price]",
 		Short: "set the value associated with a name that you own",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -296,7 +301,7 @@ func GetCmdSetSellMinPrice(cdc *codec.Codec) *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgSetSellMinPrice(args[0], cliCtx.GetFromAddress(), coins)
+			msg := types.NewMsgUpdateSell(args[0], cliCtx.GetFromAddress(), coins)
 			err = msg.ValidateBasic()
 			if err != nil {
 				return err
@@ -331,10 +336,10 @@ func GetCmdDeleteSell(cdc *codec.Codec) *cobra.Command {
 	}
 }
 
-// GetCmdSetReservation is the CLI command for sending a SetProduct transaction
-func GetCmdSetReservation(cdc *codec.Codec) *cobra.Command {
+// GetCmdCreateReservation is the CLI command for sending a CreateReservation transaction
+func GetCmdCreateReservation(cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
-		Use:   "set-reservation [reservationID] [sellID] [price]",
+		Use:   "create-reservation [reservationID] [sellID] [price]",
 		Short: "set the value associated with a reservation that you own",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -347,7 +352,7 @@ func GetCmdSetReservation(cdc *codec.Codec) *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgSetReservation(args[0], args[1], cliCtx.GetFromAddress(), coins)
+			msg := types.NewMsgCreateReservation(args[0], args[1], cliCtx.GetFromAddress(), coins)
 			err = msg.ValidateBasic()
 			if err != nil {
 				return err
@@ -359,10 +364,10 @@ func GetCmdSetReservation(cdc *codec.Codec) *cobra.Command {
 	}
 }
 
-// GetCmdSetReservationPrice is the CLI command for sending a SetProduct transaction
-func GetCmdSetReservationPrice(cdc *codec.Codec) *cobra.Command {
+// GetCmdUpdateReservation is the CLI command for sending a UpdateReservation transaction
+func GetCmdUpdateReservation(cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
-		Use:   "set-reservation-price [reservationID] [price]",
+		Use:   "update-reservation [reservationID] [price]",
 		Short: "set the value associated with a reservation that you own",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -375,7 +380,7 @@ func GetCmdSetReservationPrice(cdc *codec.Codec) *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgSetReservationPrice(args[0], cliCtx.GetFromAddress(), coins)
+			msg := types.NewMsgUpdateReservation(args[0], cliCtx.GetFromAddress(), coins)
 			err = msg.ValidateBasic()
 			if err != nil {
 				return err
@@ -390,7 +395,7 @@ func GetCmdSetReservationPrice(cdc *codec.Codec) *cobra.Command {
 // GetCmdDeleteReservation is the CLI command for sending a DeleteReservation transaction
 func GetCmdDeleteReservation(cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
-		Use:   "delete-sell [sellID]",
+		Use:   "delete-reservation [reservationID]",
 		Short: "delete the sell that you own along with it's associated fields",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {

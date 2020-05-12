@@ -224,35 +224,14 @@ func (k Keeper) GetSellProductID(ctx sdk.Context, sellID string) string {
 	return k.GetSell(ctx, sellID).ProductID
 }
 
-// SetSellProductID sets productID of sell
-func (k Keeper) SetSellProductID(ctx sdk.Context, sellID string, productID string) {
-	sell := k.GetSell(ctx, sellID)
-	sell.ProductID = productID
-	k.SetSell(ctx, sellID, sell)
-}
-
 // GetSellSeller gets seller of sell
 func (k Keeper) GetSellSeller(ctx sdk.Context, sellID string) sdk.AccAddress {
 	return k.GetSell(ctx, sellID).Seller
 }
 
-// SetSellSeller sets seller of sell
-func (k Keeper) SetSellSeller(ctx sdk.Context, sellID string, seller sdk.AccAddress) {
-	sell := k.GetSell(ctx, sellID)
-	sell.Seller = seller
-	k.SetSell(ctx, sellID, sell)
-}
-
 // GetSellMinPrice gets MinPrice of sell
 func (k Keeper) GetSellMinPrice(ctx sdk.Context, sellID string) sdk.Coins {
 	return k.GetSell(ctx, sellID).MinPrice
-}
-
-// SetSellMinPrice sets MinPrice of sell
-func (k Keeper) SetSellMinPrice(ctx sdk.Context, sellID string, minPrice sdk.Coins) {
-	sell := k.GetSell(ctx, sellID)
-	sell.MinPrice = minPrice
-	k.SetSell(ctx, sellID, sell)
 }
 
 // GetSellsIterator gets an iterator over all sell in which the keys are the sellID and the values are the sell
@@ -265,6 +244,13 @@ func (k Keeper) GetSellsIterator(ctx sdk.Context) sdk.Iterator {
 func (k Keeper) IsSellPresent(ctx sdk.Context, sellID string) bool {
 	store := ctx.KVStore(k.storeKey)
 	return store.Has([]byte(sellID))
+}
+
+
+// DeleteSell deletes the entire Sell metadata struct for a sell
+func (k Keeper) DeleteSell(ctx sdk.Context, sellID string) {
+	store := ctx.KVStore(k.storeKey)
+	store.Delete([]byte(sellID))
 }
 
 // GetReservation gets the entire reservation metadata struct for a reservation
@@ -300,35 +286,14 @@ func (k Keeper) GetReservationSellID(ctx sdk.Context, reservationID string) stri
 	return k.GetReservation(ctx, reservationID).SellID
 }
 
-// SetReservationProductID sets productID of reservation
-func (k Keeper) SetReservationSellID(ctx sdk.Context, reservationID string, sellID string) {
-	reservation := k.GetReservation(ctx, reservationID)
-	reservation.SellID = sellID
-	k.SetReservation(ctx, reservationID, reservation)
-}
-
 // GetReservationBuyer gets Buyer of reservation
 func (k Keeper) GetReservationBuyer(ctx sdk.Context, reservationID string) sdk.AccAddress {
 	return k.GetReservation(ctx, reservationID).Buyer
 }
 
-// SetReservationBuyer sets Buyer of reservation
-func (k Keeper) SetReservationBuyer(ctx sdk.Context, reservationID string, buyer sdk.AccAddress) {
-	reservation := k.GetReservation(ctx, reservationID)
-	reservation.Buyer = buyer
-	k.SetReservation(ctx, reservationID, reservation)
-}
-
 // GetReservationPrice gets price of reservation
 func (k Keeper) GetReservationPrice(ctx sdk.Context, reservationID string) sdk.Coins {
 	return k.GetReservation(ctx, reservationID).Price
-}
-
-// SetReservationPrice sets Price of reservation
-func (k Keeper) SetReservationPrice(ctx sdk.Context, reservationID string, price sdk.Coins) {
-	reservation := k.GetReservation(ctx, reservationID)
-	reservation.Price = price
-	k.SetReservation(ctx, reservationID, reservation)
 }
 
 // GetReservationsIterator gets an iterator over all reservations in which the keys are the reservationID and the values are the reservation
@@ -341,4 +306,11 @@ func (k Keeper) GetReservationsIterator(ctx sdk.Context) sdk.Iterator {
 func (k Keeper) IsReservationPresent(ctx sdk.Context, reservationID string) bool {
 	store := ctx.KVStore(k.storeKey)
 	return store.Has([]byte(reservationID))
+}
+
+
+// DeleteReservation deletes the entire Reservation metadata struct for a reservation
+func (k Keeper) DeleteReservation(ctx sdk.Context, reservationID string) {
+	store := ctx.KVStore(k.storeKey)
+	store.Delete([]byte(reservationID))
 }
