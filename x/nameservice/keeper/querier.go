@@ -118,7 +118,10 @@ func queryNames(ctx sdk.Context, req abci.RequestQuery, keeper Keeper) ([]byte, 
 
 // nolint: unparam
 func queryProduct(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
-	product := keeper.GetProduct(ctx, path[0])
+
+	key := "Product-" + path[0]
+
+	product := keeper.GetProduct(ctx, key)
 
 	res, err := codec.MarshalJSONIndent(keeper.cdc, product)
 	if err != nil {
@@ -135,7 +138,10 @@ func queryProducts(ctx sdk.Context, req abci.RequestQuery, keeper Keeper) ([]byt
 	iterator := keeper.GetProductsIterator(ctx)
 
 	for ; iterator.Valid(); iterator.Next() {
-		productsList = append(productsList, keeper.GetProduct(ctx, string(iterator.Key())))
+		key := string(iterator.Key())
+		if "Product-" <= key && key <= "Product-zzzzzzzz" {
+			productsList = append(productsList, keeper.GetProduct(ctx, key))
+		}
 	}
 
 	res, err := codec.MarshalJSONIndent(keeper.cdc, productsList)
@@ -148,7 +154,10 @@ func queryProducts(ctx sdk.Context, req abci.RequestQuery, keeper Keeper) ([]byt
 
 // nolint: unparam
 func querySell(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
-	sell := keeper.GetSell(ctx, path[0])
+
+	key := "Sell-" + path[0]
+
+	sell := keeper.GetSell(ctx, key)
 
 	res, err := codec.MarshalJSONIndent(keeper.cdc, sell)
 	if err != nil {
@@ -160,12 +169,16 @@ func querySell(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Kee
 
 // nolint: unparam
 func querySells(ctx sdk.Context, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
+
 	var sellsList types.QueryResSells
 
 	iterator := keeper.GetSellsIterator(ctx)
 
 	for ; iterator.Valid(); iterator.Next() {
-		sellsList = append(sellsList, keeper.GetSell(ctx, string(iterator.Key())))
+		key := string(iterator.Key())
+		if "Sell-" <= key && key <= "Sell-zzzzzzzz" {
+			sellsList = append(sellsList, keeper.GetSell(ctx, key))
+		}
 	}
 
 	res, err := codec.MarshalJSONIndent(keeper.cdc, sellsList)
@@ -178,7 +191,9 @@ func querySells(ctx sdk.Context, req abci.RequestQuery, keeper Keeper) ([]byte, 
 
 // nolint: unparam
 func queryReservation(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
-	reservation := keeper.GetReservation(ctx, path[0])
+	key := "Reservation-" + path[0]
+
+	reservation := keeper.GetReservation(ctx, key)
 
 	res, err := codec.MarshalJSONIndent(keeper.cdc, reservation)
 	if err != nil {
@@ -190,15 +205,19 @@ func queryReservation(ctx sdk.Context, path []string, req abci.RequestQuery, kee
 
 // nolint: unparam
 func queryReservations(ctx sdk.Context, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
-	var sellsList types.QueryResSells
+
+	var reservationsList types.QueryResReservations
 
 	iterator := keeper.GetSellsIterator(ctx)
 
 	for ; iterator.Valid(); iterator.Next() {
-		sellsList = append(sellsList, keeper.GetSell(ctx, string(iterator.Key())))
+		key := string(iterator.Key())
+		if "Reservation-" <= key && key <= "Reservation-zzzzzzzz" {
+			reservationsList = append(reservationsList, keeper.GetReservation(ctx, key))
+		}
 	}
 
-	res, err := codec.MarshalJSONIndent(keeper.cdc, sellsList)
+	res, err := codec.MarshalJSONIndent(keeper.cdc, reservationsList)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
 	}
