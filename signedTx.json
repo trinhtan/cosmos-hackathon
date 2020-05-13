@@ -1,35 +1,4 @@
 {
-  "type": "cosmos-sdk/StdTx",
-  "value": {
-    "msg": [
-      {
-        "type": "nameservice/CreateReservation",
-        "value": {
-          "reservationID": "reservation01",
-          "sellID": "sell01",
-          "buyer": "cosmos10plzr777vn0u44hr5f7h7lfg0qyqet096hs4mn",
-          "price": [
-            {
-              "denom": "producttoken",
-              "amount": "11"
-            }
-          ]
-        }
-      }
-    ],
-    "fee": {
-      "amount": [],
-      "gas": "200000"
-    },
-    "signatures": [
-      {
-        "pub_key": {
-          "type": "tendermint/PubKeySecp256k1",
-          "value": "A8f/ZvsQvxSrcYN/ihqMOKnecLDBBn0vD2hoFTFtQmyv"
-        },
-        "signature": "vS3mZF+erSMNZEijXcLv/cNDnac84+P71xWKvy+hFKULEGwfI8uKf9BkrOXD8XHXLmMBL2y00l7Tmv72bbw67Q=="
-      }
-    ],
-    "memo": ""
-  }
+  "height": "0",
+  "result": "{\n  \"type\": \"cosmos-sdk/StdTx\",\n  \"value\": {\n    \"msg\": [\n      {\n        \"type\": \"nameservice/CreateProduct\",\n        \"value\": {\n          \"productID\": \"product02\",\n          \"title\": \"product02\",\n          \"description\": \"product02\",\n          \"signer\": \"cosmos1zwzf5e5qc2zw4nmv3ukv4guaq6hkhfr2whsjsc\"\n        }\n      }\n    ],\n    \"fee\": {\n      \"amount\": [],\n      \"gas\": \"200000\"\n    },\n    \"signatures\": [\n      {\n        \"pub_key\": {\n          \"type\": \"tendermint/PubKeySecp256k1\",\n          \"value\": \"AqFMzdw3qYuBfEQ5PxMmR+zaqUPvldJ6/fXLymrtjFzs\"\n        },\n        \"signature\": \"1fRisXXP+tTGPed97exUE/oHMWBwQkSu4aSFwH2TVH8IkigLRdLfvX9clllSQVQGLP1WXyO37kk+MGpdGEtj4Q==\"\n      }\n    ],\n    \"memo\": \"\"\n  }\n}\n"
 }

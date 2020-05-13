@@ -2,13 +2,20 @@ package rest
 
 import (
 	"net/http"
+	"os/exec"
 
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/trinhtan/cosmos-hackathon/x/nameservice/types"
 
+	"io/ioutil"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/rest"
 	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
+)
+
+const (
+	dir = "/home/trinh.van.tan/cosmos-hackathon/"
 )
 
 type buyNameReq struct {
@@ -542,5 +549,45 @@ func deleteReservationHandler(cliCtx context.CLIContext) http.HandlerFunc {
 		}
 
 		utils.WriteGenerateStdTxResponse(w, cliCtx, baseReq, []sdk.Msg{msg})
+	}
+}
+
+type signTxReq struct {
+	BaseReq       rest.BaseReq `json:"base_req"`
+	Tx            string       `json:"tx"`
+	Signer        string       `json:"signer"`
+	Sequence      string       `json:"sequence"`
+	AccountNumber string       `json:"accountNumber"`
+}
+
+func signTxHandler(cliCtx context.CLIContext) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+		var req signTxReq
+		if !rest.ReadRESTReq(w, r, cliCtx.Codec, &req) {
+			rest.WriteErrorResponse(w, http.StatusBadRequest, "failed to parse request")
+			return
+		}
+
+		baseReq := req.BaseReq.Sanitize()
+		if !baseReq.ValidateBasic(w) {
+			return
+		}
+
+		filePath := dir + "unsignedTx.json"
+
+		data := []byte(req.Tx)
+		err := ioutil.WriteFile(filePath, data, 0644)
+		if err != nil {
+			panic(err)
+		}
+
+		cmd := exec.Command("nscli", "tx", "sign", filePath, "--from", req.Signer, "--offline", "--chain-id", "namechain", "--sequence", req.Sequence, "--account-number", req.AccountNumber)
+		stdout, err := cmd.Output()
+		if err != nil {
+			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
+			return
+		}
+		rest.PostProcessResponse(w, cliCtx, string(stdout))
 	}
 }

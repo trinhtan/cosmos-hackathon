@@ -26,6 +26,8 @@ func RegisterRoutes(cliCtx context.CLIContext, r *mux.Router, storeName string) 
 	r.HandleFunc(fmt.Sprintf("/%s/names/{%s}/description", storeName, restName), getDescriptionHandler(cliCtx, storeName)).Methods("GET")
 	r.HandleFunc(fmt.Sprintf("/%s/names", storeName), deleteNameHandler(cliCtx)).Methods("DELETE")
 
+	r.HandleFunc(fmt.Sprintf("/%s/tx/sign", storeName), signTxHandler(cliCtx)).Methods("POST")
+
 	r.HandleFunc(fmt.Sprintf("/%s/products", storeName), createProductHandler(cliCtx)).Methods("POST")
 	r.HandleFunc(fmt.Sprintf("/%s/products", storeName), productsHandler(cliCtx, storeName)).Methods("GET")
 	r.HandleFunc(fmt.Sprintf("/%s/products/{%s}", storeName, restProduct), getProductHandler(cliCtx, storeName)).Methods("GET")
