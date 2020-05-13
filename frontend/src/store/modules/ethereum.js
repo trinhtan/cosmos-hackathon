@@ -4,7 +4,7 @@ import getWeb3 from '@/utils/getWeb3';
 const state = {
   web3: null,
   account: null,
-  balance: 0
+  balance: 0,
 };
 
 const mutations = {
@@ -12,7 +12,7 @@ const mutations = {
     state.web3 = payload.web3;
     state.balance = payload.balance;
     state.account = payload.account;
-  }
+  },
 };
 
 const actions = {
@@ -20,8 +20,8 @@ const actions = {
     const web3 = await getWeb3();
     const accounts = await web3.eth.getAccounts();
     window.web3.version.getNetwork((e, netId) => {
-      if (netId !== '3') {
-        alert('Unknown network, please change network to Ropsten testnet network');
+      if (netId !== process.env.VUE_APP_NETWORK_ID) {
+        alert('Unknown network');
         return;
       }
     });
@@ -33,7 +33,7 @@ const actions = {
     } else {
       console.log('Account not found');
     }
-  }
+  },
 };
 
 const getters = {};
@@ -43,5 +43,5 @@ export const ethereum = {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };

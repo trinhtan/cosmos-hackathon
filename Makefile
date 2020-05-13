@@ -15,13 +15,15 @@ include Makefile.ledger
 all: install
 
 install: go.sum
-		@echo "--> Installing nsd & nscli"
+		@echo "--> Installing nsd & nscli & ebrelayer"
 		@go install -mod=readonly $(BUILD_FLAGS) ./cmd/nsd
 		@go install -mod=readonly $(BUILD_FLAGS) ./cmd/nscli
+		@go install -mod=readonly $(BUILD_FLAGS) ./cmd/ebrelayer
 
 go.sum: go.mod
 		@echo "--> Ensure dependencies have not been modified"
-		GO111MODULE=on go mod verify
+		@go mod verify
+		@go mod tidy
 
 test:
 	@go test -mod=readonly $(PACKAGES)

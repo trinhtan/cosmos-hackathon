@@ -69,7 +69,11 @@ func main() {
 }
 
 func newApp(logger log.Logger, db dbm.DB, traceStore io.Writer) abci.Application {
-	return app.NewNameServiceApp(logger, db, baseapp.SetMinGasPrices(viper.GetString(server.FlagMinGasPrices)))
+	return app.NewNameServiceApp(
+		logger, db,
+		baseapp.SetMinGasPrices(viper.GetString(server.FlagMinGasPrices)),
+		baseapp.SetHaltHeight(uint64(viper.GetInt(server.FlagHaltHeight))),
+	)
 }
 
 func exportAppStateAndTMValidators(
