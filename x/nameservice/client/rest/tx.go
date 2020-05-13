@@ -1,13 +1,12 @@
 package rest
 
 import (
+	"io/ioutil"
 	"net/http"
 	"os/exec"
 
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/trinhtan/cosmos-hackathon/x/nameservice/types"
-
-	"io/ioutil"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/rest"
@@ -15,7 +14,7 @@ import (
 )
 
 const (
-	dir = "/home/trinh.van.tan/cosmos-hackathon/"
+	dir = "/home/ngo.van.nghia/Documents/POC/cosmos-hackathon/"
 )
 
 type buyNameReq struct {
@@ -186,6 +185,16 @@ type createProducteReq struct {
 
 func createProductHandler(cliCtx context.CLIContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodOptions {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Methods", "POST")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+			w.Header().Set("Access-Control-Max-Age", "3600")
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+		// Set CORS headers for the main request.
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		var req createProducteReq
 
 		if !rest.ReadRESTReq(w, r, cliCtx.Codec, &req) {
@@ -560,8 +569,27 @@ type signTxReq struct {
 	AccountNumber string       `json:"accountNumber"`
 }
 
+// type Tx struct {
+// 	Data       string `json:"data"`
+// 	Status     string `json:"status"`
+// 	StatusText string `json:"statusText"`
+// 	Headers    string `json:"headers"`
+// 	Config     string `json:"config"`
+// 	Request    string `json:"request"`
+// }
+
 func signTxHandler(cliCtx context.CLIContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodOptions {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Methods", "POST")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+			w.Header().Set("Access-Control-Max-Age", "3600")
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+		// Set CORS headers for the main request.
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 
 		var req signTxReq
 		if !rest.ReadRESTReq(w, r, cliCtx.Codec, &req) {
@@ -575,8 +603,8 @@ func signTxHandler(cliCtx context.CLIContext) http.HandlerFunc {
 		}
 
 		filePath := dir + "unsignedTx.json"
-
 		data := []byte(req.Tx)
+
 		err := ioutil.WriteFile(filePath, data, 0644)
 		if err != nil {
 			panic(err)

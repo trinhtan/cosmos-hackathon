@@ -1,4 +1,30 @@
 {
-  "height": "0",
-  "result": "{\n  \"type\": \"cosmos-sdk/StdTx\",\n  \"value\": {\n    \"msg\": [\n      {\n        \"type\": \"nameservice/CreateProduct\",\n        \"value\": {\n          \"productID\": \"product02\",\n          \"title\": \"product02\",\n          \"description\": \"product02\",\n          \"signer\": \"cosmos1zwzf5e5qc2zw4nmv3ukv4guaq6hkhfr2whsjsc\"\n        }\n      }\n    ],\n    \"fee\": {\n      \"amount\": [],\n      \"gas\": \"200000\"\n    },\n    \"signatures\": [\n      {\n        \"pub_key\": {\n          \"type\": \"tendermint/PubKeySecp256k1\",\n          \"value\": \"AqFMzdw3qYuBfEQ5PxMmR+zaqUPvldJ6/fXLymrtjFzs\"\n        },\n        \"signature\": \"1fRisXXP+tTGPed97exUE/oHMWBwQkSu4aSFwH2TVH8IkigLRdLfvX9clllSQVQGLP1WXyO37kk+MGpdGEtj4Q==\"\n      }\n    ],\n    \"memo\": \"\"\n  }\n}\n"
+  "type": "cosmos-sdk/StdTx",
+  "value": {
+    "msg": [
+      {
+        "type": "nameservice/CreateProduct",
+        "value": {
+          "productID": "02",
+          "title": "abc",
+          "description": "mota01",
+          "signer": "cosmos10n87ewwqmxw9dyvlhhhp54upnhq2h2rdglch7h"
+        }
+      }
+    ],
+    "fee": {
+      "amount": [],
+      "gas": "200000"
+    },
+    "signatures": [
+      {
+        "pub_key": {
+          "type": "tendermint/PubKeySecp256k1",
+          "value": "A1HBz0kb4IBOmpcGhhtri68TIThQl6OQ/f24EVZhSbMm"
+        },
+        "signature": "H1A+cmTZPDDN2KtNIFzacZBm6EalPmwDpK1x3y1Vn0JflWM7boONSn5EU1yFBL5kKdG08ToWDG3Z3vm+tvdHPQ=="
+      }
+    ],
+    "memo": ""
+  }
 }

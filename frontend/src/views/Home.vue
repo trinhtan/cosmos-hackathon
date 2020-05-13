@@ -12,27 +12,59 @@
       </form>
     </div>
     <section id="section00">
-      <div class="content-home" v-loading="loading"></div>
+      <div class="content-home" v-loading="loading">
+        <div class="row justify-content-center">
+          <router-link
+            to="/product"
+            v-for="(product, index) in products"
+            :key="index"
+            class="col-12 col-ms-6 col-md-6 col-lg-3 text-decoration-none"
+          >
+            <div class="col-card-home">
+              <el-card>
+                <img
+                  src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+                  class="image"
+                />
+                <div class="home-title-product">
+                  <span>{{ product.title }}</span>
+                  <div class="bottom clearfix">
+                    <p>{{ product.description }}</p>
+                  </div>
+                </div>
+              </el-card>
+            </div>
+          </router-link>
+        </div>
+      </div>
     </section>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import { mapState, mapActions } from 'vuex';
 export default {
   name: 'Home',
   data() {
     return {
       searchTerm: '',
-      loading: true,
+      loading: false
     };
+  },
+  computed: {
+    ...mapState('cosmos', ['products'])
   },
   components: {},
   methods: {
+    ...mapActions('cosmos', ['getAllProducts']),
     setSearchTerm(e) {
       this.searchTerm = e.target.value;
-    },
+    }
   },
+  async created() {
+    await this.getAllProducts();
+  }
 };
 </script>
 
@@ -83,6 +115,14 @@ input[type='search'] {
   flex-basis: 500px;
 }
 
+.home-title-product {
+  padding: 15px 0;
+}
+
+.text-decoration-none {
+  text-decoration: none;
+}
+
 @media all and (max-width: 800px) {
   .flex-form {
     width: 100%;
@@ -98,7 +138,7 @@ input[type='search'] {
 }
 
 .content-home {
-  min-height: 470px;
+  min-height: 570px;
   padding: 0px 50px 50px 50px;
   width: 75%;
   margin: 0 auto;
@@ -117,13 +157,18 @@ input[type='search'] {
   }
 }
 
-// .image-waves {
-//   background-image: url('../../assets/images/wave.webp');
-//   background-repeat: no-repeat;
-//   background-size: 100% 100%;
-//   background-color: rgba(2, 78, 128, 0.93);
-//   height: 30rem;
-// }
+.col-card-home {
+  margin: 20px 0;
+  cursor: pointer;
+}
+.card-home {
+  border-radius: 5px;
+  padding: 20px;
+  box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.01), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  img {
+    height: 150px;
+  }
+}
 
 @media all and (max-width: 768px) {
   .content-home {

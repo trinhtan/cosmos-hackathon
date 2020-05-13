@@ -1,1 +1,1 @@
-{"type":"cosmos-sdk/StdTx","value":{"msg":[{"type":"nameservice/CreateProduct","value":{"productID":"product01","title":"product01","description":"product01","signer":"cosmos1e6z79xmjseplq8uxygt9rqwse3z2s38d42rej0"}}],"fee":{"amount":[],"gas":"200000"},"signatures":null,"memo":""}}
+{"type":"cosmos-sdk/StdTx","value":{"msg":[{"type":"nameservice/CreateProduct","value":{"productID":"04","title":"sss","description":"ssssss","signer":"cosmos10n87ewwqmxw9dyvlhhhp54upnhq2h2rdglch7h"}}],"fee":{"amount":[],"gas":"200000"},"signatures":null,"memo":""}}
