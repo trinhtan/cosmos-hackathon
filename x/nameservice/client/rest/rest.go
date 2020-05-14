@@ -13,6 +13,8 @@ const (
 	restProduct     = "product"
 	restSell        = "sell"
 	restReservation = "reservation"
+
+	accName = "name"
 )
 
 // RegisterRoutes - Central function to define routes that get registered by the main application
@@ -48,4 +50,6 @@ func RegisterRoutes(cliCtx context.CLIContext, r *mux.Router, storeName string) 
 	r.HandleFunc(fmt.Sprintf("/%s/reservations/{%s}", storeName, restReservation), getSellHandler(cliCtx, storeName)).Methods("GET")
 	r.HandleFunc(fmt.Sprintf("/%s/reservations", storeName), updateReservationHandler(cliCtx)).Methods("PUT")
 	r.HandleFunc(fmt.Sprintf("/%s/reservations", storeName), deleteReservationHandler(cliCtx)).Methods("DELETE")
+
+	r.HandleFunc(fmt.Sprintf("/%s/accAddress/{%s}", storeName, accName), accAddressHandler(cliCtx)).Methods("GET")
 }

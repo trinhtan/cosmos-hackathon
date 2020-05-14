@@ -569,15 +569,6 @@ type signTxReq struct {
 	AccountNumber string       `json:"accountNumber"`
 }
 
-// type Tx struct {
-// 	Data       string `json:"data"`
-// 	Status     string `json:"status"`
-// 	StatusText string `json:"statusText"`
-// 	Headers    string `json:"headers"`
-// 	Config     string `json:"config"`
-// 	Request    string `json:"request"`
-// }
-
 func signTxHandler(cliCtx context.CLIContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodOptions {
