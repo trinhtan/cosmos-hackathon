@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	dir = "/home/ngo.van.nghia/Documents/POC/cosmos-hackathon/"
+	dir = "/home/trinh.van.tan/cosmos-hackathon/"
 )
 
 type buyNameReq struct {
@@ -616,6 +616,21 @@ func signTxHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
 		}
+
+		filePath = dir + "signedTx.json"
+		data = []byte(string(stdout))
+		err = ioutil.WriteFile(filePath, data, 0644)
+		if err != nil {
+			panic(err)
+		}
+
+		cmd = exec.Command("nscli", "tx", "broadcast", filePath)
+		stdout, err = cmd.Output()
+		if err != nil {
+			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
+			return
+		}
+
 		rest.PostProcessResponse(w, cliCtx, string(stdout))
 	}
 }
