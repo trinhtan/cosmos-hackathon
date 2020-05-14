@@ -116,7 +116,6 @@ export default {
       formAsset: {
         title: '',
         category: '',
-        images: [],
         description: ''
       },
       fileList: [],
@@ -147,7 +146,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('cosmos', ['createProduct', 'signCreateProduct', 'broadcastProduct']),
+    ...mapActions('cosmos', ['createProduct', 'signTxt', 'getAllProducts', 'setCosmosAccount']),
     next() {
       if (this.current === 0) {
         this.$refs['ruleForm_1'].validate((valid) => {
@@ -191,21 +190,16 @@ export default {
         if (valid) {
           this.formAsset.description = this.form3.description;
           this.loadingUpload = true;
-          this.form2_images.forEach(async (file) => {
+          let images = [];
+          for (let i = 0; i < this.form2_images.length; i++) {
+            let file = this.form2_images[i];
             var url = await this.uploadImageIpfs(file);
-            this.formAsset.images.push(url);
-          });
-
-          var reponseCreate = await this.createProduct(this.formAsset);
-          var reponseSign = await this.signCreateProduct(reponseCreate);
-          var reponseSigned = await this.broadcastProduct(reponseSign);
-          console.log(reponseSigned);
-
+            images.push(url);
+          }
+          var reponseCreate = await this.createProduct({ asset: this.formAsset, images });
+          await this.setCosmosAccount();
           this.loadingUpload = false;
-          // setTimeout(() => {
-          //   this.loadingUpload = false;
-          //   // this.$router.push({ name: 'Home' });
-          // }, 1000);
+          await this.open(reponseCreate);
         } else {
           return false;
         }
@@ -235,6 +229,39 @@ export default {
       } else {
         console.log('error upload ipfs');
       }
+    },
+    open(reponseCreate) {
+      const h = this.$createElement;
+      this.$msgbox({
+        title: 'Confirm',
+        message: h('p', null, [h('span', null, 'Do you want to broadcast the transaction?')]),
+        showCancelButton: true,
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        beforeClose: (action, instance, done) => {
+          if (action === 'confirm') {
+            instance.confirmButtonLoading = true;
+            instance.confirmButtonText = 'Loading...';
+            done();
+            instance.confirmButtonLoading = false;
+          } else {
+            done();
+          }
+        }
+      }).then(async () => {
+        this.loadingUpload = true;
+        var reponseSign = await this.signTxt(reponseCreate);
+        console.log(reponseSign);
+        await setTimeout(async () => {
+          await this.getAllProducts();
+          await this.$message({
+            type: 'success',
+            message: 'Publish success'
+          });
+          this.loadingUpload = false;
+          await this.$router.push({ name: 'Home' });
+        }, 5000);
+      });
     }
   }
 };

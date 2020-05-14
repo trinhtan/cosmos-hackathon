@@ -4,7 +4,11 @@
       <div class="row">
         <div class="col-md-6">
           <el-card shadow="always">
-            <el-image @click="showMultiple(0)" class="cursor-pointer img-first" :src="imgs[0]">
+            <el-image
+              @click="showMultiple(0)"
+              class="cursor-pointer img-first"
+              :src="imgFirst ? imgFirst : ''"
+            >
               <div slot="placeholder" class="image-slot">Loading<span class="dot">...</span></div>
               <div slot="error" class="image-slot">
                 <i class="el-icon-picture-outline"></i>
@@ -26,41 +30,98 @@
             escDisabled
             moveDisabled
             :visible="visible"
-            :imgs="imgs"
+            :imgs="productDetail.images"
             :index="index"
             @hide="handleHide"
           ></vue-easy-lightbox>
         </div>
         <div style="padding:30px" class="col-md-6">
           <div class="product--title">
-            <h1>My Awesome Product</h1>
+            <h1>{{ productDetail.title }}</h1>
           </div>
-          <h4 class="type">Category: Food</h4>
+          <h4 class="type">Category: {{ productDetail.category }}</h4>
           <div class="description-content">
             <h3>Description:</h3>
             <p>
-              The definition of a description is a statement that gives details about someone or
-              something. An example of description is a story about the places visited on a family
-              trip.
+              {{ productDetail.description }}
             </p>
           </div>
 
-          <div class="price-content">
+          <div class="price-content" v-if="productDetail.minPrice ? productDetail.minPrice : ''">
             <h2><span>Price:</span> 125$</h2>
           </div>
         </div>
         <div class="button-buy">
-          <el-button type="primary ">
+          <el-button type="success">
             <i class="el-icon-shopping-cart-full" />
             Buy
           </el-button>
         </div>
+        <div class="button-sell">
+          <el-button type="danger" @click="dialogVisible = true">
+            <i class="el-icon-sell" />
+            Sell
+          </el-button>
+        </div>
+        <div class="button-cancel">
+          <el-button type="warning">
+            <i class="el-icon-error" />
+            Cancel Sell
+          </el-button>
+        </div>
+      </div>
+
+      <div class="orders-product">
+        <h2>Orders</h2>
+        <div class=" margin-top-20 el-alert el-alert--success is-light">
+          <i class="el-alert__icon el-icon-s-order is-big"></i>
+          <div class="el-alert__content">
+            <h3>Alice</h3>
+            <!---->
+            <p class="el-alert__description">Price: 100</p>
+          </div>
+          <el-button type="primary" icon="el-icon-success" class="button-confirm-order" round
+            >Sell</el-button
+          >
+        </div>
+
+        <div class=" margin-top-20 el-alert el-alert--success is-light">
+          <i class="el-alert__icon el-icon-s-order is-big"></i>
+          <div class="el-alert__content">
+            <h3>Alice</h3>
+            <!---->
+            <p class="el-alert__description">Price: 100</p>
+          </div>
+          <el-button type="primary" icon="el-icon-success" class="button-confirm-order" round
+            >Sell</el-button
+          >
+        </div>
+
+        <div class=" margin-top-20 el-alert el-alert--success is-light">
+          <i class="el-alert__icon el-icon-s-order is-big"></i>
+          <div class="el-alert__content">
+            <h3>Alice</h3>
+            <!---->
+            <p class="el-alert__description">Price: 100</p>
+          </div>
+          <el-button type="primary" icon="el-icon-success" class="button-confirm-order" round
+            >Sell</el-button
+          >
+        </div>
       </div>
     </div>
+    <el-dialog title="Tips" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+      <span>This is a message</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="dialogVisible = false">Confirm</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
 import VueEasyLightbox from 'vue-easy-lightbox';
+import { mapState, mapActions } from 'vuex';
 export default {
   name: 'ProductDetail',
   components: {
@@ -68,20 +129,18 @@ export default {
   },
   data() {
     return {
-      imgs: [
-        'https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg',
-        'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-        'https://gateway.ipfs.io/ipfs/QmVL4qj7Dqe7THu2dH9ub23v4SDZCWTZR2ur5Mhc7cXaXd/logo-full.png',
-        'https://gateway.ipfs.io/ipfs/QmVyiPL1yBr1fQJ5LNbdqzLpkYkdpN7QHHHPZxqQeJMwBc/word.png',
-        'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png'
-      ],
       imgsPreview: [],
       imgFirst: '',
       visible: false,
-      index: 0
+      index: 0,
+      dialogVisible: false
     };
   },
+  computed: {
+    ...mapState('cosmos', ['productDetail'])
+  },
   methods: {
+    ...mapActions('cosmos', ['getDetailProduct']),
     showMultiple(index) {
       this.index = index;
       this.show();
@@ -91,11 +150,19 @@ export default {
     },
     handleHide() {
       this.visible = false;
+    },
+    handleClose(done) {
+      this.$confirm('Are you sure to close this dialog?')
+        .then(() => {
+          done();
+        })
+        .catch(() => {});
     }
   },
-  mounted() {
-    this.imgsPreview = this.imgs.filter((e, i) => i !== 0);
-    this.imgFirst = this.imgs[0];
+  async created() {
+    await this.getDetailProduct(this.$route.params.productId);
+    this.imgsPreview = this.productDetail.images.filter((e, i) => i !== 0);
+    this.imgFirst = this.productDetail.images[0];
   }
 };
 </script>
@@ -152,8 +219,8 @@ p {
     margin-left: 0;
   }
   .img-small {
-    width: 100px;
-    height: 100px;
+    width: 95px;
+    height: 95px;
     float: left;
     margin: 5px;
     border-radius: 5px;
@@ -182,6 +249,40 @@ p {
     padding: 15px 45px;
     font-size: 1rem;
   }
+}
+
+.button-sell {
+  width: 100%;
+  padding: 0 30px 20px 0;
+  button {
+    float: right;
+    padding: 15px 45px;
+    font-size: 1rem;
+  }
+}
+
+.button-cancel {
+  width: 100%;
+  padding: 0 30px 20px 0;
+  button {
+    float: right;
+    padding: 15px 45px;
+    font-size: 1rem;
+  }
+}
+.orders-product {
+  margin-top: 30px;
+  h2 {
+    margin-bottom: 20px;
+  }
+  button.button-confirm-order {
+    position: absolute;
+    right: 0;
+  }
+}
+
+.margin-top-20 {
+  margin: 20px 0 0 !important;
 }
 
 @media (max-width: 768px) {

@@ -18,10 +18,12 @@ export default {
   },
   computed: { ...mapState('ethereum', ['web3']) },
   methods: {
-    ...mapActions('ethereum', ['setWeb3'])
+    ...mapActions('ethereum', ['setWeb3']),
+    ...mapActions('cosmos', ['setCosmosAccount'])
   },
   async mounted() {
     await this.setWeb3();
+    await this.setCosmosAccount();
   }
 };
 </script>

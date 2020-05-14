@@ -15,19 +15,16 @@
       <div class="content-home" v-loading="loading">
         <div class="row justify-content-center">
           <router-link
-            to="/product"
-            v-for="(product, index) in products"
+            :to="`/product/${product.productID}`"
+            v-for="(product, index) in sellsProducts"
             :key="index"
             class="col-12 col-ms-6 col-md-6 col-lg-3 text-decoration-none"
           >
             <div class="col-card-home">
               <el-card>
-                <img
-                  src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-                  class="image"
-                />
+                <img :src="product.images[0]" class="home-image-product" />
                 <div class="home-title-product">
-                  <span>{{ product.title }}</span>
+                  <h1 class="">{{ product.title }}</h1>
                   <div class="bottom clearfix">
                     <p>{{ product.description }}</p>
                   </div>
@@ -49,21 +46,22 @@ export default {
   data() {
     return {
       searchTerm: '',
-      loading: false
+      loading: true
     };
   },
   computed: {
-    ...mapState('cosmos', ['products'])
+    ...mapState('cosmos', ['sellsProducts'])
   },
   components: {},
   methods: {
-    ...mapActions('cosmos', ['getAllProducts']),
+    ...mapActions('cosmos', ['getSellsProducts']),
     setSearchTerm(e) {
       this.searchTerm = e.target.value;
     }
   },
   async created() {
-    await this.getAllProducts();
+    await this.getSellsProducts();
+    this.loading = false;
   }
 };
 </script>
@@ -119,6 +117,12 @@ input[type='search'] {
   padding: 15px 0;
 }
 
+.home-title-product {
+  h1 {
+    color: cadetblue;
+  }
+}
+
 .text-decoration-none {
   text-decoration: none;
 }
@@ -168,6 +172,11 @@ input[type='search'] {
   img {
     height: 150px;
   }
+}
+
+.home-image-product {
+  height: 260px;
+  width: 100%;
 }
 
 @media all and (max-width: 768px) {

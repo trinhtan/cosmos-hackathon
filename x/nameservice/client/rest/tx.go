@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	dir = "/home/trinh.van.tan/cosmos-hackathon/"
+	dir = "/home/ngo.van.nghia/Documents/POC/cosmos-hackathon/"
 )
 
 type buyNameReq struct {
