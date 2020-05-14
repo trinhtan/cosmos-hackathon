@@ -113,6 +113,8 @@ func handleMsgCreateProduct(ctx sdk.Context, keeper Keeper, msg MsgCreateProduct
 		ProductID:   msg.ProductID,
 		Title:       msg.Title,
 		Description: msg.Description,
+		Category:    msg.Category,
+		Images:      msg.Images,
 		Owner:       msg.Signer,
 	}
 
@@ -137,6 +139,8 @@ func handleMsgUpdateProduct(ctx sdk.Context, keeper Keeper, msg MsgUpdateProduct
 		ProductID:   msg.ProductID,
 		Title:       msg.Title,
 		Description: msg.Description,
+		Category:    msg.Category,
+		Images:      msg.Images,
 		Owner:       msg.Signer,
 	}
 

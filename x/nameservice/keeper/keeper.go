@@ -180,6 +180,16 @@ func (k Keeper) GetProductDescription(ctx sdk.Context, productID string) string 
 	return k.GetProduct(ctx, productID).Description
 }
 
+// GetProductCategory gets product description
+func (k Keeper) GetProductCategory(ctx sdk.Context, productID string) string {
+	return k.GetProduct(ctx, productID).Category
+}
+
+// GetProductImages gets product description
+func (k Keeper) GetProductImages(ctx sdk.Context, productID string) string {
+	return k.GetProduct(ctx, productID).Images
+}
+
 // GetProductsIterator gets an iterator over all product in which the keys are the productID and the values are the product
 func (k Keeper) GetProductsIterator(ctx sdk.Context) sdk.Iterator {
 	store := ctx.KVStore(k.storeKey)

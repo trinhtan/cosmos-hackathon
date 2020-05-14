@@ -183,15 +183,19 @@ type MsgCreateProduct struct {
 	ProductID   string         `json:"productID"`
 	Title       string         `json:"title"`
 	Description string         `json:"description"`
+	Category    string         `json:"category"`
+	Images      string         `json:"images"`
 	Signer      sdk.AccAddress `json:"signer"`
 }
 
 // NewMsgSetProduct is a constructor function for MsgSetProduct
-func NewMsgCreateProduct(productID string, title string, description string, signer sdk.AccAddress) MsgCreateProduct {
+func NewMsgCreateProduct(productID string, title string, description string, category string, images string, signer sdk.AccAddress) MsgCreateProduct {
 	return MsgCreateProduct{
 		ProductID:   productID,
 		Title:       title,
 		Description: description,
+		Category:    category,
+		Images:      images,
 		Signer:      signer,
 	}
 }
@@ -228,15 +232,19 @@ type MsgUpdateProduct struct {
 	ProductID   string         `json:"productID"`
 	Title       string         `json:"title"`
 	Description string         `json:"description"`
+	Category    string         `json:"category"`
+	Images      string         `json:"images"`
 	Signer      sdk.AccAddress `json:"signer"`
 }
 
 // NewMsgUpdateProduct is a constructor function for MsgSetProduct
-func NewMsgUpdateProduct(productID string, title string, description string, signer sdk.AccAddress) MsgUpdateProduct {
+func NewMsgUpdateProduct(productID string, title string, description string, category string, images string, signer sdk.AccAddress) MsgUpdateProduct {
 	return MsgUpdateProduct{
 		ProductID:   productID,
 		Title:       title,
 		Description: description,
+		Category:    category,
+		Images:      images,
 		Signer:      signer,
 	}
 }
