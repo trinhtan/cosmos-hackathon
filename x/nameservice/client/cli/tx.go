@@ -158,7 +158,7 @@ func GetCmdCreateProduct(cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
 		Use:   "create-product [productID] [title] [description]",
 		Short: "set the value associated with a product that you own",
-		Args:  cobra.ExactArgs(3),
+		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
 			inBuf := bufio.NewReader(cmd.InOrStdin())
@@ -168,7 +168,7 @@ func GetCmdCreateProduct(cdc *codec.Codec) *cobra.Command {
 			// 	return err
 			// }
 
-			msg := types.NewMsgCreateProduct(args[0], args[1], args[2], cliCtx.GetFromAddress())
+			msg := types.NewMsgCreateProduct(args[0], args[1], args[2], args[3], args[4], cliCtx.GetFromAddress())
 			err := msg.ValidateBasic()
 			if err != nil {
 				return err
@@ -195,7 +195,7 @@ func GetCmdUpdateProduct(cdc *codec.Codec) *cobra.Command {
 			// 	return err
 			// }
 
-			msg := types.NewMsgUpdateProduct(args[0], args[1], args[2], cliCtx.GetFromAddress())
+			msg := types.NewMsgUpdateProduct(args[0], args[1], args[2], args[3], args[4], cliCtx.GetFromAddress())
 			err := msg.ValidateBasic()
 			if err != nil {
 				return err

@@ -41,6 +41,8 @@ type Product struct {
 	ProductID   string         `json:"productID"`
 	Title       string         `json:"title"`
 	Description string         `json:"description"`
+	Category    string         `json:"category"`
+	Images      string         `json:"images"`
 	Owner       sdk.AccAddress `json:"owner"`
 }
 
@@ -55,7 +57,8 @@ func (product Product) String() string {
 	ProductID: %s
 	Title: %s
 	Description: %s
-	Owner: %s`, product.ProductID, product.Title, product.Description, product.Owner))
+	Category: %s
+	Owner: %s`, product.ProductID, product.Title, product.Description, product.Category, product.Owner))
 }
 
 // Sell is a struct contains all the metadata of a sell

@@ -1,7 +1,10 @@
 package rest
 
 import (
+	"crypto/rand"
+	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os/exec"
 
@@ -176,11 +179,13 @@ func setDescriptionHandler(cliCtx context.CLIContext) http.HandlerFunc {
 }
 
 type createProducteReq struct {
-	BaseReq     rest.BaseReq `json:"base_req"`
-	ProductID   string       `json:"productID"`
-	Title       string       `json:"title"`
-	Description string       `json:"description"`
-	Signer      string       `json:"signer"`
+	BaseReq rest.BaseReq `json:"base_req"`
+	// ProductID   string       `json:"productID"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Category    string `json:"category"`
+	Images      string `json:"images"`
+	Signer      string `json:"signer"`
 }
 
 func createProductHandler(cliCtx context.CLIContext) http.HandlerFunc {
@@ -213,14 +218,15 @@ func createProductHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			return
 		}
 
-		// coins, err := sdk.ParseCoins(req.Amount)
-		// if err != nil {
-		// 	rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
-		// 	return
-		// }
+		b := make([]byte, 16)
+		_, err = rand.Read(b)
+		if err != nil {
+			log.Fatal(err)
+		}
+		productID := fmt.Sprintf("%x-%x-%x-%x-%x",
+			b[0:4], b[4:6], b[6:8], b[8:10], b[10:])
 
-		// create the message
-		msg := types.NewMsgCreateProduct(req.ProductID, req.Title, req.Description, addr)
+		msg := types.NewMsgCreateProduct(productID, req.Title, req.Description, req.Category, req.Images, addr)
 		err = msg.ValidateBasic()
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
@@ -236,6 +242,8 @@ type updateProductReq struct {
 	ProductID   string       `json:"productID"`
 	Title       string       `json:"title"`
 	Description string       `json:"description"`
+	Category    string       `json:"category"`
+	Images      string       `json:"images"`
 	Signer      string       `json:"signer"`
 }
 
@@ -259,7 +267,7 @@ func updateProductHandler(cliCtx context.CLIContext) http.HandlerFunc {
 		}
 
 		// create the message
-		msg := types.NewMsgUpdateProduct(req.ProductID, req.Title, req.Description, addr)
+		msg := types.NewMsgUpdateProduct(req.ProductID, req.Title, req.Description, req.Category, req.Images, addr)
 		err = msg.ValidateBasic()
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
