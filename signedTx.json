@@ -5,10 +5,10 @@
       {
         "type": "nameservice/CreateProduct",
         "value": {
-          "productID": "02",
-          "title": "abc",
-          "description": "mota01",
-          "signer": "cosmos10n87ewwqmxw9dyvlhhhp54upnhq2h2rdglch7h"
+          "productID": "product01",
+          "title": "product01",
+          "description": "description01",
+          "signer": "cosmos14mlqls2d3pxenn9n8pnrycqr7uxu7tmpyq0tn4"
         }
       }
     ],
@@ -20,9 +20,9 @@
       {
         "pub_key": {
           "type": "tendermint/PubKeySecp256k1",
-          "value": "A1HBz0kb4IBOmpcGhhtri68TIThQl6OQ/f24EVZhSbMm"
+          "value": "A0SKxPWrM4Phlg/GdQSgn2E7j2pCys+KjGrarRJmzq0C"
         },
-        "signature": "H1A+cmTZPDDN2KtNIFzacZBm6EalPmwDpK1x3y1Vn0JflWM7boONSn5EU1yFBL5kKdG08ToWDG3Z3vm+tvdHPQ=="
+        "signature": "ctDJ0l2KddPMlYq9uEWB2c7kokQJSWAKq9BV+naHtacT1E04Ka02PlStv75DJ2tf73fN2N9CblDUcP1bvDBA4w=="
       }
     ],
     "memo": ""
