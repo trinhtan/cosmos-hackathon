@@ -3,6 +3,7 @@ package rest
 import (
 	"fmt"
 	"net/http"
+	"os/exec"
 
 	"github.com/cosmos/cosmos-sdk/client/context"
 
@@ -143,6 +144,22 @@ func reservationsHandler(cliCtx context.CLIContext, storeName string) http.Handl
 			return
 		}
 		rest.PostProcessResponse(w, cliCtx, res)
+	}
+}
+
+func accAddressHandler(cliCtx context.CLIContext) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+		name := vars[accName]
+
+		cmd := exec.Command("nscli", "keys", "show", name)
+		stdout, err := cmd.Output()
+		if err != nil {
+			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
+			return
+		}
+
+		rest.PostProcessResponse(w, cliCtx, string(stdout))
 	}
 }
 
