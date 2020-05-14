@@ -26,14 +26,6 @@
                   placeholder="Please input catagory..."
                 ></el-input>
               </el-form-item>
-              <el-form-item label="Price" prop="price">
-                <el-input-number
-                  v-model="form1.price"
-                  controls-position="right"
-                  :min="0"
-                  placeholder="Please input price..."
-                ></el-input-number>
-              </el-form-item>
             </el-form>
           </div>
         </div>
@@ -114,42 +106,27 @@ import VueUploadMultipleImage from '../../node_modules/vue-upload-multiple-image
 import { ipfsNodeUri } from '@/utils/config.js';
 import getIpfs from '@/utils/getIpfs';
 import { streamFiles } from '@/utils/checkFileUpload.js';
+import { mapState, mapActions } from 'vuex';
 export default {
   name: 'publish',
   data() {
-    var checkPrice = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('Please input the price'));
-      } else if (!Number.parseFloat(value)) {
-        callback(new Error('Please input digits'));
-      } else {
-        if (value <= 0) {
-          callback(new Error('Price must be greater than 0'));
-        } else {
-          callback();
-        }
-      }
-    };
     return {
       current: 0,
       labelPosition: 'top',
       formAsset: {
         title: '',
         category: '',
-        price: 0,
         images: [],
         description: ''
       },
       fileList: [],
       form1: {
         title: '',
-        category: '',
-        price: 0
+        category: ''
       },
       rules_1: {
         title: [{ required: true, message: 'Please input title', trigger: 'blur' }],
-        category: [{ required: true, message: 'Please input catagory', trigger: 'blur' }],
-        price: [{ validator: checkPrice, trigger: 'blur' }]
+        category: [{ required: true, message: 'Please input catagory', trigger: 'blur' }]
       },
       form2_images: [],
       rules_2: true,
@@ -162,18 +139,21 @@ export default {
       loadingUpload: false
     };
   },
+  computed: {
+    ...mapState('cosmos', ['products'])
+  },
   components: {
     VueUploadMultipleImage
   },
 
   methods: {
+    ...mapActions('cosmos', ['createProduct', 'signCreateProduct', 'broadcastProduct']),
     next() {
       if (this.current === 0) {
         this.$refs['ruleForm_1'].validate((valid) => {
           if (valid) {
             this.formAsset.title = this.form1.title;
             this.formAsset.category = this.form1.category;
-            this.formAsset.price = this.form1.price;
             if (this.current++ > 2) this.current = 2;
           } else {
             return false;
@@ -207,7 +187,7 @@ export default {
       this.fileList = fileList;
     },
     publishData() {
-      this.$refs['ruleForm_3'].validate((valid) => {
+      this.$refs['ruleForm_3'].validate(async (valid) => {
         if (valid) {
           this.formAsset.description = this.form3.description;
           this.loadingUpload = true;
@@ -215,11 +195,17 @@ export default {
             var url = await this.uploadImageIpfs(file);
             this.formAsset.images.push(url);
           });
-          console.log(this.formAsset);
-          setTimeout(() => {
-            this.loadingUpload = false;
-            this.$router.push({ name: 'Home' });
-          }, 1000);
+
+          var reponseCreate = await this.createProduct(this.formAsset);
+          var reponseSign = await this.signCreateProduct(reponseCreate);
+          var reponseSigned = await this.broadcastProduct(reponseSign);
+          console.log(reponseSigned);
+
+          this.loadingUpload = false;
+          // setTimeout(() => {
+          //   this.loadingUpload = false;
+          //   // this.$router.push({ name: 'Home' });
+          // }, 1000);
         } else {
           return false;
         }

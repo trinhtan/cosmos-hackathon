@@ -1,7 +1,5 @@
 export function streamFiles(ipfs, files) {
   return new Promise((resolve, reject) => {
-    console.log(ipfs);
-
     const stream = ipfs.addReadableStream({
       wrapWithDirectory: true
       // progress: (length: number) =>

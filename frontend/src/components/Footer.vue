@@ -15,9 +15,6 @@ export default {
 <style lang="scss">
 .ant-layout-footer {
   padding: 0 50px 15px;
-  background: none;
-  position: fixed;
-  bottom: 0;
 }
 
 .footer-home {
@@ -47,13 +44,13 @@ export default {
 
 .ant-layout-footer {
   padding: 0px 50px 15px 50px;
-  background: none;
+  background: #f0f2f5;
 }
 
 @media all and (max-width: 768px) {
   .ant-layout-footer {
     padding: 0px 20px 15px 20px;
-    background: none;
+    background: #f0f2f5;
   }
 }
 </style>

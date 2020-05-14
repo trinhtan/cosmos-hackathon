@@ -84,6 +84,7 @@ func getProductHandler(cliCtx context.CLIContext, storeName string) http.Handler
 
 func productsHandler(cliCtx context.CLIContext, storeName string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/products", storeName), nil)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusNotFound, err.Error())
