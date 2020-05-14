@@ -4,10 +4,13 @@ import (
 	"fmt"
 	"net/http"
 	"os/exec"
+	"strings"
 
 	"github.com/cosmos/cosmos-sdk/client/context"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/cosmos/cosmos-sdk/types/rest"
+	"github.com/cosmos/cosmos-sdk/x/auth/types"
 
 	"github.com/gorilla/mux"
 )
@@ -152,14 +155,40 @@ func accAddressHandler(cliCtx context.CLIContext) http.HandlerFunc {
 		vars := mux.Vars(r)
 		name := vars[accName]
 
-		cmd := exec.Command("nscli", "keys", "show", name)
+		cmd := exec.Command("nscli", "keys", "show", name, "-a")
 		stdout, err := cmd.Output()
+		s := string(stdout)
+		t := strings.Trim(s, "\n")
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
 		}
 
-		rest.PostProcessResponse(w, cliCtx, string(stdout))
+		addr, err := sdk.AccAddressFromBech32(t)
+		if err != nil {
+			rest.WriteErrorResponse(w, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		cliCtx, ok := rest.ParseQueryHeightOrReturnBadRequest(w, cliCtx, r)
+		if !ok {
+			return
+		}
+
+		accGetter := types.NewAccountRetriever(cliCtx)
+		account, height, err := accGetter.GetAccountWithHeight(addr)
+		if err != nil {
+			if err := accGetter.EnsureExists(addr); err != nil {
+				cliCtx = cliCtx.WithHeight(height)
+				rest.PostProcessResponse(w, cliCtx, types.BaseAccount{})
+				return
+			}
+
+			rest.WriteErrorResponse(w, http.StatusInternalServerError, err.Error())
+			return
+		}
+		cliCtx = cliCtx.WithHeight(height)
+		rest.PostProcessResponse(w, cliCtx, account)
 	}
 }
 
