@@ -98,6 +98,20 @@ func productsHandler(cliCtx context.CLIContext, storeName string) http.HandlerFu
 	}
 }
 
+func productsByOwnerHandler(cliCtx context.CLIContext, storeName string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		vars := mux.Vars(r)
+		paramType := vars[restOwner]
+		res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/productsByOwner/%s", storeName, paramType), nil)
+		if err != nil {
+			rest.WriteErrorResponse(w, http.StatusNotFound, err.Error())
+			return
+		}
+		rest.PostProcessResponse(w, cliCtx, res)
+	}
+}
+
 func getSellHandler(cliCtx context.CLIContext, storeName string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
@@ -142,6 +156,20 @@ func getReservationHandler(cliCtx context.CLIContext, storeName string) http.Han
 func reservationsHandler(cliCtx context.CLIContext, storeName string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/reservations", storeName), nil)
+		if err != nil {
+			rest.WriteErrorResponse(w, http.StatusNotFound, err.Error())
+			return
+		}
+		rest.PostProcessResponse(w, cliCtx, res)
+	}
+}
+
+func reservationsBySellIDHandler(cliCtx context.CLIContext, storeName string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		vars := mux.Vars(r)
+		paramType := vars[restSell]
+		res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/reservationsBySellID/%s", storeName, paramType), nil)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusNotFound, err.Error())
 			return

@@ -3,12 +3,11 @@
   "value": {
     "msg": [
       {
-        "type": "nameservice/CreateProduct",
+        "type": "nameservice/ChangeProductOwner",
         "value": {
-          "productID": "product01",
-          "title": "product01",
-          "description": "description01",
-          "signer": "cosmos14mlqls2d3pxenn9n8pnrycqr7uxu7tmpyq0tn4"
+          "productID": "9cfbe55c-e859-cc37-5dd6-0ba84c683127",
+          "reservationID": "reservation01",
+          "singer": "cosmos1nvfe70z7663ggyuku057sxztrltrrcnz49m4zs"
         }
       }
     ],
@@ -20,9 +19,9 @@
       {
         "pub_key": {
           "type": "tendermint/PubKeySecp256k1",
-          "value": "A0SKxPWrM4Phlg/GdQSgn2E7j2pCys+KjGrarRJmzq0C"
+          "value": "AnvVQejzpWbgu5HPOE4unSmSLR0TGSu9p9gXUiOfWm12"
         },
-        "signature": "ctDJ0l2KddPMlYq9uEWB2c7kokQJSWAKq9BV+naHtacT1E04Ka02PlStv75DJ2tf73fN2N9CblDUcP1bvDBA4w=="
+        "signature": "xm+cJ1Hl41VZEA2Xa4kko1SupHjEXA0qsYAsghDOyc12wQuk2BEgrN0yRkEO7hYh/Qk/2vwO+HH0qiEDynwogw=="
       }
     ],
     "memo": ""
