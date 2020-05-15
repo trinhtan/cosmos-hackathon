@@ -25,8 +25,6 @@ func NewHandler(keeper Keeper) sdk.Handler {
 			return handleMsgCreateProduct(ctx, keeper, msg)
 		case MsgUpdateProduct:
 			return handleMsgUpdateProduct(ctx, keeper, msg)
-		case MsgDeleteProduct:
-			return handleMsgDeleteProduct(ctx, keeper, msg)
 		case MsgChangeProductOwner:
 			return handleMsgChangeProductOwner(ctx, keeper, msg)
 		case MsgCreateSell:
