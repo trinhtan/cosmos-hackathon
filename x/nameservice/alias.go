@@ -25,8 +25,8 @@ var (
 	NewProduct               = types.NewProduct
 	NewMsgCreateProduct      = types.NewMsgCreateProduct
 	NewMsgChangeProductOwner = types.NewMsgChangeProductOwner
-	NewMsgDeleteProduct      = types.NewMsgDeleteProduct
-	NewMsgUpdateProduct      = types.NewMsgUpdateProduct
+	// NewMsgDeleteProduct      = types.NewMsgDeleteProduct
+	NewMsgUpdateProduct = types.NewMsgUpdateProduct
 
 	NewSell          = types.NewSell
 	NewMsgCreateSell = types.NewMsgCreateSell
@@ -54,16 +54,16 @@ type (
 	QueryResNames       = types.QueryResNames
 	QueryResDescription = types.QueryResDescription
 
-	Product               = types.Product
-	MsgCreateProduct      = types.MsgCreateProduct
-	MsgUpdateProduct      = types.MsgUpdateProduct
-	MsgDeleteProduct      = types.MsgDeleteProduct
+	Product          = types.Product
+	MsgCreateProduct = types.MsgCreateProduct
+	MsgUpdateProduct = types.MsgUpdateProduct
+	// MsgDeleteProduct      = types.MsgDeleteProduct
 	MsgChangeProductOwner = types.MsgChangeProductOwner
 
 	Sell          = types.Sell
 	MsgCreateSell = types.MsgCreateSell
 	MsgUpdateSell = types.MsgUpdateSell
-	MsgDeleteSell  = types.MsgDeleteSell
+	MsgDeleteSell = types.MsgDeleteSell
 
 	Reservation          = types.Reservation
 	MsgCreateReservation = types.MsgCreateReservation
