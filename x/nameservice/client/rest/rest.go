@@ -56,4 +56,5 @@ func RegisterRoutes(cliCtx context.CLIContext, r *mux.Router, storeName string) 
 	r.HandleFunc(fmt.Sprintf("/%s/reservations", storeName), deleteReservationHandler(cliCtx)).Methods("DELETE")
 
 	r.HandleFunc(fmt.Sprintf("/%s/accAddress/{%s}", storeName, accName), accAddressHandler(cliCtx)).Methods("GET")
+	r.HandleFunc(fmt.Sprintf("%s/accAddress/{%s}/products", storeName, restOwner), productsByOwnerHandler(cliCtx, storeName)).Methods("GET")
 }
