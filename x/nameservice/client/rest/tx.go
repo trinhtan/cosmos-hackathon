@@ -278,15 +278,16 @@ func updateProductHandler(cliCtx context.CLIContext) http.HandlerFunc {
 	}
 }
 
-type deleteProductReq struct {
-	BaseReq   rest.BaseReq `json:"base_req"`
-	ProductID string       `json:"productID"`
-	Signer    string       `json:"signer"`
+type changeProductOwnerReq struct {
+	BaseReq       rest.BaseReq `json:"base_req"`
+	ProductID     string       `json:"productID"`
+	ReservationID string       `json:"reservationID"`
+	Signer        string       `json:"signer"`
 }
 
-func deleteProductHandler(cliCtx context.CLIContext) http.HandlerFunc {
+func changeProductOwnerHandler(cliCtx context.CLIContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req deleteProductReq
+		var req changeProductOwnerReq
 		if !rest.ReadRESTReq(w, r, cliCtx.Codec, &req) {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, "failed to parse request")
 			return
@@ -304,9 +305,9 @@ func deleteProductHandler(cliCtx context.CLIContext) http.HandlerFunc {
 		}
 
 		// create the message
-		msg := types.NewMsgDeleteProduct(req.ProductID, addr)
+		msg := types.NewMsgChangeProductOwner(req.ProductID, req.ReservationID, addr)
 		err = msg.ValidateBasic()
-		if err := msg.ValidateBasic(); err != nil {
+		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
 		}
@@ -316,11 +317,11 @@ func deleteProductHandler(cliCtx context.CLIContext) http.HandlerFunc {
 }
 
 type createSellReq struct {
-	BaseReq   rest.BaseReq `json:"base_req"`
-	SellID    string       `json:"sellID"`
-	ProductID string       `json:"productID"`
-	Signer    string       `json:"signer"`
-	MinPrice  string       `json:"minPrice"`
+	BaseReq rest.BaseReq `json:"base_req"`
+	// SellID    string       `json:"sellID"`
+	ProductID string `json:"productID"`
+	Signer    string `json:"signer"`
+	MinPrice  string `json:"minPrice"`
 }
 
 func createSellHandler(cliCtx context.CLIContext) http.HandlerFunc {
@@ -349,8 +350,16 @@ func createSellHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			return
 		}
 
+		b := make([]byte, 16)
+		_, err = rand.Read(b)
+		if err != nil {
+			log.Fatal(err)
+		}
+		sellID := fmt.Sprintf("%x-%x-%x-%x-%x",
+			b[0:4], b[4:6], b[6:8], b[8:10], b[10:])
+
 		// create the message
-		msg := types.NewMsgCreateSell(req.SellID, req.ProductID, addr, coins)
+		msg := types.NewMsgCreateSell(sellID, req.ProductID, addr, coins)
 		err = msg.ValidateBasic()
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
@@ -443,11 +452,11 @@ func deleteSellHandler(cliCtx context.CLIContext) http.HandlerFunc {
 }
 
 type createReservationReq struct {
-	BaseReq       rest.BaseReq `json:"base_req"`
-	SellID        string       `json:"sellID"`
-	ReservationID string       `json:"reservationID"`
-	Signer        string       `json:"signer"`
-	Price         string       `json:"price"`
+	BaseReq rest.BaseReq `json:"base_req"`
+	SellID  string       `json:"sellID"`
+	// ReservationID string       `json:"reservationID"`
+	Signer string `json:"signer"`
+	Price  string `json:"price"`
 }
 
 func createReservationHandler(cliCtx context.CLIContext) http.HandlerFunc {
@@ -476,8 +485,16 @@ func createReservationHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			return
 		}
 
+		b := make([]byte, 16)
+		_, err = rand.Read(b)
+		if err != nil {
+			log.Fatal(err)
+		}
+		reservationID := fmt.Sprintf("%x-%x-%x-%x-%x",
+			b[0:4], b[4:6], b[6:8], b[8:10], b[10:])
+
 		// create the message
-		msg := types.NewMsgCreateReservation(req.ReservationID, req.SellID, addr, coins)
+		msg := types.NewMsgCreateReservation(reservationID, req.SellID, addr, coins)
 		err = msg.ValidateBasic()
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())

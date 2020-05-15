@@ -36,7 +36,7 @@ func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
 		GetCmdSetDescription(cdc),
 
 		GetCmdCreateProduct(cdc),
-		GetCmdDeleteProduct(cdc),
+		// GetCmdDeleteProduct(cdc),
 		GetCmdUpdateProduct(cdc),
 		GetCmdChangeProductOwner(cdc),
 
@@ -207,33 +207,10 @@ func GetCmdUpdateProduct(cdc *codec.Codec) *cobra.Command {
 	}
 }
 
-// GetCmdDeleteProduct is the CLI command for sending a DeleteProduct transaction
-func GetCmdDeleteProduct(cdc *codec.Codec) *cobra.Command {
-	return &cobra.Command{
-		Use:   "delete-product [productID]",
-		Short: "delete the product that you own along with it's associated fields",
-		Args:  cobra.ExactArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			cliCtx := context.NewCLIContext().WithCodec(cdc)
-			inBuf := bufio.NewReader(cmd.InOrStdin())
-			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
-
-			msg := types.NewMsgDeleteProduct(args[0], cliCtx.GetFromAddress())
-			err := msg.ValidateBasic()
-			if err != nil {
-				return err
-			}
-
-			// return utils.CompleteAndBroadcastTxCLI(txBldr, cliCtx, msgs)
-			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
-		},
-	}
-}
-
 // GetCmdChangeProductOwner is the CLI command for sending a ChangeProductOwner transaction
 func GetCmdChangeProductOwner(cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
-		Use:   "change-product-owner [productID] [newOwner]",
+		Use:   "decide-sell [productID] [reservationID]",
 		Short: "set the value associated with a product that you own",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -241,11 +218,11 @@ func GetCmdChangeProductOwner(cdc *codec.Codec) *cobra.Command {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
 
-			addr, err := sdk.AccAddressFromBech32(args[1])
+			// addr, err := sdk.AccAddressFromBech32(args[1])
 
-			msg := types.NewMsgChangeProductOwner(args[0], cliCtx.GetFromAddress(), addr)
+			msg := types.NewMsgChangeProductOwner(args[0], args[1], cliCtx.GetFromAddress())
 
-			err = msg.ValidateBasic()
+			err := msg.ValidateBasic()
 
 			if err != nil {
 				return err
