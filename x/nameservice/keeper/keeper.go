@@ -152,12 +152,6 @@ func (k Keeper) SetProduct(ctx sdk.Context, key string, product types.Product) {
 	store.Set([]byte(key), k.cdc.MustMarshalBinaryBare(product))
 }
 
-// DeleteProduct deletes the entire Proudct metadata struct for a product
-func (k Keeper) DeleteProduct(ctx sdk.Context, key string) {
-	store := ctx.KVStore(k.storeKey)
-	store.Delete([]byte(key))
-}
-
 // GetProductTitle gets product title
 func (k Keeper) GetProductTitle(ctx sdk.Context, key string) string {
 	return k.GetProduct(ctx, key).Title

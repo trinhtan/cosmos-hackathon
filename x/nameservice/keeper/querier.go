@@ -22,8 +22,10 @@ const (
 	QuerySell  = "sell"
 	QuerySells = "sells"
 
-	QueryReservation  = "reservation"
-	QueryReservations = "reservations"
+	QueryReservation          = "reservation"
+	QueryReservations         = "reservations"
+	QueryReservationsBySellID = "reservationsBySellID"
+	QueryProductsByOwner      = "productsByOwner"
 )
 
 // NewQuerier is the module level router for state queries
@@ -50,6 +52,10 @@ func NewQuerier(keeper Keeper) sdk.Querier {
 			return queryReservation(ctx, path[1:], req, keeper)
 		case QueryReservations:
 			return queryReservations(ctx, req, keeper)
+		case QueryReservationsBySellID:
+			return queryReservationsBySellID(ctx, path[1:], req, keeper)
+		case QueryProductsByOwner:
+			return queryProductsByOwner(ctx, path[1:], req, keeper)
 		default:
 			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "unknown nameservice query endpoint")
 		}
@@ -208,7 +214,7 @@ func queryReservations(ctx sdk.Context, req abci.RequestQuery, keeper Keeper) ([
 
 	var reservationsList types.QueryResReservations
 
-	iterator := keeper.GetSellsIterator(ctx)
+	iterator := keeper.GetReservationsIterator(ctx)
 
 	for ; iterator.Valid(); iterator.Next() {
 		key := string(iterator.Key())
@@ -218,6 +224,63 @@ func queryReservations(ctx sdk.Context, req abci.RequestQuery, keeper Keeper) ([
 	}
 
 	res, err := codec.MarshalJSONIndent(keeper.cdc, reservationsList)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
+	}
+
+	return res, nil
+}
+
+// nolint: unparam
+func queryReservationsBySellID(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
+
+	var sellID = path[0]
+	var reservationsList types.QueryResReservations
+
+	iterator := keeper.GetSellsIterator(ctx)
+
+	for ; iterator.Valid(); iterator.Next() {
+		key := string(iterator.Key())
+		if "Reservation-" <= key && key <= "Reservation-zzzzzzzz" {
+			sell := keeper.GetReservation(ctx, key)
+			if sell.SellID == sellID {
+				reservationsList = append(reservationsList, sell)
+			}
+		}
+	}
+
+	res, err := codec.MarshalJSONIndent(keeper.cdc, reservationsList)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
+	}
+
+	return res, nil
+}
+
+// nolint: unparam
+func queryProductsByOwner(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
+
+	var accAddress = path[0]
+	var productsList types.QueryResProducts
+	addr, err := sdk.AccAddressFromBech32(accAddress)
+	if err != nil {
+		// rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
+		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
+	}
+
+	iterator := keeper.GetSellsIterator(ctx)
+
+	for ; iterator.Valid(); iterator.Next() {
+		key := string(iterator.Key())
+		if "Product-" <= key && key <= "Product-zzzzzzzz" {
+			product := keeper.GetProduct(ctx, key)
+			if product.Owner.Equals(addr) {
+				productsList = append(productsList, product)
+			}
+		}
+	}
+
+	res, err := codec.MarshalJSONIndent(keeper.cdc, productsList)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
 	}
