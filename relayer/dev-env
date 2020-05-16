@@ -1,0 +1,25 @@
+#/bin/bash -e
+
+RELAYER_DIR="$GOPATH/src/github.com/iqlusioninc/relayer"
+RELAYER_CONF="$HOME/.relayer"
+GAIA_CONF="$RELAYER_DIR/data"
+
+# Ensure user understands what will be deleted
+if ([[ -d $RELAYER_CONF ]] || [[ -d $GAIA_CONF ]]) && [[ ! "$1" == "skip" ]]; then
+  read -p "$0 will delete \$HOME/.relayer and \$(pwd)/data folder. Do you wish to continue? (y/n): " -n 1 -r
+  echo
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+      exit 1
+  fi
+fi
+
+cd $RELAYER_DIR
+rm -rf $RELAYER_CONF &> /dev/null
+bash two-chainz "local" "skip"
+bash config-relayer "skip"
+sleep 2
+rly tx full-path demo -o 3s
+rly tx raw xfer-send ibc0 ibc1 1000n0token true $(rly ch addr ibc1)
+rly tx raw xfer-send ibc0 ibc1 1000n0token true $(rly ch addr ibc1) 
+rly tx raw xfer-send ibc1 ibc0 1000n0token true $(rly ch addr ibc0)
+rly tx raw xfer-send ibc1 ibc0 1000n0token true $(rly ch addr ibc0)
