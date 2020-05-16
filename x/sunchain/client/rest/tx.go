@@ -8,8 +8,8 @@ import (
 	"net/http"
 	"os/exec"
 
-	"github.com/trinhtan/cosmos-hackathon/x/sunchain/types"
 	"github.com/cosmos/cosmos-sdk/client/context"
+	"github.com/trinhtan/cosmos-hackathon/x/sunchain/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/rest"
@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	dir = "/home/le.thanh.cong/cosmos-hackathon/"
+	dir = "/home/ngo.van.nghia/Documents/POC/cosmos-hackathon/"
 )
 
 type createProducteReq struct {
@@ -468,7 +468,7 @@ func signTxHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			panic(err)
 		}
 
-		cmd := exec.Command("nscli", "tx", "sign", filePath, "--from", req.Signer, "--offline", "--chain-id", "namechain", "--sequence", req.Sequence, "--account-number", req.AccountNumber)
+		cmd := exec.Command("bccli", "tx", "sign", filePath, "--from", req.Signer, "--offline", "--chain-id", "band-consumer", "--sequence", req.Sequence, "--account-number", req.AccountNumber)
 		stdout, err := cmd.Output()
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
@@ -482,7 +482,7 @@ func signTxHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			panic(err)
 		}
 
-		cmd = exec.Command("nscli", "tx", "broadcast", filePath)
+		cmd = exec.Command("bccli", "tx", "broadcast", filePath)
 		stdout, err = cmd.Output()
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
