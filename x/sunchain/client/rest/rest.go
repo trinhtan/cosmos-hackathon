@@ -21,8 +21,8 @@ const (
 // RegisterRoutes - Central function to define routes that get registered by the main application
 func RegisterRoutes(cliCtx context.CLIContext, r *mux.Router, storeName string) {
 
-	// r.HandleFunc(fmt.Sprintf("/%s/tx/sign", storeName), signTxHandler(cliCtx)).Methods("POST")
-	// r.HandleFunc(fmt.Sprintf("/%s/tx/sign", storeName), signTxHandler(cliCtx)).Methods("OPTIONS")
+	r.HandleFunc(fmt.Sprintf("/%s/tx/sign", storeName), signTxHandler(cliCtx)).Methods("POST")
+	r.HandleFunc(fmt.Sprintf("/%s/tx/sign", storeName), signTxHandler(cliCtx)).Methods("OPTIONS")
 
 	r.HandleFunc(fmt.Sprintf("/%s/products", storeName), createProductHandler(cliCtx)).Methods("POST")
 	r.HandleFunc(fmt.Sprintf("/%s/products", storeName), createProductHandler(cliCtx)).Methods("OPTIONS")
