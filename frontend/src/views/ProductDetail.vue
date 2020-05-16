@@ -51,89 +51,36 @@
             <h2><span>Price:</span> 125$</h2>
           </div>
         </div>
-        <div class="button-buy">
-          <el-button type="success">
-            <i class="el-icon-shopping-cart-full" />
-            Buy
-          </el-button>
-        </div>
-        <div class="button-sell">
-          <el-button type="danger" @click="dialogVisible = true">
-            <i class="el-icon-sell" />
-            Sell
-          </el-button>
-        </div>
-        <div class="button-cancel">
-          <el-button type="warning">
-            <i class="el-icon-error" />
-            Cancel Sell
-          </el-button>
-        </div>
+        <buy-product></buy-product>
+        <sell-product></sell-product>
+        <cancel-sell-product></cancel-sell-product>
       </div>
-
-      <div class="orders-product">
-        <h2>Orders</h2>
-        <div class=" margin-top-20 el-alert el-alert--success is-light">
-          <i class="el-alert__icon el-icon-s-order is-big"></i>
-          <div class="el-alert__content">
-            <h3>Alice</h3>
-            <!---->
-            <p class="el-alert__description">Price: 100</p>
-          </div>
-          <el-button type="primary" icon="el-icon-success" class="button-confirm-order" round
-            >Sell</el-button
-          >
-        </div>
-
-        <div class=" margin-top-20 el-alert el-alert--success is-light">
-          <i class="el-alert__icon el-icon-s-order is-big"></i>
-          <div class="el-alert__content">
-            <h3>Alice</h3>
-            <!---->
-            <p class="el-alert__description">Price: 100</p>
-          </div>
-          <el-button type="primary" icon="el-icon-success" class="button-confirm-order" round
-            >Sell</el-button
-          >
-        </div>
-
-        <div class=" margin-top-20 el-alert el-alert--success is-light">
-          <i class="el-alert__icon el-icon-s-order is-big"></i>
-          <div class="el-alert__content">
-            <h3>Alice</h3>
-            <!---->
-            <p class="el-alert__description">Price: 100</p>
-          </div>
-          <el-button type="primary" icon="el-icon-success" class="button-confirm-order" round
-            >Sell</el-button
-          >
-        </div>
-      </div>
+      <orders-product></orders-product>
     </div>
-    <el-dialog title="Tips" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-      <span>This is a message</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="dialogVisible = false">Confirm</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 <script>
 import VueEasyLightbox from 'vue-easy-lightbox';
 import { mapState, mapActions } from 'vuex';
+import SellProduct from '@/components/ProductDrail/SellProduct';
+import BuyProduct from '@/components/ProductDrail/BuyProduct';
+import CancelSellProduct from '@/components/ProductDrail/CancelSellProduct';
+import OrdersProduct from '@/components/ProductDrail/OrdersProduct';
 export default {
   name: 'ProductDetail',
   components: {
-    VueEasyLightbox
+    VueEasyLightbox,
+    SellProduct,
+    BuyProduct,
+    CancelSellProduct,
+    OrdersProduct
   },
   data() {
     return {
       imgsPreview: [],
       imgFirst: '',
       visible: false,
-      index: 0,
-      dialogVisible: false
+      index: 0
     };
   },
   computed: {
@@ -238,46 +185,6 @@ p {
   }
   h2 {
     color: #ff4a4a;
-  }
-}
-
-.button-buy {
-  width: 100%;
-  padding: 0 30px 20px 0;
-  button {
-    float: right;
-    padding: 15px 45px;
-    font-size: 1rem;
-  }
-}
-
-.button-sell {
-  width: 100%;
-  padding: 0 30px 20px 0;
-  button {
-    float: right;
-    padding: 15px 45px;
-    font-size: 1rem;
-  }
-}
-
-.button-cancel {
-  width: 100%;
-  padding: 0 30px 20px 0;
-  button {
-    float: right;
-    padding: 15px 45px;
-    font-size: 1rem;
-  }
-}
-.orders-product {
-  margin-top: 30px;
-  h2 {
-    margin-bottom: 20px;
-  }
-  button.button-confirm-order {
-    position: absolute;
-    right: 0;
   }
 }
 
