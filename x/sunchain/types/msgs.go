@@ -96,7 +96,7 @@ func (msg MsgBuyGold) GetSignBytes() []byte {
 	return sdk.MustSortJSON(bz)
 }
 
-// MsgSetProduct defines a SetProduct message
+// MsgCreateProduct defines a SetProduct message
 type MsgCreateProduct struct {
 	ProductID   string         `json:"productID"`
 	Title       string         `json:"title"`
@@ -104,9 +104,10 @@ type MsgCreateProduct struct {
 	Category    string         `json:"category"`
 	Images      string         `json:"images"`
 	Signer      sdk.AccAddress `json:"signer"`
+	Selling     bool           `json:"selling"`
 }
 
-// NewMsgSetProduct is a constructor function for MsgSetProduct
+// NewMsgCreateProduct is a constructor function for MsgSetProduct
 func NewMsgCreateProduct(productID string, title string, description string, category string, images string, signer sdk.AccAddress) MsgCreateProduct {
 	return MsgCreateProduct{
 		ProductID:   productID,
