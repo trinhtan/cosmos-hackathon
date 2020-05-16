@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	dir = "/home/ngo.van.nghia/Documents/POC/cosmos-hackathon/"
+	dir = "/home/le.thanh.cong/cosmos-hackathon/"
 )
 
 type createProducteReq struct {
@@ -468,7 +468,7 @@ func signTxHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			panic(err)
 		}
 
-		cmd := exec.Command("bccli", "tx", "sign", filePath, "--from", req.Signer, "--offline", "--chain-id", "band-consumer", "--sequence", req.Sequence, "--account-number", req.AccountNumber)
+		cmd := exec.Command("bccli", "tx", "sign", filePath, "--from", req.Signer, "--offline", "--chain-id", "namechain", "--sequence", req.Sequence, "--account-number", req.AccountNumber)
 		stdout, err := cmd.Output()
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
@@ -482,7 +482,7 @@ func signTxHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			panic(err)
 		}
 
-		cmd = exec.Command("bccli", "tx", "broadcast", filePath)
+		cmd = exec.Command("nscli", "tx", "broadcast", filePath)
 		stdout, err = cmd.Output()
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())

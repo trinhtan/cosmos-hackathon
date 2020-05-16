@@ -6,10 +6,10 @@ import (
 
 	// "github.com/cosmos/cosmos-sdk/codec"
 
-	"github.com/trinhtan/cosmos-hackathon/x/sunchain/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	abci "github.com/tendermint/tendermint/abci/types"
+	"github.com/trinhtan/cosmos-hackathon/x/sunchain/types"
 )
 
 const (
@@ -21,8 +21,10 @@ const (
 	QuerySell  = "sell"
 	QuerySells = "sells"
 
-	QueryReservation  = "reservation"
-	QueryReservations = "reservations"
+	QueryReservation          = "reservation"
+	QueryReservations         = "reservations"
+	QueryReservationsBySellID = "reservationsBySellID"
+	QueryProductsByOwner      = "productsByOwner"
 )
 
 // NewQuerier is the module level router for state queries.
@@ -43,6 +45,8 @@ func NewQuerier(keeper Keeper) sdk.Querier {
 			return queryReservation(ctx, path[1:], req, keeper)
 		case QueryReservations:
 			return queryReservations(ctx, req, keeper)
+		case QueryReservationsBySellID:
+			return queryReservationsBySellID(ctx, path[1:], req, keeper)
 		default:
 			return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "unknown sunchain query endpoint")
 		}
@@ -177,6 +181,62 @@ func queryReservations(ctx sdk.Context, req abci.RequestQuery, keeper Keeper) ([
 	}
 
 	res := keeper.cdc.MustMarshalJSON(reservationsList)
+
+	return res, nil
+}
+
+// nolint: unparam
+func queryReservationsBySellID(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
+
+	var sellID = path[0]
+	var reservationsList types.QueryResReservations
+
+	iterator := keeper.GetReservationsIterator(ctx)
+
+	for ; iterator.Valid(); iterator.Next() {
+		key := string(iterator.Key())
+		if "Reservation-" <= key && key <= "Reservation-zzzzzzzz" {
+			reservation, err := keeper.GetReservation(ctx, key)
+			if err != nil {
+				continue
+			}
+			if reservation.SellID == sellID {
+				reservationsList = append(reservationsList, reservation)
+			}
+		}
+	}
+
+	res := keeper.cdc.MustMarshalJSON(reservationsList)
+
+	return res, nil
+}
+
+// nolint: unparam
+func queryProductsByOwner(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
+
+	var accAddress = path[0]
+	var productsList types.QueryResProducts
+	addr, err := sdk.AccAddressFromBech32(accAddress)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
+	}
+
+	iterator := keeper.GetSellsIterator(ctx)
+
+	for ; iterator.Valid(); iterator.Next() {
+		key := string(iterator.Key())
+		if "Product-" <= key && key <= "Product-zzzzzzzz" {
+			product, err := keeper.GetProduct(ctx, key)
+			if err != nil {
+				continue
+			}
+			if product.Owner.Equals(addr) {
+				productsList = append(productsList, product)
+			}
+		}
+	}
+
+	res := keeper.cdc.MustMarshalJSON(productsList)
 
 	return res, nil
 }
