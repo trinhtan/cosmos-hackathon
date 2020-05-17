@@ -21,6 +21,7 @@ type Product struct {
 	Category    string         `json:"category"`
 	Images      string         `json:"images"`
 	Owner       sdk.AccAddress `json:"owner"`
+	Selling     bool           `json:"selling"`
 }
 
 //NewProduct returns a new product
@@ -35,7 +36,8 @@ func (product Product) String() string {
 	Title: %s
 	Description: %s
 	Category: %s
-	Owner: %s`, product.ProductID, product.Title, product.Description, product.Category, product.Owner))
+	Images: %s
+	Owner: %s`, product.ProductID, product.Title, product.Description, product.Category, product.Images, product.Owner))
 }
 
 // Sell is a struct contains all the metadata of a sell
