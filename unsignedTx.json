@@ -5,8 +5,8 @@
       {
         "type": "sunchain/PayReservation",
         "value": {
-          "reservationID": "21cd76a3-6e5e-2423-1c2d-9d301267756e",
-          "signer": "cosmos1hxw79sdy6plemkyvnmj2t44weq6k4hftkzpaq8"
+          "reservationID": "cd0a6f07-88b1-b514-6ae7-752b2f0cf939",
+          "signer": "cosmos1d8gp6wgjvv5emsj70as0j73avg5xzez9kjh8pg"
         }
       }
     ],
