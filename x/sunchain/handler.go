@@ -415,21 +415,19 @@ func handleMsgPayReservation(ctx sdk.Context, keeper Keeper, msg MsgPayReservati
 		return nil, sdkerrors.Wrap(types.ErrReservationNotDecided, msg.ReservationID)
 	}
 
-	if !msg.Signer.Equals(reservation.Buyer) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Incorrect Owner")
-	}
-
 	keySell := "Sell-" + reservation.SellID
 	if !keeper.IsSellPresent(ctx, keySell) {
 		return nil, sdkerrors.Wrap(types.ErrSellDoesNotExist, reservation.SellID)
+	}
+
+	if !msg.Signer.Equals(reservation.Buyer) {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Incorrect Owner")
 	}
 
 	sell, err := keeper.GetSell(ctx, keySell)
 	if err != nil {
 		return &sdk.Result{}, err
 	}
-
-	keyProduct := "Product-" + sell.ProductID
 
 	err = keeper.BankKeeper.SendCoins(ctx, reservation.Buyer, sell.Seller, reservation.Price)
 	if err != nil {
@@ -452,7 +450,17 @@ func handleMsgPayReservation(ctx sdk.Context, keeper Keeper, msg MsgPayReservati
 		}
 	}
 
+	keyProduct := "Product-" + sell.ProductID
+	product, err := keeper.GetProduct(ctx, keyProduct)
+	if err != nil {
+		return &sdk.Result{}, err
+	}
+
+	product.Selling = false
+	product.SellID = ""
+	product.Owner = reservation.Buyer
+
 	keeper.DeleteSell(ctx, keySell)
-	keeper.ChangeProductOwner(ctx, keyProduct, reservation.Buyer)
+	keeper.SetProduct(ctx, keyProduct, product)
 	return &sdk.Result{}, nil
 }
