@@ -12,7 +12,7 @@
           <el-input-number
             v-model="form.price"
             controls-position="right"
-            :min="0"
+            :min="minPrice"
             placeholder="Please input price..."
           ></el-input-number>
         </el-form-item>
@@ -29,6 +29,9 @@
 import { mapActions, mapState } from 'vuex';
 export default {
   name: 'buy-product',
+  props: {
+    minPrice: Number
+  },
   data() {
     var checkPrice = (rule, value, callback) => {
       if (!value) {
@@ -46,7 +49,7 @@ export default {
     return {
       dialogOrder: false,
       form: {
-        price: 0
+        price: this.minPrice
       },
       rulesBuy: {
         price: [{ validator: checkPrice, trigger: 'blur' }]
@@ -59,7 +62,7 @@ export default {
     ...mapState('cosmos', ['productDetail'])
   },
   methods: {
-    ...mapActions('cosmos', ['orderProduct', 'signTxt', 'getDetailProduct']),
+    ...mapActions('cosmos', ['orderProduct', 'signTxt', 'getDetailProduct', 'getOrderOfSell']),
     async buyProduct() {
       this.$refs['rulesBuy'].validate(async (valid) => {
         if (valid) {
@@ -107,6 +110,7 @@ export default {
             type: 'success',
             message: 'Order product success'
           });
+          await this.getOrderOfSell(this.productDetail.sellID);
           this.loadingUpload = false;
         }, 5000);
       });

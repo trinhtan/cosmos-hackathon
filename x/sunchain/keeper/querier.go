@@ -37,6 +37,8 @@ func NewQuerier(keeper Keeper) sdk.Querier {
 			return queryProduct(ctx, path[1:], req, keeper)
 		case QueryProducts:
 			return queryProducts(ctx, req, keeper)
+		case QueryProductsByOwner:
+			return queryProductsByOwner(ctx, path[1:], req, keeper)
 		case QuerySell:
 			return querySell(ctx, path[1:], req, keeper)
 		case QuerySells:
@@ -47,8 +49,6 @@ func NewQuerier(keeper Keeper) sdk.Querier {
 			return queryReservations(ctx, req, keeper)
 		case QueryReservationsBySellID:
 			return queryReservationsBySellID(ctx, path[1:], req, keeper)
-		case QueryProductsByOwner:
-			return queryProductsByOwner(ctx, path[1:], req, keeper)
 		default:
 			return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "unknown sunchain query endpoint")
 		}

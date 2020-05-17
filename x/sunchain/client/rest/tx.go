@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	dir = "/home/le.thanh.cong/cosmos-hackathon/"
+	dir = "/home/ngo.van.nghia/Documents/POC/cosmos-hackathon/"
 )
 
 type createProducteReq struct {
@@ -127,6 +127,7 @@ type changeProductOwnerReq struct {
 
 func changeProductOwnerHandler(cliCtx context.CLIContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+
 		var req changeProductOwnerReq
 		if !rest.ReadRESTReq(w, r, cliCtx.Codec, &req) {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, "failed to parse request")
@@ -165,6 +166,16 @@ type createSellReq struct {
 
 func createSellHandler(cliCtx context.CLIContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodOptions {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Methods", "POST")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+			w.Header().Set("Access-Control-Max-Age", "3600")
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+		// Set CORS headers for the main request.
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		var req createSellReq
 
 		if !rest.ReadRESTReq(w, r, cliCtx.Codec, &req) {
@@ -259,6 +270,16 @@ type deleteSellReq struct {
 
 func deleteSellHandler(cliCtx context.CLIContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodOptions {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+			w.Header().Set("Access-Control-Max-Age", "3600")
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+		// Set CORS headers for the main request.
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		var req deleteSellReq
 		if !rest.ReadRESTReq(w, r, cliCtx.Codec, &req) {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, "failed to parse request")
@@ -296,6 +317,16 @@ type createReservationReq struct {
 
 func createReservationHandler(cliCtx context.CLIContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodOptions {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Methods", "POST")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+			w.Header().Set("Access-Control-Max-Age", "3600")
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+		// Set CORS headers for the main request.
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		var req createReservationReq
 
 		if !rest.ReadRESTReq(w, r, cliCtx.Codec, &req) {
@@ -390,6 +421,16 @@ type deleteReservationReq struct {
 
 func deleteReservationHandler(cliCtx context.CLIContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodOptions {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+			w.Header().Set("Access-Control-Max-Age", "3600")
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+		// Set CORS headers for the main request.
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		var req deleteReservationReq
 		if !rest.ReadRESTReq(w, r, cliCtx.Codec, &req) {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, "failed to parse request")
@@ -490,6 +531,16 @@ type decideSellReq struct {
 
 func decideSellHandler(cliCtx context.CLIContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodOptions {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Methods", "POST")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+			w.Header().Set("Access-Control-Max-Age", "3600")
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+		// Set CORS headers for the main request.
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		var req deleteReservationReq
 		if !rest.ReadRESTReq(w, r, cliCtx.Codec, &req) {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, "failed to parse request")
