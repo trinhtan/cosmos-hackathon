@@ -3,14 +3,10 @@
   "value": {
     "msg": [
       {
-        "type": "sunchain/UpdateProduct",
+        "type": "sunchain/PayReservation",
         "value": {
-          "productID": "4f6d1266-d645-320e-5d0b-2f6501ee45b1",
-          "title": "01",
-          "description": "aaaaaaaaa",
-          "category": "01",
-          "images": "01",
-          "signer": "cosmos1tpyj4yk5cvv00uwx7kklhudc29a0vq448w0225"
+          "reservationID": "21cd76a3-6e5e-2423-1c2d-9d301267756e",
+          "signer": "cosmos1hxw79sdy6plemkyvnmj2t44weq6k4hftkzpaq8"
         }
       }
     ],
@@ -20,8 +16,8 @@
     },
     "signatures": [
       {
-        "public_key": "61rphyEDvPIRhV+agXHXz8gQytdSoovNXgUUAPLebBnnkvXfAHM=",
-        "signature": "+ydD2f4uxOfgtzYwSWLrGo6Cka9DYgk1oAfpPOuMQQU9/yTLdCBVFr7KTpddoTtIR0IwIQ00t/AETmzlooZJ5Q=="
+        "public_key": "61rphyECzGvt7gMxGWixsxhMU0hfrjAFEHvNGEJMof1lp5dqXxI=",
+        "signature": "cc5PBUC50XzPSsIlhPE9f5Ok3lKLVuyWWBzAzEiXt6JzuXxhk7l7xv5OsVn9gMDP7llbGc2yLU0qE9ZE1Wd9+Q=="
       }
     ],
     "memo": ""

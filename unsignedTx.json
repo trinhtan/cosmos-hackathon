@@ -3,14 +3,10 @@
   "value": {
     "msg": [
       {
-        "type": "sunchain/UpdateProduct",
+        "type": "sunchain/PayReservation",
         "value": {
-          "productID": "4f6d1266-d645-320e-5d0b-2f6501ee45b1",
-          "title": "01",
-          "description": "aaaaaaaaa",
-          "category": "01",
-          "images": "01",
-          "signer": "cosmos1tpyj4yk5cvv00uwx7kklhudc29a0vq448w0225"
+          "reservationID": "21cd76a3-6e5e-2423-1c2d-9d301267756e",
+          "signer": "cosmos1hxw79sdy6plemkyvnmj2t44weq6k4hftkzpaq8"
         }
       }
     ],
