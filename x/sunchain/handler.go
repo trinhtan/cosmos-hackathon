@@ -297,6 +297,32 @@ func handleMsgDeleteSell(ctx sdk.Context, keeper Keeper, msg MsgDeleteSell) (*sd
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Incorrect Owner")
 	}
 
+	// sell := keeper.GetSell(ctx, keySell)
+	iterator := keeper.GetReservationsIterator(ctx)
+
+	for ; iterator.Valid(); iterator.Next() {
+		key := string(iterator.Key())
+		if "Reservation-" <= key && key <= "Reservation-zzzzzzzz" {
+			record, err := keeper.GetReservation(ctx, key)
+			if err != nil {
+				continue
+			}
+			if record.SellID == msg.SellID {
+				keeper.DeleteReservation(ctx, key)
+			}
+		}
+	}
+
+	keyProduct := "Product-" + sell.ProductID
+	product, err := keeper.GetProduct(ctx, keyProduct)
+	if err != nil {
+		return &sdk.Result{}, err
+	}
+
+	product.Selling = false
+	product.SellID = ""
+
+	keeper.SetProduct(ctx, keyProduct, product)
 	keeper.DeleteSell(ctx, keySell)
 	return &sdk.Result{}, nil
 }
