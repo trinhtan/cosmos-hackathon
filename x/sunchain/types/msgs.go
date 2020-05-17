@@ -96,7 +96,7 @@ func (msg MsgBuyGold) GetSignBytes() []byte {
 	return sdk.MustSortJSON(bz)
 }
 
-// MsgSetProduct defines a SetProduct message
+// MsgCreateProduct defines a SetProduct message
 type MsgCreateProduct struct {
 	ProductID   string         `json:"productID"`
 	Title       string         `json:"title"`
@@ -106,7 +106,7 @@ type MsgCreateProduct struct {
 	Signer      sdk.AccAddress `json:"signer"`
 }
 
-// NewMsgSetProduct is a constructor function for MsgSetProduct
+// NewMsgCreateProduct is a constructor function for MsgSetProduct
 func NewMsgCreateProduct(productID string, title string, description string, category string, images string, signer sdk.AccAddress) MsgCreateProduct {
 	return MsgCreateProduct{
 		ProductID:   productID,
@@ -502,5 +502,46 @@ func (msg MsgDeleteReservation) GetSignBytes() []byte {
 
 // GetSigners defines whose signature is required
 func (msg MsgDeleteReservation) GetSigners() []sdk.AccAddress {
+	return []sdk.AccAddress{msg.Signer}
+}
+
+// MsgDecideSell defines a DecideSell message
+type MsgDecideSell struct {
+	ReservationID string         `json:"reservationID"`
+	Signer        sdk.AccAddress `json:"signer"`
+}
+
+// NewMsgDecideSell is a constructor function for MsgDecideSell
+func NewMsgDecideSell(reservationID string, signer sdk.AccAddress) MsgDecideSell {
+	return MsgDecideSell{
+		ReservationID: reservationID,
+		Signer:        signer,
+	}
+}
+
+// Route should return the name of the module
+func (msg MsgDecideSell) Route() string { return RouterKey }
+
+// Type should return the action
+func (msg MsgDecideSell) Type() string { return "decide_sell" }
+
+// ValidateBasic runs stateless checks on the message
+func (msg MsgDecideSell) ValidateBasic() error {
+	if msg.Signer.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Signer.String())
+	}
+	if len(msg.ReservationID) == 0 {
+		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "ReservationID cannot be empty")
+	}
+	return nil
+}
+
+// GetSignBytes encodes the message for signing
+func (msg MsgDecideSell) GetSignBytes() []byte {
+	return sdk.MustSortJSON(ModuleCdc.MustMarshalJSON(msg))
+}
+
+// GetSigners defines whose signature is required
+func (msg MsgDecideSell) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{msg.Signer}
 }

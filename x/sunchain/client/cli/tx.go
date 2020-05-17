@@ -36,6 +36,7 @@ func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
 		GetCmdCreateSell(cdc),
 		GetCmdUpdateSell(cdc),
 		GetCmdDeteleSell(cdc),
+		GetCmdDecideSell(cdc),
 
 		GetCmdCreateReservation(cdc),
 		GetCmdUpdateReservation(cdc),
@@ -318,6 +319,29 @@ func GetCmdDeleteReservation(cdc *codec.Codec) *cobra.Command {
 			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(authclient.GetTxEncoder(cdc))
 
 			msg := types.NewMsgDeleteReservation(args[0], cliCtx.GetFromAddress())
+			err := msg.ValidateBasic()
+			if err != nil {
+				return err
+			}
+
+			// return utils.CompleteAndBroadcastTxCLI(txBldr, cliCtx, msgs)
+			return authclient.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
+		},
+	}
+}
+
+// GetCmdDecideSell cdc is the CLI command for sending a DecideSell transaction
+func GetCmdDecideSell(cdc *codec.Codec) *cobra.Command {
+	return &cobra.Command{
+		Use:   "decide-sell [reservationID]",
+		Short: "set the value associated with a product that you own",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			inBuf := bufio.NewReader(cmd.InOrStdin())
+			cliCtx := context.NewCLIContext().WithCodec(cdc)
+			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(authclient.GetTxEncoder(cdc))
+
+			msg := types.NewMsgDecideSell(args[0], cliCtx.GetFromAddress())
 			err := msg.ValidateBasic()
 			if err != nil {
 				return err
