@@ -5,8 +5,8 @@
       {
         "type": "sunchain/PayReservation",
         "value": {
-          "reservationID": "21cd76a3-6e5e-2423-1c2d-9d301267756e",
-          "signer": "cosmos1hxw79sdy6plemkyvnmj2t44weq6k4hftkzpaq8"
+          "reservationID": "cd0a6f07-88b1-b514-6ae7-752b2f0cf939",
+          "signer": "cosmos1d8gp6wgjvv5emsj70as0j73avg5xzez9kjh8pg"
         }
       }
     ],
@@ -16,8 +16,8 @@
     },
     "signatures": [
       {
-        "public_key": "61rphyECzGvt7gMxGWixsxhMU0hfrjAFEHvNGEJMof1lp5dqXxI=",
-        "signature": "cc5PBUC50XzPSsIlhPE9f5Ok3lKLVuyWWBzAzEiXt6JzuXxhk7l7xv5OsVn9gMDP7llbGc2yLU0qE9ZE1Wd9+Q=="
+        "public_key": "61rphyEDD48/goWCBfwaaynAX3IWPwWhPb93PWZgUKTUxhMhANY=",
+        "signature": "kWYysV6gpvEQ80xPkOOnxw3yBTCC2oXzubvkRKLuxoFbMWaIGR1sUuwew+lJWOiS/6112dQKWl3YHiES+awiGA=="
       }
     ],
     "memo": ""

@@ -583,3 +583,44 @@ func (msg MsgPayReservation) GetSignBytes() []byte {
 func (msg MsgPayReservation) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{msg.Signer}
 }
+
+// MsgDecideSell defines a DecideSell message
+type MsgPayReservationByAtom struct {
+	ReservationID string         `json:"reservationID"`
+	Signer        sdk.AccAddress `json:"signer"`
+}
+
+// NewMsgPayReservationByAtom is a constructor function for MsgPayReservationByAtom
+func NewMsgPayReservationByAtom(reservationID string, signer sdk.AccAddress) MsgPayReservationByAtom {
+	return MsgPayReservationByAtom{
+		ReservationID: reservationID,
+		Signer:        signer,
+	}
+}
+
+// Route should return the name of the module
+func (msg MsgPayReservationByAtom) Route() string { return RouterKey }
+
+// Type should return the action
+func (msg MsgPayReservationByAtom) Type() string { return "pay_reservation_by_atom" }
+
+// ValidateBasic runs stateless checks on the message
+func (msg MsgPayReservationByAtom) ValidateBasic() error {
+	if msg.Signer.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Signer.String())
+	}
+	if len(msg.ReservationID) == 0 {
+		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "ReservationID cannot be empty")
+	}
+	return nil
+}
+
+// GetSignBytes encodes the message for signing
+func (msg MsgPayReservationByAtom) GetSignBytes() []byte {
+	return sdk.MustSortJSON(ModuleCdc.MustMarshalJSON(msg))
+}
+
+// GetSigners defines whose signature is required
+func (msg MsgPayReservationByAtom) GetSigners() []sdk.AccAddress {
+	return []sdk.AccAddress{msg.Signer}
+}
