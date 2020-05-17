@@ -24,4 +24,5 @@ var (
 
 	ErrReservationDoesNotExist  = sdkerrors.Register(ModuleName, 15, "reservation does not exist")
 	ErrReservationAlreadyExists = sdkerrors.Register(ModuleName, 16, "reservation already exists")
+	ErrReservationNotDecided    = sdkerrors.Register(ModuleName, 17, "reservation not decided")
 )

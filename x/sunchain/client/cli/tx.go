@@ -41,6 +41,7 @@ func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
 		GetCmdCreateReservation(cdc),
 		GetCmdUpdateReservation(cdc),
 		GetCmdDeleteReservation(cdc),
+		GetCmdPayReservation(cdc),
 
 		GetCmdSetChannel(cdc),
 	)...)
@@ -342,6 +343,29 @@ func GetCmdDecideSell(cdc *codec.Codec) *cobra.Command {
 			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(authclient.GetTxEncoder(cdc))
 
 			msg := types.NewMsgDecideSell(args[0], cliCtx.GetFromAddress())
+			err := msg.ValidateBasic()
+			if err != nil {
+				return err
+			}
+
+			// return utils.CompleteAndBroadcastTxCLI(txBldr, cliCtx, msgs)
+			return authclient.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
+		},
+	}
+}
+
+// GetCmdPayReservation cdc is the CLI command for sending a PayReservation transaction
+func GetCmdPayReservation(cdc *codec.Codec) *cobra.Command {
+	return &cobra.Command{
+		Use:   "pay-reservation [reservationID]",
+		Short: "set the value associated with a product that you own",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			inBuf := bufio.NewReader(cmd.InOrStdin())
+			cliCtx := context.NewCLIContext().WithCodec(cdc)
+			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(authclient.GetTxEncoder(cdc))
+
+			msg := types.NewMsgPayReservation(args[0], cliCtx.GetFromAddress())
 			err := msg.ValidateBasic()
 			if err != nil {
 				return err

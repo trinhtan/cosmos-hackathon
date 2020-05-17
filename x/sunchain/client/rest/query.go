@@ -108,8 +108,19 @@ func productsByOwnerHandler(cliCtx context.CLIContext, storeName string) http.Ha
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		vars := mux.Vars(r)
-		paramType := vars[restOwner]
-		res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/productsByOwner/%s", storeName, paramType), nil)
+		name := vars[accName]
+
+		cmd := exec.Command("bccli", "keys", "show", name, "-a")
+
+		stdout, err := cmd.Output()
+		s := string(stdout)
+		t := strings.Trim(s, "\n")
+		if err != nil {
+			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
+			return
+		}
+
+		res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/productsByOwner/%s", storeName, t), nil)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusNotFound, err.Error())
 			return
@@ -226,6 +237,32 @@ func accAddressHandler(cliCtx context.CLIContext) http.HandlerFunc {
 		}
 		cliCtx = cliCtx.WithHeight(height)
 		rest.PostProcessResponse(w, cliCtx, account)
+	}
+}
+
+func queryBalanceHandler(cliCtx context.CLIContext) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		vars := mux.Vars(r)
+		name := vars[accName]
+
+		cmd := exec.Command("bccli", "keys", "show", name, "-a")
+		stdout, err := cmd.Output()
+		s := string(stdout)
+		t := strings.Trim(s, "\n")
+		if err != nil {
+			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
+			return
+		}
+
+		cmd = exec.Command("bccli", "query", "bank", "balances", t)
+		stdout, err = cmd.Output()
+		if err != nil {
+			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
+			return
+		}
+
+		rest.PostProcessResponse(w, cliCtx, string(stdout))
 	}
 }
 
