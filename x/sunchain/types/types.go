@@ -22,6 +22,7 @@ type Product struct {
 	Images      string         `json:"images"`
 	Owner       sdk.AccAddress `json:"owner"`
 	Selling     bool           `json:"selling"`
+	SellID      string         `json:"sellID"`
 }
 
 //NewProduct returns a new product
@@ -68,6 +69,7 @@ type Reservation struct {
 	SellID        string         `json:"sellID"`
 	Buyer         sdk.AccAddress `json:"buyer"`
 	Price         sdk.Coins      `json:"price"`
+	Decide        bool           `json:"decide"`
 }
 
 //NewReservation returns a new Reservation

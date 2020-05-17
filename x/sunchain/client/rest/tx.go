@@ -492,3 +492,40 @@ func signTxHandler(cliCtx context.CLIContext) http.HandlerFunc {
 		rest.PostProcessResponse(w, cliCtx, string(stdout))
 	}
 }
+
+type decideSellReq struct {
+	BaseReq       rest.BaseReq `json:"base_req"`
+	ReservationID string       `json:"reservationID"`
+	Signer        string       `json:"signer"`
+}
+
+func decideSellHandler(cliCtx context.CLIContext) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var req deleteReservationReq
+		if !rest.ReadRESTReq(w, r, cliCtx.Codec, &req) {
+			rest.WriteErrorResponse(w, http.StatusBadRequest, "failed to parse request")
+			return
+		}
+
+		baseReq := req.BaseReq.Sanitize()
+		if !baseReq.ValidateBasic(w) {
+			return
+		}
+
+		addr, err := sdk.AccAddressFromBech32(req.Signer)
+		if err != nil {
+			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
+			return
+		}
+
+		// create the message
+		msg := types.NewMsgDecideSell(req.ReservationID, addr)
+		err = msg.ValidateBasic()
+		if err := msg.ValidateBasic(); err != nil {
+			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
+			return
+		}
+
+		authclient.WriteGenerateStdTxResponse(w, cliCtx, baseReq, []sdk.Msg{msg})
+	}
+}

@@ -23,6 +23,7 @@ var (
 	NewMsgCreateSell = types.NewMsgCreateSell
 	NewMsgUpdateSell = types.NewMsgUpdateSell
 	NewMsgDeleteSell = types.NewMsgDeleteSell
+	NewMsgDecideSell = types.NewMsgDecideSell
 
 	NewMsgCreateReservation = types.NewMsgCreateReservation
 	NewMsgUpdateReservation = types.NewMsgUpdateReservation
@@ -42,6 +43,7 @@ type (
 	MsgCreateSell = types.MsgCreateSell
 	MsgUpdateSell = types.MsgUpdateSell
 	MsgDeleteSell = types.MsgDeleteSell
+	MsgDecideSell = types.MsgDecideSell
 
 	Reservation          = types.Reservation
 	MsgCreateReservation = types.MsgCreateReservation
