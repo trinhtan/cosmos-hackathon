@@ -21,13 +21,11 @@ const (
 )
 
 type createProducteReq struct {
-	BaseReq rest.BaseReq `json:"base_req"`
-	// ProductID   string       `json:"productID"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Category    string `json:"category"`
-	Images      string `json:"images"`
-	Signer      string `json:"signer"`
+	BaseReq     rest.BaseReq `json:"base_req"`
+	Title       string       `json:"title"`
+	Description string       `json:"description"`
+	Category    string       `json:"category"`
+	Images      string       `json:"images"`
 }
 
 func createProductHandler(cliCtx context.CLIContext) http.HandlerFunc {
@@ -54,9 +52,11 @@ func createProductHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			return
 		}
 
-		addr, err := sdk.AccAddressFromBech32(req.Signer)
+		signer := req.BaseReq.From
+
+		addr, err := sdk.AccAddressFromBech32(signer)
 		if err != nil {
-			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
+			rest.WriteErrorResponse(w, http.StatusInternalServerError, err.Error())
 			return
 		}
 
@@ -86,7 +86,6 @@ type updateProductReq struct {
 	Description string       `json:"description"`
 	Category    string       `json:"category"`
 	Images      string       `json:"images"`
-	Signer      string       `json:"signer"`
 }
 
 func updateProductHandler(cliCtx context.CLIContext) http.HandlerFunc {
@@ -102,7 +101,7 @@ func updateProductHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			return
 		}
 
-		addr, err := sdk.AccAddressFromBech32(req.Signer)
+		addr, err := sdk.AccAddressFromBech32(req.BaseReq.From)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
@@ -124,7 +123,6 @@ type changeProductOwnerReq struct {
 	BaseReq       rest.BaseReq `json:"base_req"`
 	ProductID     string       `json:"productID"`
 	ReservationID string       `json:"reservationID"`
-	Signer        string       `json:"signer"`
 }
 
 func changeProductOwnerHandler(cliCtx context.CLIContext) http.HandlerFunc {
@@ -140,7 +138,7 @@ func changeProductOwnerHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			return
 		}
 
-		addr, err := sdk.AccAddressFromBech32(req.Signer)
+		addr, err := sdk.AccAddressFromBech32(req.BaseReq.From)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
@@ -159,11 +157,10 @@ func changeProductOwnerHandler(cliCtx context.CLIContext) http.HandlerFunc {
 }
 
 type createSellReq struct {
-	BaseReq rest.BaseReq `json:"base_req"`
-	// SellID    string       `json:"sellID"`
-	ProductID string `json:"productID"`
-	Signer    string `json:"signer"`
-	MinPrice  string `json:"minPrice"`
+	BaseReq   rest.BaseReq `json:"base_req"`
+	ProductID string       `json:"productID"`
+	Signer    string       `json:"signer"`
+	MinPrice  string       `json:"minPrice"`
 }
 
 func createSellHandler(cliCtx context.CLIContext) http.HandlerFunc {
@@ -180,7 +177,7 @@ func createSellHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			return
 		}
 
-		addr, err := sdk.AccAddressFromBech32(req.Signer)
+		addr, err := sdk.AccAddressFromBech32(req.BaseReq.From)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
@@ -216,7 +213,6 @@ type updateSellReq struct {
 	BaseReq  rest.BaseReq `json:"base_req"`
 	SellID   string       `json:"sellID"`
 	MinPrice string       `json:"minPrice"`
-	Signer   string       `json:"signer"`
 }
 
 func updateSellHandler(cliCtx context.CLIContext) http.HandlerFunc {
@@ -232,7 +228,7 @@ func updateSellHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			return
 		}
 
-		addr, err := sdk.AccAddressFromBech32(req.Signer)
+		addr, err := sdk.AccAddressFromBech32(req.BaseReq.From)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
@@ -259,7 +255,6 @@ func updateSellHandler(cliCtx context.CLIContext) http.HandlerFunc {
 type deleteSellReq struct {
 	BaseReq rest.BaseReq `json:"base_req"`
 	SellID  string       `json:"sellID"`
-	Signer  string       `json:"signer"`
 }
 
 func deleteSellHandler(cliCtx context.CLIContext) http.HandlerFunc {
@@ -275,7 +270,7 @@ func deleteSellHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			return
 		}
 
-		addr, err := sdk.AccAddressFromBech32(req.Signer)
+		addr, err := sdk.AccAddressFromBech32(req.BaseReq.From)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
@@ -296,9 +291,7 @@ func deleteSellHandler(cliCtx context.CLIContext) http.HandlerFunc {
 type createReservationReq struct {
 	BaseReq rest.BaseReq `json:"base_req"`
 	SellID  string       `json:"sellID"`
-	// ReservationID string       `json:"reservationID"`
-	Signer string `json:"signer"`
-	Price  string `json:"price"`
+	Price   string       `json:"price"`
 }
 
 func createReservationHandler(cliCtx context.CLIContext) http.HandlerFunc {
@@ -315,7 +308,7 @@ func createReservationHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			return
 		}
 
-		addr, err := sdk.AccAddressFromBech32(req.Signer)
+		addr, err := sdk.AccAddressFromBech32(req.BaseReq.From)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
@@ -351,7 +344,6 @@ type updateReservationReq struct {
 	BaseReq       rest.BaseReq `json:"base_req"`
 	ReservationID string       `json:"reservationID"`
 	Price         string       `json:"price"`
-	Signer        string       `json:"signer"`
 }
 
 func updateReservationHandler(cliCtx context.CLIContext) http.HandlerFunc {
@@ -367,7 +359,7 @@ func updateReservationHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			return
 		}
 
-		addr, err := sdk.AccAddressFromBech32(req.Signer)
+		addr, err := sdk.AccAddressFromBech32(req.BaseReq.From)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
@@ -394,7 +386,6 @@ func updateReservationHandler(cliCtx context.CLIContext) http.HandlerFunc {
 type deleteReservationReq struct {
 	BaseReq       rest.BaseReq `json:"base_req"`
 	ReservationID string       `json:"reservationID"`
-	Signer        string       `json:"signer"`
 }
 
 func deleteReservationHandler(cliCtx context.CLIContext) http.HandlerFunc {
@@ -410,7 +401,7 @@ func deleteReservationHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			return
 		}
 
-		addr, err := sdk.AccAddressFromBech32(req.Signer)
+		addr, err := sdk.AccAddressFromBech32(req.BaseReq.From)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
@@ -431,7 +422,6 @@ func deleteReservationHandler(cliCtx context.CLIContext) http.HandlerFunc {
 type signTxReq struct {
 	BaseReq       rest.BaseReq `json:"base_req"`
 	Tx            string       `json:"tx"`
-	Signer        string       `json:"signer"`
 	Sequence      string       `json:"sequence"`
 	AccountNumber string       `json:"accountNumber"`
 }
@@ -468,7 +458,7 @@ func signTxHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			panic(err)
 		}
 
-		cmd := exec.Command("bccli", "tx", "sign", filePath, "--from", req.Signer, "--offline", "--chain-id", "namechain", "--sequence", req.Sequence, "--account-number", req.AccountNumber)
+		cmd := exec.Command("bccli", "tx", "sign", filePath, "--from", req.BaseReq.From, "--offline", "--chain-id", "band-consumer", "--sequence", req.Sequence, "--account-number", req.AccountNumber)
 		stdout, err := cmd.Output()
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
@@ -482,7 +472,7 @@ func signTxHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			panic(err)
 		}
 
-		cmd = exec.Command("nscli", "tx", "broadcast", filePath)
+		cmd = exec.Command("bccli", "tx", "broadcast", filePath)
 		stdout, err = cmd.Output()
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
@@ -496,7 +486,6 @@ func signTxHandler(cliCtx context.CLIContext) http.HandlerFunc {
 type decideSellReq struct {
 	BaseReq       rest.BaseReq `json:"base_req"`
 	ReservationID string       `json:"reservationID"`
-	Signer        string       `json:"signer"`
 }
 
 func decideSellHandler(cliCtx context.CLIContext) http.HandlerFunc {
@@ -512,7 +501,7 @@ func decideSellHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			return
 		}
 
-		addr, err := sdk.AccAddressFromBech32(req.Signer)
+		addr, err := sdk.AccAddressFromBech32(req.BaseReq.From)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return

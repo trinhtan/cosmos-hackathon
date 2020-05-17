@@ -58,10 +58,7 @@ type MsgBuyGold struct {
 }
 
 // NewMsgBuyGold creates a new MsgBuyGold instance.
-func NewMsgBuyGold(
-	buyer sdk.AccAddress,
-	amount sdk.Coins,
-) MsgBuyGold {
+func NewMsgBuyGold(buyer sdk.AccAddress, amount sdk.Coins) MsgBuyGold {
 	return MsgBuyGold{
 		Buyer:  buyer,
 		Amount: amount,
@@ -543,5 +540,46 @@ func (msg MsgDecideSell) GetSignBytes() []byte {
 
 // GetSigners defines whose signature is required
 func (msg MsgDecideSell) GetSigners() []sdk.AccAddress {
+	return []sdk.AccAddress{msg.Signer}
+}
+
+// MsgDecideSell defines a DecideSell message
+type MsgPayReservation struct {
+	ReservationID string         `json:"reservationID"`
+	Signer        sdk.AccAddress `json:"signer"`
+}
+
+// NewMsgPayReservation is a constructor function for MsgPayReservation
+func NewMsgPayReservation(reservationID string, signer sdk.AccAddress) MsgPayReservation {
+	return MsgPayReservation{
+		ReservationID: reservationID,
+		Signer:        signer,
+	}
+}
+
+// Route should return the name of the module
+func (msg MsgPayReservation) Route() string { return RouterKey }
+
+// Type should return the action
+func (msg MsgPayReservation) Type() string { return "pay_reservation" }
+
+// ValidateBasic runs stateless checks on the message
+func (msg MsgPayReservation) ValidateBasic() error {
+	if msg.Signer.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Signer.String())
+	}
+	if len(msg.ReservationID) == 0 {
+		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "ReservationID cannot be empty")
+	}
+	return nil
+}
+
+// GetSignBytes encodes the message for signing
+func (msg MsgPayReservation) GetSignBytes() []byte {
+	return sdk.MustSortJSON(ModuleCdc.MustMarshalJSON(msg))
+}
+
+// GetSigners defines whose signature is required
+func (msg MsgPayReservation) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{msg.Signer}
 }

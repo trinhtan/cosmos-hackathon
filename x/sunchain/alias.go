@@ -28,6 +28,7 @@ var (
 	NewMsgCreateReservation = types.NewMsgCreateReservation
 	NewMsgUpdateReservation = types.NewMsgUpdateReservation
 	NewMsgDeleteReservation = types.NewMsgDeleteReservation
+	NewMsgPayReservation    = types.NewMsgPayReservation
 )
 
 type (
@@ -49,4 +50,5 @@ type (
 	MsgCreateReservation = types.MsgCreateReservation
 	MsgUpdateReservation = types.MsgUpdateReservation
 	MsgDeleteReservation = types.MsgDeleteReservation
+	MsgPayReservation    = types.MsgPayReservation
 )

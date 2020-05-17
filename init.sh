@@ -5,16 +5,16 @@ bccli keys add validator --keyring-backend test
 bccli keys add user --keyring-backend test
 bccli keys add faucet --keyring-backend test
 
-bcd add-genesis-account validator 10000000000000stake,1000000product --keyring-backend test
-bcd add-genesis-account user 10000000000000stake,1000000product --keyring-backend test
-bcd add-genesis-account faucet 1000000000000000stake,1000000product --keyring-backend test
+bcd add-genesis-account validator 10000000000000stake,1000000producttoken --keyring-backend test
+bcd add-genesis-account user 10000000000000stake,1000000producttoken --keyring-backend test
+bcd add-genesis-account faucet 1000000000000000stake,1000000producttoken --keyring-backend test
 
 
 bccli keys add jack --keyring-backend test
 bccli keys add alice --keyring-backend test
 
-bcd add-genesis-account jack 10000000000000stake,1000000product --keyring-backend test
-bcd add-genesis-account alice 10000000000000stake,1000000product --keyring-backend test
+bcd add-genesis-account jack 10000000000000stake,1000000producttoken --keyring-backend test
+bcd add-genesis-account alice 10000000000000stake,1000000producttoken --keyring-backend test
 
 
 bccli config chain-id band-consumer

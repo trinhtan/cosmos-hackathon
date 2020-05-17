@@ -41,8 +41,11 @@ func NewHandler(keeper Keeper) sdk.Handler {
 			return handleMsgUpdateReservation(ctx, keeper, msg)
 		case MsgDeleteReservation:
 			return handleMsgDeleteReservation(ctx, keeper, msg)
+		case MsgPayReservation:
+			return handleMsgPayReservation(ctx, keeper, msg)
 		case MsgSetSourceChannel:
 			return handleSetSourceChannel(ctx, msg, keeper)
+
 		case channeltypes.MsgPacket:
 			var responsePacket oracle.OracleResponsePacketData
 			if err := types.ModuleCdc.UnmarshalJSON(msg.GetData(), &responsePacket); err == nil {
@@ -391,5 +394,65 @@ func handleMsgDecideSell(ctx sdk.Context, keeper Keeper, msg MsgDecideSell) (*sd
 	reservation.Decide = true
 
 	keeper.SetReservation(ctx, keyReservation, reservation)
+	return &sdk.Result{}, nil
+}
+
+// Handle a message to delete reservation
+func handleMsgPayReservation(ctx sdk.Context, keeper Keeper, msg MsgPayReservation) (*sdk.Result, error) {
+
+	keyReservation := "Reservation-" + msg.ReservationID
+
+	if !keeper.IsReservationPresent(ctx, keyReservation) {
+		return nil, sdkerrors.Wrap(types.ErrReservationDoesNotExist, msg.ReservationID)
+	}
+
+	reservation, err := keeper.GetReservation(ctx, keyReservation)
+	if err != nil {
+		return &sdk.Result{}, err
+	}
+
+	if !reservation.Decide {
+		return nil, sdkerrors.Wrap(types.ErrReservationNotDecided, msg.ReservationID)
+	}
+
+	if !msg.Signer.Equals(reservation.Buyer) {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Incorrect Owner")
+	}
+
+	keySell := "Sell-" + reservation.SellID
+	if !keeper.IsSellPresent(ctx, keySell) {
+		return nil, sdkerrors.Wrap(types.ErrSellDoesNotExist, reservation.SellID)
+	}
+
+	sell, err := keeper.GetSell(ctx, keySell)
+	if err != nil {
+		return &sdk.Result{}, err
+	}
+
+	keyProduct := "Product-" + sell.ProductID
+
+	err = keeper.BankKeeper.SendCoins(ctx, reservation.Buyer, sell.Seller, reservation.Price)
+	if err != nil {
+		return nil, err
+	}
+
+	// sell := keeper.GetSell(ctx, keySell)
+	iterator := keeper.GetReservationsIterator(ctx)
+
+	for ; iterator.Valid(); iterator.Next() {
+		key := string(iterator.Key())
+		if "Reservation-" <= key && key <= "Reservation-zzzzzzzz" {
+			record, err := keeper.GetReservation(ctx, key)
+			if err != nil {
+				continue
+			}
+			if record.SellID == reservation.SellID {
+				keeper.DeleteReservation(ctx, key)
+			}
+		}
+	}
+
+	keeper.DeleteSell(ctx, keySell)
+	keeper.ChangeProductOwner(ctx, keyProduct, reservation.Buyer)
 	return &sdk.Result{}, nil
 }
