@@ -20,9 +20,19 @@ The app allows users to post second hand items. Other users can set prices to bu
 - [IPFS](https://ipfs.io/) (Upload images)
 - [BandProtocol](https://bandprotocol.com/)
 
+## Video demo
+
+### 1. Balance not enough to buy
+
+[![Balance not enough](https://user-images.githubusercontent.com/53574829/82236049-bff90e00-995d-11ea-88f8-1ea6a68c6f53.png)](https://www.youtube.com/watch?v=GIxLYMYcRts)
+
+### 2. Balance enough to buy
+
+[![Balance enough](https://user-images.githubusercontent.com/53574829/82236290-16664c80-995e-11ea-905d-755d75c16267.png)](https://www.youtube.com/watch?v=342q7NQhejA)
+
 ## Functionality
 
-### Register second hand items (3 steps)
+### 1.Register second hand items (3 steps)
 
 ![image_2020_5_18](https://user-images.githubusercontent.com/53574829/82218329-f2970c80-9945-11ea-8f65-ab5b058f3e49.png)
 
@@ -30,7 +40,7 @@ The app allows users to post second hand items. Other users can set prices to bu
 
 ![82bcd4ce632f0ed68b79e892833f9c57](https://user-images.githubusercontent.com/53574829/82218471-22deab00-9946-11ea-8e62-f35675898f76.png)
 
-### Sell and set min price of items
+### 2.Sell and set min price of items
 
 ![Screenshot from 2020-05-18 20-10-42](https://user-images.githubusercontent.com/53574829/82219566-a947bc80-9947-11ea-85d3-29ee05159886.png)
 
@@ -38,7 +48,7 @@ The app allows users to post second hand items. Other users can set prices to bu
 
 ![Screenshot from 2020-05-18 20-22-01](https://user-images.githubusercontent.com/53574829/82219982-3f7be280-9948-11ea-9363-f187b058e570.png)
 
-### Other user buy items
+### 3.Other user buy items
 
 ![Screenshot from 2020-05-18 20-22-50](https://user-images.githubusercontent.com/53574829/82220082-62a69200-9948-11ea-8391-756707bd757b.png)
 
@@ -48,13 +58,13 @@ The app allows users to post second hand items. Other users can set prices to bu
 **Order successfully**
 ![Screenshot from 2020-05-18 20-34-33](https://user-images.githubusercontent.com/53574829/82220781-48b97f00-9949-11ea-8f51-cc97392ebede.png)
 
-### Seller can choose order which they want to sell
+### 4.Seller can choose order which they want to sell
 
 ![image_2020_5_18 (1)](https://user-images.githubusercontent.com/53574829/82221769-9e425b80-994a-11ea-86c0-d769c795f4bc.png)
 
 ![Screenshot from 2020-05-18 20-55-45](https://user-images.githubusercontent.com/53574829/82221818-aa2e1d80-994a-11ea-8b9a-7db352279eb1.png)
 
-### Buyer trigger transaction
+### 5.Buyer trigger transaction
 
 **Orders are accepted to display with world payment**
 ![Screenshot from 2020-05-18 20-56-36](https://user-images.githubusercontent.com/53574829/82222275-42c49d80-994b-11ea-873a-9a9c6935a367.png)
