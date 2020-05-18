@@ -1,1 +1,1 @@
-bccli rest-server --chain-id namechain --trust-node
+bccli rest-server --chain-id sunchain --trust-node
