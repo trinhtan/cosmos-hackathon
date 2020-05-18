@@ -64,18 +64,19 @@ export default {
     ...mapState('cosmos', ['productDetail'])
   },
   methods: {
-    ...mapActions('cosmos', ['orderProduct', 'signTxt', 'getDetailProduct']),
+    ...mapActions('cosmos', ['setPriceSell', 'signTxt', 'getDetailProduct', 'setCosmosAccount']),
     async setSell() {
+      await this.setCosmosAccount();
       this.$refs['rulesSell'].validate(async (valid) => {
         if (valid) {
           this.loadingUpload = true;
-          let resOrderProduct = await this.orderProduct({
-            sellID: this.productDetail.sellID,
-            price: `${this.form.price.toString()}producttoken`
+          let resPriceSell = await this.setPriceSell({
+            productID: this.productDetail.productID,
+            minPrice: `${this.form.price.toString()}producttoken`
           });
 
           this.loadingUpload = false;
-          await this.open(resOrderProduct);
+          await this.open(resPriceSell);
 
           this.form.price = 0;
           this.dialogFormVisible = false;
@@ -113,6 +114,7 @@ export default {
             message: 'Set sell success'
           });
           this.loadingUpload = false;
+          await this.$router.push({ name: 'Home' });
         }, 5000);
       });
     }

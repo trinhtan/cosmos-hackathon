@@ -259,7 +259,7 @@ export default {
             message: 'Publish success'
           });
           this.loadingUpload = false;
-          await this.$router.push({ name: 'Home' });
+          await this.$router.push({ name: 'MyAssets' });
         }, 5000);
       });
     }

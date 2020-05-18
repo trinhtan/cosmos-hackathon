@@ -47,15 +47,26 @@
             </p>
           </div>
 
-          <div class="price-content" v-if="productDetail.minPrice ? productDetail.minPrice : ''">
-            <h2><span>Price:</span> 125$</h2>
+          <div class="price-content" v-if="productDetail.selling">
+            <h2>
+              <span>Min Price:</span> {{ sell.minPrice ? sell.minPrice[0].amount : '' }} -{{
+                sell.minPrice ? sell.minPrice[0].denom : ''
+              }}
+            </h2>
           </div>
         </div>
-        <buy-product></buy-product>
-        <sell-product></sell-product>
-        <cancel-sell-product></cancel-sell-product>
+        <buy-product
+          v-if="productDetail.selling && productDetail.owner !== address"
+          :minPrice="sell.minPrice ? parseInt(sell.minPrice[0].amount) : 0"
+        ></buy-product>
+        <sell-product
+          v-if="!productDetail.selling && productDetail.owner === address"
+        ></sell-product>
+        <cancel-sell-product
+          v-if="productDetail.selling && productDetail.owner === address"
+        ></cancel-sell-product>
       </div>
-      <orders-product></orders-product>
+      <orders-product v-if="productDetail.selling"></orders-product>
     </div>
   </div>
 </template>
@@ -66,6 +77,7 @@ import SellProduct from '@/components/ProductDrail/SellProduct';
 import BuyProduct from '@/components/ProductDrail/BuyProduct';
 import CancelSellProduct from '@/components/ProductDrail/CancelSellProduct';
 import OrdersProduct from '@/components/ProductDrail/OrdersProduct';
+import axios from 'axios';
 export default {
   name: 'ProductDetail',
   components: {
@@ -80,11 +92,12 @@ export default {
       imgsPreview: [],
       imgFirst: '',
       visible: false,
-      index: 0
+      index: 0,
+      sell: {}
     };
   },
   computed: {
-    ...mapState('cosmos', ['productDetail'])
+    ...mapState('cosmos', ['productDetail', 'address'])
   },
   methods: {
     ...mapActions('cosmos', ['getDetailProduct']),
@@ -104,12 +117,23 @@ export default {
           done();
         })
         .catch(() => {});
+    },
+    async getMinPrice() {
+      if (this.productDetail.selling) {
+        let response = await axios.get(
+          `${process.env.VUE_APP_API_BACKEND}/sunchain/sells/${this.productDetail.sellID}`
+        );
+        this.sell = response.data.result;
+      }
     }
   },
   async created() {
     await this.getDetailProduct(this.$route.params.productId);
-    this.imgsPreview = this.productDetail.images.filter((e, i) => i !== 0);
-    this.imgFirst = this.productDetail.images[0];
+    if (this.productDetail) {
+      this.imgsPreview = this.productDetail.images.filter((e, i) => i !== 0);
+      this.imgFirst = this.productDetail.images[0];
+    }
+    await this.getMinPrice();
   }
 };
 </script>

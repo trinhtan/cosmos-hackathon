@@ -4,10 +4,9 @@
 import axios from 'axios';
 
 const state = {
+  name: 'alice',
   address: '',
-  balance: '',
   products: [],
-  coins: [],
   public_key: '',
   account_number: 0,
   sequence: 0,
@@ -20,7 +19,6 @@ const state = {
 const mutations = {
   setCosmosAccount(state, payload) {
     state.address = payload.address;
-    state.coins = payload.coins;
     state.public_key = payload.public_key;
     state.account_number = payload.account_number;
     state.sequence = payload.sequence;
@@ -43,8 +41,10 @@ const mutations = {
 };
 
 const actions = {
-  async setCosmosAccount({ commit }) {
-    let respone = await axios.get(`${process.env.VUE_APP_API_BACKEND}/sunchain/accAddress/jack`);
+  async setCosmosAccount({ commit, state }) {
+    let respone = await axios.get(
+      `${process.env.VUE_APP_API_BACKEND}/sunchain/names/${state.name}/address`
+    );
     let account = respone.data.result.value;
     commit('setCosmosAccount', account);
   },
@@ -52,9 +52,12 @@ const actions = {
     try {
       let response = await axios.get(`${process.env.VUE_APP_API_BACKEND}/sunchain/products`);
       let products = response.data.result;
-      for (let index = 0; index < products.length; index++) {
-        products[index].images = JSON.parse(products[index].images);
+      if (products) {
+        for (let index = 0; index < products.length; index++) {
+          products[index].images = JSON.parse(products[index].images);
+        }
       }
+
       commit('setAllProducts', products);
     } catch (error) {
       throw error;
@@ -70,8 +73,7 @@ const actions = {
         title: product.asset.title,
         description: product.asset.description,
         category: product.asset.category,
-        images: JSON.stringify(product.images),
-        signer: state.address
+        images: JSON.stringify(product.images)
       });
       return response;
     } catch (error) {
@@ -88,7 +90,7 @@ const actions = {
             chain_id: 'band-consumer'
           },
           tx: JSON.stringify(sign.data),
-          signer: state.address,
+          signer: state.name,
           sequence: state.sequence.toString(),
           accountNumber: state.account_number.toString()
         },
@@ -111,12 +113,15 @@ const actions = {
     await dispatch('setCosmosAccount');
     try {
       let response = await axios.get(
-        `${process.env.VUE_APP_API_BACKEND}/sunchain/accAddress/${state.address}/products`
+        `${process.env.VUE_APP_API_BACKEND}/sunchain/names/${state.name}/products`
       );
       let products = response.data.result;
-      for (let index = 0; index < products.length; index++) {
-        products[index].images = JSON.parse(products[index].images);
+      if (products) {
+        for (let index = 0; index < products.length; index++) {
+          products[index].images = JSON.parse(products[index].images);
+        }
       }
+
       commit('setMyProduct', products);
     } catch (error) {
       throw error;
@@ -149,7 +154,6 @@ const actions = {
           chain_id: 'band-consumer'
         },
         productID,
-        signer: state.address,
         minPrice
       });
       return response;
@@ -165,7 +169,6 @@ const actions = {
           chain_id: 'band-consumer'
         },
         sellID,
-        signer: state.address,
         price
       });
       return response;
@@ -173,15 +176,15 @@ const actions = {
       throw error;
     }
   },
-  async deleteSell({ state }, SellID) {
+  async deleteSell({ state }, { productID, sellID }) {
     try {
-      let response = await axios.delete(`${process.env.VUE_APP_API_BACKEND}/sunchain/sells`, {
+      let response = await axios.post(`${process.env.VUE_APP_API_BACKEND}/sunchain/cancelSell`, {
         base_req: {
           from: state.address,
           chain_id: 'band-consumer'
         },
-        SellID,
-        signer: state.address
+        productID,
+        sellID
       });
       return response;
     } catch (error) {
