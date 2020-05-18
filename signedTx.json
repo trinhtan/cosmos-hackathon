@@ -3,17 +3,10 @@
   "value": {
     "msg": [
       {
-        "type": "sunchain/CreateReservation",
+        "type": "sunchain/DeleteSell",
         "value": {
-          "reservationID": "a956c572-84a7-23aa-02a1-0af03ebf85d5",
-          "sellID": "133b3207-2a86-2b63-3d84-5cc408d826b9",
-          "buyer": "cosmos135d59m34zu7r65zscafsl69pyrgsfe9u3a80u5",
-          "price": [
-            {
-              "denom": "producttoken",
-              "amount": "3"
-            }
-          ]
+          "sellID": "d11d3827-c31f-c368-bafa-1307ca240724",
+          "signer": "cosmos1tc82y22dh8l5s3afmkwxp4d8rht0rt46s74ndd"
         }
       }
     ],
@@ -23,8 +16,8 @@
     },
     "signatures": [
       {
-        "public_key": "61rphyED4yh7VPAPLeKUA6uv23F2FSwKHArxmcwSkjBucjbYJ/o=",
-        "signature": "/XCoayGtgurw5Cc5UrgxGKNk4MT5wK9F0fClIv1I0U1fPLTE+jMOWHG5EV5oktHI0CWG8v2NKEX/Ei2z4/OMjw=="
+        "public_key": "61rphyED/jkba28hsURINnPA3dSlQ8GIkrAoyTOGt5DrP6IRSb0=",
+        "signature": "Pc0tO39/PD34d7C4k2QkiEzUdUE4tCdFD1YLRNwMDmRhLSBsJ+HC/KX/r67gDf7FCryXXnHSNCWIsRbGc8NFGA=="
       }
     ],
     "memo": ""

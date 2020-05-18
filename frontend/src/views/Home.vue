@@ -24,8 +24,8 @@
               <el-card>
                 <img :src="product.images[0]" class="home-image-product" />
                 <div class="home-title-product">
-                  <h1 class="">{{ product.title }}</h1>
-                  <div class="bottom clearfix">
+                  <h1 class="text-title-product">{{ product.title }}</h1>
+                  <div class="bottom clearfix text-description-product">
                     <p>{{ product.description }}</p>
                   </div>
                 </div>
@@ -177,6 +177,24 @@ input[type='search'] {
 .home-image-product {
   height: 260px;
   width: 100%;
+}
+
+.text-title-product {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 85px;
+}
+
+.text-description-product {
+  display: -webkit-box;
+  -webkit-line-clamp: 10;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 230px;
 }
 
 @media all and (max-width: 768px) {

@@ -195,6 +195,7 @@ export default {
             let file = this.form2_images[i];
             var url = await this.uploadImageIpfs(file);
             images.push(url);
+            console.log(url);
           }
           var reponseCreate = await this.createProduct({ asset: this.formAsset, images });
           await this.setCosmosAccount();

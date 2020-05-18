@@ -62,7 +62,13 @@ export default {
     ...mapState('cosmos', ['productDetail'])
   },
   methods: {
-    ...mapActions('cosmos', ['orderProduct', 'signTxt', 'getDetailProduct', 'getOrderOfSell']),
+    ...mapActions('cosmos', [
+      'orderProduct',
+      'signTxt',
+      'getDetailProduct',
+      'getOrderOfSell',
+      'setCosmosAccount'
+    ]),
     async buyProduct() {
       this.$refs['rulesBuy'].validate(async (valid) => {
         if (valid) {
@@ -111,6 +117,7 @@ export default {
             message: 'Order product success'
           });
           await this.getOrderOfSell(this.productDetail.sellID);
+          await this.setCosmosAccount();
           this.loadingUpload = false;
         }, 5000);
       });

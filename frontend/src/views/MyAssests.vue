@@ -12,8 +12,8 @@
             <el-card>
               <img :src="product.images[0]" class="home-image-product" />
               <div class="home-title-product">
-                <h1 class="">{{ product.title }}</h1>
-                <div class="bottom clearfix">
+                <h1 class="text-title-product">{{ product.title }}</h1>
+                <div class="bottom clearfix text-description-product">
                   <p>{{ product.description }}</p>
                 </div>
               </div>

@@ -38,8 +38,13 @@
               </h3>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>
-                  <div>Account : {{ account }}</div>
-                  <div>Balance : {{ balance }}</div>
+                  <div>Account : {{ address }}</div>
+                  <div>
+                    Balance :
+                    <p v-for="(token, index) in balance" :key="index" class="text-balance">
+                      {{ token.denom }} : {{ token.amount }}
+                    </p>
+                  </div>
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -55,7 +60,7 @@ import { mapState } from 'vuex';
 export default {
   name: 'header-page',
   computed: {
-    ...mapState('ethereum', ['account', 'balance'])
+    ...mapState('cosmos', ['address', 'balance'])
   },
   data() {
     return {
@@ -398,5 +403,9 @@ section {
 
 #my-account:hover {
   cursor: pointer;
+}
+
+.text-balance {
+  margin-left: 60px;
 }
 </style>
