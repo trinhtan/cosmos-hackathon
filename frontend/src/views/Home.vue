@@ -11,6 +11,12 @@
         <input type="submit" value="Search" />
       </form>
     </div>
+    <div class="mnemonic">
+      <el-row>
+        <el-button type="primary" round v-on:click="genMemonic">Generate New Mnemonic</el-button>
+        <el-button type="success" round v-on:click="connectNetwork">Connect to Sunchain</el-button>
+      </el-row>
+    </div>
     <section id="section00">
       <div class="content-home" v-loading="loading">
         <div class="row justify-content-center">
@@ -41,28 +47,45 @@
 <script>
 // @ is an alias to /src
 import { mapState, mapActions } from 'vuex';
+import { generateNewMnemonic, getSunchainAddress } from '../utils/mnemonic';
 export default {
   name: 'Home',
   data() {
     return {
       searchTerm: '',
-      loading: true
+      loading: true,
     };
   },
   computed: {
-    ...mapState('cosmos', ['sellsProducts'])
+    ...mapState('cosmos', ['sellsProducts']),
   },
   components: {},
   methods: {
     ...mapActions('cosmos', ['getSellsProducts']),
     setSearchTerm(e) {
       this.searchTerm = e.target.value;
-    }
+    },
+    genMemonic() {
+      const mnemonic = generateNewMnemonic();
+      localStorage.setItem('mnemonic', mnemonic);
+      alert(mnemonic);
+    },
+    connectNetwork() {
+      const mnemonic = window.prompt('Insert SunChain address mnemonic');
+      if (mnemonic) {
+        try {
+          const sunChainAddress = getSunchainAddress(mnemonic);
+          console.log(sunChainAddress);
+        } catch (error) {
+          alert('Invalid mnemonic. Cannot get account from mnemonic.');
+        }
+      }
+    },
   },
   async created() {
     await this.getSellsProducts();
     this.loading = false;
-  }
+  },
 };
 </script>
 
@@ -111,6 +134,10 @@ export default {
 
 input[type='search'] {
   flex-basis: 500px;
+}
+
+.mnemonic {
+  text-align: center;
 }
 
 .home-title-product {

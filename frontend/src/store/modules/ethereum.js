@@ -21,7 +21,7 @@ const actions = {
     const accounts = await web3.eth.getAccounts();
     window.web3.version.getNetwork((e, netId) => {
       if (netId !== process.env.VUE_APP_NETWORK_ID) {
-        alert('Unknown network');
+        console.log('Unknown ethereum network');
         return;
       }
     });
