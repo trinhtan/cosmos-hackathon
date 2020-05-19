@@ -2,7 +2,19 @@
 <p>
 </p>
 
-![logo](https://user-images.githubusercontent.com/53574829/82218594-50c3ef80-9946-11ea-95d2-da9fc3b5eccd.png)
+<div style="
+  height:65px;
+  width:65px;
+  background: #fff;
+  border-radius: 25%;
+  cursor: pointer;
+  background-image: url('https://user-images.githubusercontent.com/53574829/82218594-50c3ef80-9946-11ea-95d2-da9fc3b5eccd.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.3);
+  padding: 35px;
+  margin: 30px auto
+  "></div>
 
 > Buy Second hand items with Atom Token
 
@@ -22,13 +34,13 @@ The app allows users to post second hand items. Other users can set prices to bu
 
 ## Video demo
 
-### 1. Balance not enough to buy
-
-[![Balance not enough](https://user-images.githubusercontent.com/53574829/82236049-bff90e00-995d-11ea-88f8-1ea6a68c6f53.png)](https://www.youtube.com/watch?v=GIxLYMYcRts)
-
-### 2. Balance enough to buy
+### 1. Publish - Set sell - Order - Payment with balance enough to buy
 
 [![Balance enough](https://user-images.githubusercontent.com/53574829/82236290-16664c80-995e-11ea-905d-755d75c16267.png)](https://www.youtube.com/watch?v=342q7NQhejA)
+
+### 2. Payment with balance not enough to buy
+
+[![Balance not enough](https://user-images.githubusercontent.com/53574829/82236049-bff90e00-995d-11ea-88f8-1ea6a68c6f53.png)](https://www.youtube.com/watch?v=GIxLYMYcRts)
 
 ## Functionality
 
