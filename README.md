@@ -2,19 +2,9 @@
 <p>
 </p>
 
-<div style="
-  height:65px;
-  width:65px;
-  background: #fff;
-  border-radius: 25%;
-  cursor: pointer;
-  background-image: url('https://user-images.githubusercontent.com/53574829/82218594-50c3ef80-9946-11ea-95d2-da9fc3b5eccd.png');
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.3);
-  padding: 35px;
-  margin: 30px auto
-  "></div>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/31924226/82283328-3d556a80-99c0-11ea-8fb7-dde0f237ef80.png">
+</p>
 
 > Buy Second hand items with Atom Token
 
