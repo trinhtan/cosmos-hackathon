@@ -4,8 +4,9 @@
 import axios from 'axios';
 
 const state = {
-  name: 'alice',
+  name: 'jack',
   address: '',
+  balance: [],
   products: [],
   public_key: '',
   account_number: 0,
@@ -22,6 +23,7 @@ const mutations = {
     state.public_key = payload.public_key;
     state.account_number = payload.account_number;
     state.sequence = payload.sequence;
+    state.balance = payload.balance;
   },
   setAllProducts(state, products) {
     state.products = products;
@@ -46,6 +48,11 @@ const actions = {
       `${process.env.VUE_APP_API_BACKEND}/sunchain/names/${state.name}/address`
     );
     let account = respone.data.result.value;
+    let responeBalance = await axios.get(
+      `${process.env.VUE_APP_API_BACKEND}/sunchain/names/${state.name}/balance`
+    );
+    let balance = JSON.parse(responeBalance.data.result);
+    account['balance'] = balance;
     commit('setCosmosAccount', account);
   },
   async getAllProducts({ commit }) {
@@ -198,6 +205,40 @@ const actions = {
       );
       let orders = response.data.result ? response.data.result : [];
       commit('setOrdersOfSell', orders);
+    } catch (error) {
+      throw error;
+    }
+  },
+  async decideSell({ commit }, reservationID) {
+    try {
+      let response = await axios.post(
+        `${process.env.VUE_APP_API_BACKEND}/sunchain/sells/decideSell`,
+        {
+          base_req: {
+            from: state.address,
+            chain_id: 'band-consumer'
+          },
+          reservationID
+        }
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+  async payReservation({ commit }, reservationID) {
+    try {
+      let response = await axios.post(
+        `${process.env.VUE_APP_API_BACKEND}/sunchain/reservations/payReservation`,
+        {
+          base_req: {
+            from: state.address,
+            chain_id: 'band-consumer'
+          },
+          reservationID
+        }
+      );
+      return response;
     } catch (error) {
       throw error;
     }

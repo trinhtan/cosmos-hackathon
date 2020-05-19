@@ -22,7 +22,7 @@ export default {
     ...mapActions('cosmos', ['setCosmosAccount'])
   },
   async mounted() {
-    await this.setWeb3();
+    // await this.setWeb3();
     await this.setCosmosAccount();
   }
 };
