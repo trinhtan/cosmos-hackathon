@@ -1,0 +1,1 @@
+{"type":"cosmos-sdk/StdTx","value":{"msg":[{"type":"sunchain/PayReservationByAtom","value":{"reservationID":"72223f79-45b8-2d91-836f-65539c1a691c","signer":"cosmos1ecajdgc932zvzh9lgmn84ychxj2quel3d4a9a4"}}],"fee":{"amount":[],"gas":"200000"},"signatures":null,"memo":""}}

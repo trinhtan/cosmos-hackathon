@@ -4,7 +4,7 @@
 import axios from 'axios';
 
 const state = {
-  name: 'jack',
+  name: 'alice',
   address: '',
   balance: [],
   products: [],
@@ -230,6 +230,23 @@ const actions = {
     try {
       let response = await axios.post(
         `${process.env.VUE_APP_API_BACKEND}/sunchain/reservations/payReservation`,
+        {
+          base_req: {
+            from: state.address,
+            chain_id: 'band-consumer'
+          },
+          reservationID
+        }
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+  async payReservationByAtom({ commit }, reservationID) {
+    try {
+      let response = await axios.post(
+        `${process.env.VUE_APP_API_BACKEND}/sunchain/reservations/payReservationByAtom`,
         {
           base_req: {
             from: state.address,

@@ -593,7 +593,8 @@ func payReservationByAtomHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			w.WriteHeader(http.StatusNoContent)
 			return
 		}
-
+		// Set CORS headers for the main request.
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		var req payReservationByAtomReq
 		if !rest.ReadRESTReq(w, r, cliCtx.Codec, &req) {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, "failed to parse request")
