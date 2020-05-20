@@ -31,6 +31,8 @@ github.com/aws/aws-sdk-go v1.27.0/go.mod h1:KmX6BPdI08NWTb3/sm4ZGu5ShLoqVDhKgpiN
 github.com/aws/aws-sdk-go-v2 v0.18.0/go.mod h1:JWVYvqSMppoMJC0x5wdwiImzgXTI9FuZwxzkQq9wy+g=
 github.com/bandprotocol/bandchain/chain v0.0.0-20200413032603-6ae7f6e32df7 h1:iJ8I76+zXTXEsVeoRtsoMoVkRFixDSA76XAgtOjW1tY=
 github.com/bandprotocol/bandchain/chain v0.0.0-20200413032603-6ae7f6e32df7/go.mod h1:RiSSUgivsH34ufyAkNc++muiWEIUGgphywOSJFR+TEM=
+github.com/bandprotocol/goldcdp v0.0.0-20200429121121-410e5a8606eb h1:xS+ab+j71y2Yqvhq3QfMyceb3hShhpixxA8yeIFiraQ=
+github.com/bandprotocol/goldcdp v0.0.0-20200429121121-410e5a8606eb/go.mod h1:BlDtZuyDvys9oR19ovpeUtGVdsGTohX86ad7l3r0CH0=
 github.com/bartekn/go-bip39 v0.0.0-20171116152956-a05967ea095d h1:1aAija9gr0Hyv4KfQcRcwlmFIrhkDmIj2dz5bkg/s/8=
 github.com/bartekn/go-bip39 v0.0.0-20171116152956-a05967ea095d/go.mod h1:icNx/6QdFblhsEjZehARqbNumymUT/ydwlLojFdv7Sk=
 github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973/go.mod h1:Dwedo/Wpr24TaqPxmxbtue+5NUziq4I4S80YR8gNf3Q=

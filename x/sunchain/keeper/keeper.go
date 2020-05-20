@@ -97,17 +97,6 @@ func (k Keeper) GetProductOwner(ctx sdk.Context, key string) (sdk.AccAddress, er
 	return product.Owner, nil
 }
 
-// ChangeProductOwner changes product owner
-func (k Keeper) ChangeProductOwner(ctx sdk.Context, key string, newOwner sdk.AccAddress) string {
-	product, err := k.GetProduct(ctx, key)
-	if err != nil {
-		return "Product does not exist!"
-	}
-	product.Owner = newOwner
-	k.SetProduct(ctx, key, product)
-	return "Change product owner sucessfully!"
-}
-
 // GetProductDescription gets product description
 func (k Keeper) GetProductDescription(ctx sdk.Context, key string) (string, error) {
 	product, err := k.GetProduct(ctx, key)

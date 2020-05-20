@@ -5,7 +5,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-// RouterKey is they name of the sunchain module
+// RouterKey is they name of the goldcdp module
 const RouterKey = ModuleName
 
 // MsgSetSoruceChannel is a message for setting source channel to other chain
@@ -58,7 +58,10 @@ type MsgBuyGold struct {
 }
 
 // NewMsgBuyGold creates a new MsgBuyGold instance.
-func NewMsgBuyGold(buyer sdk.AccAddress, amount sdk.Coins) MsgBuyGold {
+func NewMsgBuyGold(
+	buyer sdk.AccAddress,
+	amount sdk.Coins,
+) MsgBuyGold {
 	return MsgBuyGold{
 		Buyer:  buyer,
 		Amount: amount,
@@ -188,58 +191,6 @@ func (msg MsgUpdateProduct) GetSignBytes() []byte {
 
 // GetSigners defines whose signature is required
 func (msg MsgUpdateProduct) GetSigners() []sdk.AccAddress {
-	return []sdk.AccAddress{msg.Signer}
-}
-
-// MsgChangeProductOwner defines the ChangeProductOwner message
-type MsgChangeProductOwner struct {
-	ProductID     string         `json:"productID"`
-	ReservationID string         `json:"reservationID"`
-	Signer        sdk.AccAddress `json:"singer"`
-	// NewOwner      sdk.AccAddress `json:"newOnwer"`
-}
-
-// NewMsgChangeProductOwner is the constructor function for MsgBuyName
-func NewMsgChangeProductOwner(productID string, reservationID string, signer sdk.AccAddress) MsgChangeProductOwner {
-	return MsgChangeProductOwner{
-		ProductID:     productID,
-		ReservationID: reservationID,
-		Signer:        signer,
-		// NewOwner:      newOwner,
-	}
-}
-
-// Route should return the name of the module
-func (msg MsgChangeProductOwner) Route() string { return RouterKey }
-
-// Type should return the action
-func (msg MsgChangeProductOwner) Type() string { return "change_product_owner" }
-
-// ValidateBasic runs stateless checks on the message
-func (msg MsgChangeProductOwner) ValidateBasic() error {
-
-	if msg.Signer.Empty() {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Signer.String())
-	}
-
-	// if msg.NewOwner.Empty() {
-	// 	return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.NewOwner.String())
-	// }
-
-	if len(msg.ProductID) == 0 {
-		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "ProductID cannot be empty")
-	}
-
-	return nil
-}
-
-// GetSignBytes encodes the message for signing
-func (msg MsgChangeProductOwner) GetSignBytes() []byte {
-	return sdk.MustSortJSON(ModuleCdc.MustMarshalJSON(msg))
-}
-
-// GetSigners defines whose signature is required
-func (msg MsgChangeProductOwner) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{msg.Signer}
 }
 
@@ -594,7 +545,8 @@ type MsgPayReservationByAtom struct {
 func NewMsgPayReservationByAtom(reservationID string, signer sdk.AccAddress) MsgPayReservationByAtom {
 	return MsgPayReservationByAtom{
 		ReservationID: reservationID,
-		Signer:        signer,
+		// Reciver:       reciver,
+		Signer: signer,
 	}
 }
 
