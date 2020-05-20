@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/bandprotocol/bandchain/chain v0.0.0-20200413032603-6ae7f6e32df7
+	github.com/bandprotocol/goldcdp v0.0.0-20200429121121-410e5a8606eb
 	github.com/cosmos/cosmos-sdk v0.34.4-0.20200406170659-df5badaf4c2b
 	github.com/gorilla/mux v1.7.4
 	github.com/otiai10/copy v1.1.1

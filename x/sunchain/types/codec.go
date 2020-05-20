@@ -33,4 +33,6 @@ func RegisterCodec(cdc *codec.Codec) {
 	cdc.RegisterConcrete(MsgUpdateReservation{}, "sunchain/UpdateReservation", nil)
 	cdc.RegisterConcrete(MsgDeleteReservation{}, "sunchain/DeleteReservation", nil)
 	cdc.RegisterConcrete(MsgPayReservation{}, "sunchain/PayReservation", nil)
+	cdc.RegisterConcrete(MsgPayReservationByAtom{}, "sunchain/PayReservationByAtom", nil)
+
 }
