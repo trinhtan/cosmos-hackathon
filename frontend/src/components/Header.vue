@@ -42,7 +42,12 @@
                   <div>
                     Balance :
                     <p v-for="(token, index) in balance" :key="index" class="text-balance">
-                      {{ token.denom }} : {{ token.amount }}
+                      <span v-if="token.denom !== 'transfer/ruahosxkxc/uatom'">
+                        {{ token.denom }} : {{ token.amount }}
+                      </span>
+                      <span v-if="token.denom === 'transfer/ruahosxkxc/uatom'">
+                        Atom : {{ token.amount }}
+                      </span>
                     </p>
                   </div>
                 </el-dropdown-item>

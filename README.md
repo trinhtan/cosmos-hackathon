@@ -26,11 +26,11 @@ The app allows users to post second hand items. Other users can set prices to bu
 
 ### 1. Publish - Set sell - Order - Payment with balance enough to buy
 
-[![Balance enough](https://user-images.githubusercontent.com/53574829/82236290-16664c80-995e-11ea-905d-755d75c16267.png)](https://www.youtube.com/watch?v=342q7NQhejA)
+[![Balance enough](https://user-images.githubusercontent.com/31924226/82431383-c5b73680-9ab8-11ea-810c-99efdedf1391.png)](https://www.youtube.com/watch?v=c1e7Y30xohA)
 
 ### 2. Payment with balance not enough to buy
 
-[![Balance not enough](https://user-images.githubusercontent.com/53574829/82236049-bff90e00-995d-11ea-88f8-1ea6a68c6f53.png)](https://www.youtube.com/watch?v=GIxLYMYcRts)
+[![Balance not enough](https://user-images.githubusercontent.com/31924226/82431467-debfe780-9ab8-11ea-9eb8-9048536ac75b.png)](https://www.youtube.com/watch?v=snnID4qbT4M)
 
 ## Functionality
 

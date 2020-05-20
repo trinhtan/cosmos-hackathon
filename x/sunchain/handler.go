@@ -563,7 +563,7 @@ func handleOracleRespondPacketData(ctx sdk.Context, packet oracle.OracleResponse
 		return nil, err
 	}
 
-	denom := "transfer/ebcoukxatg/uatom"
+	denom := "transfer/ruahosxkxc/uatom"
 	amount := reservation.Price[0].Amount.Int64() * 1000000000000 / int64(result.Px)
 	token := sdk.NewCoin(denom, sdk.NewInt(amount))
 

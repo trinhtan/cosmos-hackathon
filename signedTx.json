@@ -1,0 +1,25 @@
+{
+  "type": "cosmos-sdk/StdTx",
+  "value": {
+    "msg": [
+      {
+        "type": "sunchain/PayReservationByAtom",
+        "value": {
+          "reservationID": "72223f79-45b8-2d91-836f-65539c1a691c",
+          "signer": "cosmos1ecajdgc932zvzh9lgmn84ychxj2quel3d4a9a4"
+        }
+      }
+    ],
+    "fee": {
+      "amount": [],
+      "gas": "200000"
+    },
+    "signatures": [
+      {
+        "public_key": "61rphyEDIRCZLIfpcX1k+ZyD8cUDCxzBD5L48PUZ0Ie9biI4FMg=",
+        "signature": "ROmmk1QARcv71bzhFdfOw66VgjJklH08SVAKM3eG2lwvWvDqXOv7oKkDaepR/OCSE9MpncECUJuPlI0hbsjNGA=="
+      }
+    ],
+    "memo": ""
+  }
+}
